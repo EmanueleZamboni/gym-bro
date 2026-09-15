@@ -44,10 +44,6 @@
   const arp = (names, t0, step, dur, vol = 0.35, duty = 0.25) => names.map((k, i) => ({ f: N[k], t0: t0 + i * step, dur, vol, duty, dec: 0.6 }));
 
   const DEFS = {
-    ui: () => render(0.07, [{ f: 880, t0: 0, dur: 0.06, vol: 0.35, duty: 0.25 }]),
-    back: () => render(0.12, [{ f: 660, f1: 330, t0: 0, dur: 0.1, vol: 0.35, duty: 0.25 }]),
-    coin: () => render(0.4, [{ f: N.B5, t0: 0, dur: 0.07, vol: 0.45 }, { f: N.E6, t0: 0.07, dur: 0.32, vol: 0.45, dec: 1.6 }]),
-    swap: () => render(0.1, [{ f: 600, f1: 300, t0: 0, dur: 0.09, vol: 0.35, duty: 0.25 }]),
     /* DONE press: punch + reward arpeggio */
     hit: () => render(0.45,
       [{ f: 180, f1: 40, t0: 0, dur: 0.13, vol: 0.5, dec: 1.2 }, ...arp(['C5', 'E5', 'G5', 'C6'], 0.07, 0.065, 0.09, 0.3)],
@@ -57,7 +53,6 @@
       [{ f: 180, f1: 40, t0: 0, dur: 0.13, vol: 0.5, dec: 1.2 }, ...arp(['C5', 'E5', 'G5', 'C6', 'E6', 'G6'], 0.06, 0.06, 0.09, 0.28),
         { f: N.G6, t0: 0.44, dur: 0.6, vol: 0.32, duty: 0.5, vib: 1, dec: 1.4 }, { f: N.C5, t0: 0.44, dur: 0.6, vol: 0.25, type: 'tri', dec: 1.4 }],
       [{ t0: 0, dur: 0.1, vol: 0.55, hold: 3, dec: 1.4 }]),
-    tick: () => render(0.09, [{ f: 330, t0: 0, dur: 0.08, vol: 0.4 }]),
     tick3: () => render(0.09, [{ f: 494, t0: 0, dur: 0.08, vol: 0.45 }]),
     /* rest over: round bell */
     alarm: () => render(0.8, [
@@ -67,17 +62,7 @@
     /* GO: crunch */
     go: () => render(0.4,
       [{ f: 90, f1: 28, t0: 0, dur: 0.3, vol: 0.55, dec: 1.1 }, { f: 520, f1: 260, t0: 0.02, dur: 0.09, vol: 0.3, duty: 0.25 }],
-      [{ t0: 0, dur: 0.26, vol: 0.7, hold: 5, dec: 1.3 }, { t0: 0.05, dur: 0.12, vol: 0.35, hold: 2, dec: 1 }]),
-    /* stage clear jingle */
-    clear: () => render(1.5, [
-      ...arp(['E5', 'G5', 'A5', 'B5'], 0, 0.11, 0.12, 0.35, 0.5),
-      { f: N.E6, t0: 0.44, dur: 0.9, vol: 0.35, vib: 1, dec: 1.2 }, { f: N.B5, t0: 0.44, dur: 0.9, vol: 0.2, duty: 0.25, dec: 1.2 },
-      { f: N.E4, t0: 0, dur: 0.22, vol: 0.3, type: 'tri' }, { f: N.G4, t0: 0.22, dur: 0.22, vol: 0.3, type: 'tri' }, { f: N.E4, t0: 0.44, dur: 0.9, vol: 0.3, type: 'tri', dec: 1.2 }]),
-    allclear: () => render(2.2, [
-      ...arp(['C5', 'E5', 'G5', 'C6'], 0, 0.09, 0.1, 0.35, 0.5), ...arp(['E5', 'G5', 'C6', 'E6'], 0.4, 0.09, 0.1, 0.35, 0.5),
-      { f: N.G6, t0: 0.8, dur: 0.25, vol: 0.35 }, { f: N.E6, t0: 1.05, dur: 0.25, vol: 0.35 }, { f: N.G6, t0: 1.3, dur: 0.85, vol: 0.35, vib: 1, dec: 1.2 },
-      { f: N.C4, t0: 0, dur: 0.4, vol: 0.3, type: 'tri' }, { f: N.E4, t0: 0.4, dur: 0.4, vol: 0.3, type: 'tri' }, { f: N.G4, t0: 0.8, dur: 0.5, vol: 0.3, type: 'tri' }, { f: N.C4, t0: 1.3, dur: 0.85, vol: 0.3, type: 'tri', dec: 1.2 }]),
-    error: () => render(0.22, [{ f: 200, t0: 0, dur: 0.1, vol: 0.4 }, { f: 150, t0: 0.11, dur: 0.1, vol: 0.4 }])
+      [{ t0: 0, dur: 0.26, vol: 0.7, hold: 5, dec: 1.3 }, { t0: 0.05, dur: 0.12, vol: 0.35, hold: 2, dec: 1 }])
   };
   const urls = {};
   const url = name => urls[name] || (urls[name] = wav(DEFS[name]()));

@@ -1,6 +1,6 @@
 # Gym Bro
 
-A 16-bit arcade rest-timer for the gym, Mega Drive / Neo Geo style. One tap opens an exercise (the "stage"), **DONE** after each set lands a HIT, the round timer counts your rest, then **READY? … GO!!** with a chiptune crunch tells you to lift again. Short clips only, so your music ducks instead of stopping.
+A 16-bit arcade rest-timer for the gym, Mega Drive / Neo Geo style. One tap opens an exercise (the "stage"), **DONE** after each set lands a HIT, the round timer counts your rest, then **READY? … GO!!** with a chiptune crunch tells you to lift again. Only four sounds exist (hit, bell, 3-2-1, GO), all short clips, so your music ducks instead of stopping.
 
 No accounts, no server. Everything lives on your phone.
 

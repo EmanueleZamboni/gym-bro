@@ -19,7 +19,7 @@ const I18N = {
     done: 'DONE', rest: 'REST', resting: 'RESTING', ready: 'READY?', go: 'GO!!', hit: 'HIT!', last: 'LAST ONE!', stageClear: 'STAGE CLEAR', allClear: 'ALL CLEAR!', volume: 'VOLUME',
     skip: 'SKIP', newWorkout: 'NEW WORKOUT', addExercise: 'ADD EXERCISE', save: 'SAVE', delete: 'DELETE', code: 'CODE', name: 'NAME', kg: 'WEIGHT (KG)',
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
-    restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Chiptune SFX. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
+    restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'NOTIFICATION', notifySub: 'Android notification when rest ends. Helps with the screen off.', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
@@ -29,7 +29,7 @@ const I18N = {
     done: 'FATTO', rest: 'RIPOSO', resting: 'RIPOSO', ready: 'PRONTO?', go: 'VIA!!', hit: 'BOOM!', last: "L'ULTIMA!", stageClear: 'ESERCIZIO OK', allClear: 'TUTTO FATTO!', volume: 'VOLUME',
     skip: 'SALTA', newWorkout: 'NUOVO ALLENAMENTO', addExercise: 'AGGIUNGI ESERCIZIO', save: 'SALVA', delete: 'ELIMINA', code: 'CODICE', name: 'NOME', kg: 'PESO (KG)',
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
-    restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Effetti chiptune. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
+    restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'NOTIFICA', notifySub: 'Notifica Android a fine riposo. Utile a schermo spento.', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
@@ -97,7 +97,7 @@ const sprite = (k, f = 0, opts) => GymSprites.svg(k, f, '', opts);
 function renderList() {
   dayCheck();
   const el = $('#list'), ex = state.exercises, doneCount = ex.filter(isDone).length;
-  $('#subtitle').innerHTML = `${t('select')}<br><b>${doneCount}/${ex.length}</b> ${t('clearedToday')}`;
+  $('#subtitle').innerHTML = `<b>${doneCount}/${ex.length}</b> ${t('clearedToday')}`;
   if (!ex.length) { el.innerHTML = `<div class="empty">${t('empty')}</div>`; return; }
   el.innerHTML = `<div class="stages">${ex.map((e, i) => `
     <button class="stage ${isDone(e) ? 'done' : ''}" data-id="${e.id}" style="--i:${i}">
@@ -105,23 +105,22 @@ function renderList() {
       <div>
         <span class="scode">${esc(e.code || '—')}</span>
         <div class="sname">${esc(e.name)}</div>
-        <div class="sspec"><b>${e.reps}</b> ${t('reps')} × <b>${e.sets}</b> ${t('sets')}</div>
+        <div class="sspec"><b>${e.reps}</b>${t('reps')} <span style="margin:0 6px">×</span> <b>${e.sets}</b>${t('sets')}</div>
         ${e.doneSets > 0 && !isDone(e) ? `<div class="sdots">${Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''}"></i>`).join('')}</div>` : ''}
       </div>
       <div class="skg">${e.kg}<small>KG</small></div>
       ${isDone(e) ? `<div class="stamp-clear">${t('clear')}!</div>` : ''}
     </button>`).join('')}</div>
-    ${doneCount ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}
-    <div class="hint">${t('hint')}</div>`;
+    ${doneCount ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`;
   el.querySelectorAll('.stage').forEach(c => c.addEventListener('click', () => openSession(c.dataset.id)));
   const nw = $('#btnNewWorkout');
-  if (nw) nw.addEventListener('click', () => { state.exercises.forEach(e => e.doneSets = 0); save(); sfx('coin'); buzz(15); renderList(); });
+  if (nw) nw.addEventListener('click', () => { state.exercises.forEach(e => e.doneSets = 0); save(); renderList(); });
 }
 
 /* =========================== edit =========================== */
 function renderEdit() {
   const el = $('#edit'), ex = state.exercises;
-  $('#subtitle').innerHTML = `${t('edit')}<br><b>${ex.length}</b> ${t('exercise')}`;
+  $('#subtitle').innerHTML = t('edit');
   el.innerHTML = `<div class="stages">${ex.map((e, i) => `
     <div class="row" data-id="${e.id}" style="--i:${i}">
       <div class="sbox">${sprite(e.diagram, 0)}</div>
@@ -135,12 +134,12 @@ function renderEdit() {
     <div class="center"><button class="btn cyan" id="btnAdd">${icon('plus')} ${t('addExercise')}</button></div>`;
   el.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', ev => {
     const id = ev.currentTarget.closest('.row').dataset.id, i = ex.findIndex(x => x.id === id), act = ev.currentTarget.dataset.act;
-    if (act === 'edit') { sfx('ui'); buzz(8); return openForm(id); }
+    if (act === 'edit') { return openForm(id); }
     const j = act === 'up' ? i - 1 : i + 1; if (j < 0 || j >= ex.length) return;
-    [ex[i], ex[j]] = [ex[j], ex[i]]; save(); sfx('swap'); buzz(10);
+    [ex[i], ex[j]] = [ex[j], ex[i]]; save();
     renderEdit(); el.querySelectorAll('.row').forEach(r => r.style.animation = 'none'); el.querySelector(`[data-id="${id}"]`).classList.add('bump');
   }));
-  $('#btnAdd').addEventListener('click', () => { sfx('ui'); buzz(8); openForm(null); });
+  $('#btnAdd').addEventListener('click', () => { openForm(null); });
 }
 function setMode(m) {
   mode = m;
@@ -150,7 +149,7 @@ function setMode(m) {
   $('#btnEdit').classList.toggle('grey', m !== 'edit');
   if (m === 'edit') renderEdit(); else renderList();
 }
-$('#btnEdit').addEventListener('click', () => { sfx(mode === 'edit' ? 'back' : 'ui'); buzz(8); setMode(mode === 'edit' ? 'list' : 'edit'); });
+$('#btnEdit').addEventListener('click', () => { setMode(mode === 'edit' ? 'list' : 'edit'); });
 $('#btnSettings').innerHTML = icon('gear');
 $('#btnClose').innerHTML = icon('x');
 $('#dlgClose').innerHTML = icon('x');
@@ -164,8 +163,8 @@ function openDlg(title, body, foot = '') {
 }
 function closeDlgNow() { dlgOpen = false; $('#dlg').classList.remove('open'); $('#backdrop').classList.remove('open'); }
 function closeDlg() { if (dlgOpen) popLayer(); }
-$('#backdrop').addEventListener('click', () => { sfx('back'); closeDlg(); });
-$('#dlgClose').addEventListener('click', () => { sfx('back'); closeDlg(); });
+$('#backdrop').addEventListener('click', () => { closeDlg(); });
+$('#dlgClose').addEventListener('click', () => { closeDlg(); });
 
 const stepper = (id, val, min, max, step) => `<div class="stepper"><button type="button" class="btn grey sq" data-d="-1">${icon('minus')}</button><input type="number" id="${id}" value="${val}" min="${min}" max="${max}" step="${step}" inputmode="decimal"><button type="button" class="btn grey sq" data-d="1">${icon('plus')}</button></div>`;
 function wireSteppers(root) {
@@ -174,7 +173,7 @@ function wireSteppers(root) {
     s.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
       let v = (parseFloat(inp.value) || 0) + step * parseInt(b.dataset.d);
       v = Math.max(parseFloat(inp.min), Math.min(parseFloat(inp.max), v));
-      inp.value = Math.round(v * 100) / 100; sfx('ui'); buzz(6); inp.dispatchEvent(new Event('input'));
+      inp.value = Math.round(v * 100) / 100; inp.dispatchEvent(new Event('input'));
     }));
   });
 }
@@ -197,7 +196,7 @@ function openForm(id) {
     `${id ? `<button class="btn red" id="fDelete">${t('delete')}</button>` : ''}<button class="btn" id="fSave">${t('save')}</button>`);
   const body = $('#dlgBody'); wireSteppers(body);
   body.querySelectorAll('#fPick button').forEach(b => b.addEventListener('click', () => {
-    diagram = b.dataset.k; body.querySelectorAll('#fPick button').forEach(x => x.classList.toggle('sel', x === b)); sfx('ui'); buzz(6);
+    diagram = b.dataset.k; body.querySelectorAll('#fPick button').forEach(x => x.classList.toggle('sel', x === b)); 
   }));
   const restLbl = () => { const v = parseInt($('#fRest').value) || 0; $('#fRestLbl').textContent = v ? `· ${v}s` : `· ${t('useDefault')} ${state.settings.rest}s`; };
   $('#fRest').addEventListener('input', restLbl); restLbl();
@@ -206,10 +205,10 @@ function openForm(id) {
       reps: Math.max(1, parseInt($('#fReps').value) || 1), sets: Math.max(1, parseInt($('#fSets').value) || 1),
       kg: Math.max(0, parseFloat($('#fKg').value) || 0), rest: (parseInt($('#fRest').value) || 0) || null, notes: $('#fNotesI').value.trim(), diagram };
     if (id) { Object.assign(e, data); if (e.doneSets > e.sets) e.doneSets = e.sets; } else state.exercises.push({ id: uid(), doneSets: 0, ...data });
-    save(); sfx('coin'); buzz(20); closeDlg(); renderEdit();
+    save(); closeDlg(); renderEdit();
   });
   const del = $('#fDelete');
-  if (del) del.addEventListener('click', () => { if (confirm(t('deleteConfirm'))) { state.exercises = state.exercises.filter(x => x.id !== id); save(); sfx('error'); closeDlg(); renderEdit(); } });
+  if (del) del.addEventListener('click', () => { if (confirm(t('deleteConfirm'))) { state.exercises = state.exercises.filter(x => x.id !== id); save(); closeDlg(); renderEdit(); } });
 }
 
 let deferredInstall = null;
@@ -226,39 +225,37 @@ function openSettings() {
     <div class="opt"><div><div class="lab">${t('crt')}</div><div class="sub">${t('crtSub')}</div></div>${tog('crt', s.crt)}</div>
     <div class="opt"><div><div class="lab">${t('language')}</div></div>${tog('lang', s.lang === 'en', 'EN', 'IT').replace('class="toggle off"', 'class="toggle"')}</div>
     ${deferredInstall ? `<div class="opt"><div><div class="lab">${t('install')}</div><div class="sub">${t('installSub')}</div></div><button class="btn cyan" id="sInstall">${t('install')}</button></div>` : ''}
-    <div class="center"><button class="btn red" id="sReset" style="font-size:9px">${t('resetData')}</button></div>
-    <div class="credits">GYM BRO · 16-BIT EDITION<br>©2026 · NO PAIN NO GAIN</div>`);
+    <div class="center"><button class="btn red" id="sReset" style="font-size:9px">${t('resetData')}</button></div>`);
   const body = $('#dlgBody'); wireSteppers(body);
   $('#sRest').addEventListener('input', ev => { const v = parseInt(ev.target.value); if (v >= 5) { s.rest = v; save(); } });
   body.querySelectorAll('.toggle').forEach(b => b.addEventListener('click', async () => {
     const k = b.dataset.k;
-    if (k === 'lang') { s.lang = s.lang === 'en' ? 'it' : 'en'; document.documentElement.lang = s.lang; save(); sfx('ui'); openSettings(); if (mode === 'edit') renderEdit(); else renderList(); return; }
+    if (k === 'lang') { s.lang = s.lang === 'en' ? 'it' : 'en'; document.documentElement.lang = s.lang; save(); openSettings(); if (mode === 'edit') renderEdit(); else renderList(); return; }
     s[k] = !s[k];
     if (k === 'notify' && s.notify) {
       if (!('Notification' in window)) s.notify = false;
       else if (Notification.permission !== 'granted') { const p = await Notification.requestPermission(); if (p !== 'granted') s.notify = false; }
     }
     if (k === 'crt') document.body.classList.toggle('crt', s.crt);
-    save(); sfx(s[k] ? 'coin' : 'back'); buzz(8); openSettings();
+    save(); openSettings();
   }));
   const inst = $('#sInstall');
   if (inst) inst.addEventListener('click', async () => { if (!deferredInstall) return; deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = null; closeDlg(); });
-  $('#sReset').addEventListener('click', () => { if (confirm(t('resetConfirm'))) { state.exercises = freshExercises(); save(); sfx('error'); closeDlg(); setMode('list'); } });
+  $('#sReset').addEventListener('click', () => { if (confirm(t('resetConfirm'))) { state.exercises = freshExercises(); save(); closeDlg(); setMode('list'); } });
 }
-$('#btnSettings').addEventListener('click', () => { sfx('ui'); buzz(8); openSettings(); });
+$('#btnSettings').addEventListener('click', () => { openSettings(); });
 
 /* =========================== fight screen =========================== */
 const S = { ex: null, open: false, phase: 'idle', endAt: 0, dur: 0, raf: 0, timeout: 0, interval: 0, lastShown: -1, wake: null, anim: 0, goT: 0 };
 const fight = $('#fight');
 function openSession(id) {
   const e = state.exercises.find(x => x.id === id); if (!e) return;
-  sfx('coin'); buzz(12);
   wipe(() => {
     S.ex = e; S.open = true; S.phase = 'set';
     if (isDone(e)) e.doneSets = 0;
-    $('#fCode').textContent = e.code || t('exercise'); $('#fName').textContent = e.name; $('#fKgV').textContent = e.kg;
+    $('#fCode').textContent = e.code || t('exercise'); $('#fName').textContent = e.name;
+    $('#stReps').textContent = e.reps; $('#stRepsL').textContent = t('reps'); $('#stKg').textContent = e.kg; $('#stSetL').textContent = t('set');
     $('#fNotes').textContent = e.notes || '';
-    $('#capReps').textContent = `× ${e.reps} ${t('reps').toUpperCase()}`;
     $('#sprite').innerHTML = GymSprites.svg(e.diagram, 0, 'f0') + GymSprites.svg(e.diagram, 1, 'f1') + GymSprites.svg(e.diagram, 0, 'rest', { sweat: true });
     $('#stamp').className = 'stamp'; $('#score').className = 'score'; $('#score').innerHTML = '';
     fight.classList.remove('resting', 'go');
@@ -275,7 +272,7 @@ function closeSessionNow() {
   releaseWake(); save(); renderList();
 }
 function closeSession() { if (S.open) popLayer(); }
-$('#btnClose').addEventListener('click', () => { sfx('back'); buzz(8); closeSession(); });
+$('#btnClose').addEventListener('click', () => { closeSession(); });
 
 /* sprite frame animation: alternate frames while working */
 function startAnim() { stopAnim(); S.anim = setInterval(() => { if (S.phase === 'set') $('#sprite').classList.toggle('alt'); }, 420); }
@@ -285,7 +282,7 @@ function renderBar(flashIdx) {
   const e = S.ex;
   $('#bar').innerHTML = Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''} ${k === e.doneSets && S.phase === 'set' ? 'cur' : ''} ${k === flashIdx ? 'flash' : ''}"></i>`).join('');
   const next = Math.min(e.sets, e.doneSets + 1);
-  $('#capSet').innerHTML = isDone(e) ? `<b>${t('stageClear')}</b>` : `${t('set')} <b>${next}</b> ${t('of')} ${e.sets}`;
+  $('#stSet').innerHTML = isDone(e) ? `${e.sets}<i>/${e.sets}</i>` : `${next}<i>/${e.sets}</i>`;
   $('#btnDone').textContent = S.phase === 'rest' ? t('resting') : (S.phase === 'go' ? t('go') : t('done'));
   $('#btnDone').classList.toggle('grey', S.phase !== 'set');
   $('#btnDone').disabled = S.phase !== 'set';
@@ -294,10 +291,10 @@ function renderSub() {
   const el = $('#subctl');
   if (S.phase === 'rest') {
     el.innerHTML = `<button class="btn grey" id="btnMinus">-15s</button><button class="btn grey" id="btnPlus">+15s</button><button class="btn red" id="btnSkip">${t('skip')}</button>`;
-    $('#btnSkip').addEventListener('click', () => { if (S.phase === 'rest') { sfx('back'); buzz(8); endRest(false); } });
-    $('#btnPlus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt += 15000; S.dur += 15; sfx('ui'); buzz(6); tick(); } });
-    $('#btnMinus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt -= 15000; sfx('ui'); buzz(6); tick(); } });
-  } else el.innerHTML = `<div class="subhint">${t('tapDone')}</div>`;
+    $('#btnSkip').addEventListener('click', () => { if (S.phase === 'rest') { endRest(false); } });
+    $('#btnPlus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt += 15000; S.dur += 15; tick(); } });
+    $('#btnMinus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt -= 15000; tick(); } });
+  } else el.innerHTML = '';
 }
 
 /* the satisfying press */
@@ -348,7 +345,7 @@ function tick() {
     S.lastShown = secs; const num = $('#tNum'); num.textContent = secs;
     num.classList.remove('punch'); void num.offsetWidth; num.classList.add('punch');
     num.classList.toggle('low', secs <= 3);
-    if (secs <= 3 && secs > 0) { sfx('tick3'); buzz(15); } else if (secs <= 10 && secs > 3) sfx('tick');
+    if (secs <= 3 && secs > 0) { sfx('tick3'); buzz(15); }
   }
   if (rem <= 0) endRest(true);
   else if (!document.hidden) { cancelAnimationFrame(S.raf); S.raf = requestAnimationFrame(tick); }
@@ -378,7 +375,6 @@ function finishExercise() {
   const t0 = performance.now(), D = 900;
   const roll = now => { const x = Math.min(1, (now - t0) / D); sc.querySelector('b').textContent = Math.round(vol * x); if (x < 1) requestAnimationFrame(roll); };
   requestAnimationFrame(roll);
-  setTimeout(() => { if (all) sfx('allclear'); }, 900);
   setTimeout(() => {
     wipe(() => { closeSessionNow(); if (all) setTimeout(() => toast('💪 ' + t('allClear')), 300); });
   }, all ? 2600 : 1900);
