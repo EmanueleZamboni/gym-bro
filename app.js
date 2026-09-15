@@ -401,4 +401,9 @@ clockTick(); setInterval(clockTick, 5000);
 document.documentElement.lang = state.settings.lang;
 document.body.classList.toggle('crt', !!state.settings.crt);
 setMode('list');
-if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+if ('serviceWorker' in navigator) {
+  let hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController && !S.open) location.reload(); hadController = true; });
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').then(r => r.update()).catch(() => {}));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) navigator.serviceWorker.getRegistration().then(r => r && r.update()); });
+}
