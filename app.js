@@ -1,0 +1,408 @@
+'use strict';
+/* =========================== pixel icons (8x8) =========================== */
+const ICONS = {
+  pen:   ['......##','.....#.#','....#.#.','...#.#..','..#.#...','.##.#...','.#.##...','####....'],
+  gear:  ['..####..','.#....#.','##.##.##','#.#..#.#','#.#..#.#','##.##.##','.#....#.','..####..'],
+  x:     ['##....##','.##..##.','..####..','...##...','..####..','.##..##.','##....##','........'],
+  up:    ['...##...','..####..','.######.','########','...##...','...##...','...##...','...##...'],
+  down:  ['...##...','...##...','...##...','...##...','########','.######.','..####..','...##...'],
+  plus:  ['...##...','...##...','...##...','########','########','...##...','...##...','...##...'],
+  minus: ['........','........','........','########','########','........','........','........'],
+  check: ['.......#','......##','.....##.','#...##..','##.##...','.###....','..#.....','........'],
+  play:  ['#.......','###.....','#####...','#######.','#######.','#####...','###.....','#.......']
+};
+const icon = (k, color = 'currentColor') => `<svg class="icon" viewBox="0 0 8 8" shape-rendering="crispEdges">${ICONS[k].map((r, y) => { let o = ''; for (let x = 0; x < 8; x++) if (r[x] === '#') o += `<rect x="${x}" y="${y}" width="1" height="1" fill="${color}"/>`; return o; }).join('')}</svg>`;
+
+/* =========================== i18n =========================== */
+const I18N = {
+  en: { select: 'STAGE SELECT', clear: 'CLEAR', edit: 'EDIT', editTitle: 'EDIT EXERCISE', addTitle: 'NEW EXERCISE', settings: 'OPTIONS', sets: 'sets', reps: 'reps', set: 'SET',
+    done: 'DONE', rest: 'REST', resting: 'RESTING', ready: 'READY?', go: 'GO!!', hit: 'HIT!', last: 'LAST ONE!', stageClear: 'STAGE CLEAR', allClear: 'ALL CLEAR!', volume: 'VOLUME',
+    skip: 'SKIP', newWorkout: 'NEW WORKOUT', addExercise: 'ADD EXERCISE', save: 'SAVE', delete: 'DELETE', code: 'CODE', name: 'NAME', kg: 'WEIGHT (KG)',
+    restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
+    restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Chiptune SFX. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
+    notify: 'NOTIFICATION', notifySub: 'Android notification when rest ends. Helps with the screen off.', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
+    empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
+    hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
+    round: 'SET', clearedToday: 'CLEAR TODAY' },
+  it: { select: 'SCEGLI ESERCIZIO', clear: 'FATTO', edit: 'MODIFICA', editTitle: 'MODIFICA ESERCIZIO', addTitle: 'NUOVO ESERCIZIO', settings: 'OPZIONI', sets: 'serie', reps: 'rip', set: 'SERIE',
+    done: 'FATTO', rest: 'RIPOSO', resting: 'RIPOSO', ready: 'PRONTO?', go: 'VIA!!', hit: 'BOOM!', last: "L'ULTIMA!", stageClear: 'ESERCIZIO OK', allClear: 'TUTTO FATTO!', volume: 'VOLUME',
+    skip: 'SALTA', newWorkout: 'NUOVO ALLENAMENTO', addExercise: 'AGGIUNGI ESERCIZIO', save: 'SALVA', delete: 'ELIMINA', code: 'CODICE', name: 'NOME', kg: 'PESO (KG)',
+    restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
+    restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Effetti chiptune. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
+    notify: 'NOTIFICA', notifySub: 'Notifica Android a fine riposo. Utile a schermo spento.', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
+    empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
+    hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
+    round: 'SERIE', clearedToday: 'FATTI OGGI' }
+};
+const t = k => (I18N[state.settings.lang] || I18N.en)[k] ?? k;
+
+/* =========================== state =========================== */
+const DEFAULT_EXERCISES = [
+  { code: 'A01', name: 'Vertical Chest Press', sets: 4, reps: 10, kg: 40, diagram: 'chestpress', notes: 'Riesco' },
+  { code: 'E04', name: 'Leg Extension Machine', sets: 4, reps: 10, kg: 35, diagram: 'legext', notes: 'Sopra il piede zona tibia, cuscinetto indietro, sedile fino al ginocchio, piede a martello' },
+  { code: 'B02', name: 'Lat Machine', sets: 4, reps: 10, kg: 45, diagram: 'latpull', notes: 'A malapena' },
+  { code: 'B01', name: 'Vogatore a tiraggio centrale', sets: 4, reps: 10, kg: 35, diagram: 'row', notes: '40 kg mi fa male, tengo 35' },
+  { code: 'F10', name: 'Abdominal Machine', sets: 4, reps: 12, kg: 45, diagram: 'abs', notes: 'A malapena' },
+  { code: 'E05', name: 'Leg Curl Machine', sets: 4, reps: 10, kg: 40, diagram: 'legcurl', notes: '' },
+  { code: 'E01', name: 'Leg Press', sets: 4, reps: 10, kg: 85, diagram: 'legpress', notes: 'Appena alzato' }
+];
+const KEY = 'gymbro.v1';
+const uid = () => Math.random().toString(36).slice(2, 9);
+const today = () => new Date().toISOString().slice(0, 10);
+const freshExercises = () => DEFAULT_EXERCISES.map(e => ({ id: uid(), rest: null, doneSets: 0, ...e }));
+let state = load();
+function load() {
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.exercises) { s.settings = { crt: true, ...s.settings }; return s; } } catch (e) {}
+  return { settings: { rest: 90, sound: true, vibrate: true, notify: false, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() };
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+function dayCheck() { if (state.day !== today()) { state.exercises.forEach(e => e.doneSets = 0); state.day = today(); save(); } }
+const restOf = e => (e.rest && e.rest > 0) ? e.rest : state.settings.rest;
+const isDone = e => e.doneSets >= e.sets;
+
+/* =========================== helpers =========================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const sfx = n => { if (state.settings.sound) Sfx.play(n); };
+const buzz = p => { if (state.settings.vibrate && navigator.vibrate) { try { navigator.vibrate(p); } catch (e) {} } };
+let toastT;
+function toast(msg) { const el = $('#toast'); el.textContent = msg; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 2200); }
+function flash(yellow) { const f = $('#flash'); f.classList.remove('on'); f.classList.toggle('yellow', !!yellow); void f.offsetWidth; f.classList.add('on'); }
+function shake() { const f = $('#fight'); f.classList.remove('shake'); void f.offsetWidth; f.classList.add('shake'); }
+
+/* history-backed layers so the Android back button closes things */
+const layers = [];
+function pushLayer(name, close) { layers.push({ name, close }); history.pushState({ layer: name }, ''); }
+function popLayer() { if (layers.length) history.back(); }
+window.addEventListener('popstate', () => { const l = layers.pop(); if (l) l.close(); });
+
+/* tile wipe transition (Mega Drive style) */
+const wipeEl = $('#wipe');
+function wipe(mid) {
+  const T = 44, cols = Math.ceil(innerWidth / T), rows = Math.ceil(innerHeight / T);
+  wipeEl.style.gridTemplateColumns = `repeat(${cols},${T}px)`; wipeEl.style.gridTemplateRows = `repeat(${rows},${T}px)`;
+  let h = '';
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) h += `<i style="transition-delay:${(c + r) * 12}ms"></i>`;
+  wipeEl.innerHTML = h;
+  const total = (cols + rows) * 12 + 130;
+  wipeEl.classList.add('in');
+  setTimeout(() => { mid(); setTimeout(() => { wipeEl.classList.remove('in'); setTimeout(() => { wipeEl.innerHTML = ''; }, total); }, 60); }, total);
+}
+
+/* =========================== list (stage select) =========================== */
+let mode = 'list';
+const sprite = (k, f = 0, opts) => GymSprites.svg(k, f, '', opts);
+function renderList() {
+  dayCheck();
+  const el = $('#list'), ex = state.exercises, doneCount = ex.filter(isDone).length;
+  $('#subtitle').innerHTML = `${t('select')}<br><b>${doneCount}/${ex.length}</b> ${t('clearedToday')}`;
+  if (!ex.length) { el.innerHTML = `<div class="empty">${t('empty')}</div>`; return; }
+  el.innerHTML = `<div class="stages">${ex.map((e, i) => `
+    <button class="stage ${isDone(e) ? 'done' : ''}" data-id="${e.id}" style="--i:${i}">
+      <div class="sbox">${sprite(e.diagram, 0)}</div>
+      <div>
+        <span class="scode">${esc(e.code || '—')}</span>
+        <div class="sname">${esc(e.name)}</div>
+        <div class="sspec"><b>${e.reps}</b> ${t('reps')} × <b>${e.sets}</b> ${t('sets')}</div>
+        ${e.doneSets > 0 && !isDone(e) ? `<div class="sdots">${Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''}"></i>`).join('')}</div>` : ''}
+      </div>
+      <div class="skg">${e.kg}<small>KG</small></div>
+      ${isDone(e) ? `<div class="stamp-clear">${t('clear')}!</div>` : ''}
+    </button>`).join('')}</div>
+    ${doneCount ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}
+    <div class="hint">${t('hint')}</div>`;
+  el.querySelectorAll('.stage').forEach(c => c.addEventListener('click', () => openSession(c.dataset.id)));
+  const nw = $('#btnNewWorkout');
+  if (nw) nw.addEventListener('click', () => { state.exercises.forEach(e => e.doneSets = 0); save(); sfx('coin'); buzz(15); renderList(); });
+}
+
+/* =========================== edit =========================== */
+function renderEdit() {
+  const el = $('#edit'), ex = state.exercises;
+  $('#subtitle').innerHTML = `${t('edit')}<br><b>${ex.length}</b> ${t('exercise')}`;
+  el.innerHTML = `<div class="stages">${ex.map((e, i) => `
+    <div class="row" data-id="${e.id}" style="--i:${i}">
+      <div class="sbox">${sprite(e.diagram, 0)}</div>
+      <div><div class="sname">${esc(e.name)}</div><div class="sspec">${esc(e.code)} · ${e.reps}×${e.sets} · <b>${e.kg} kg</b>${e.rest ? ` · ${e.rest}s` : ''}</div></div>
+      <div class="acts">
+        <button class="btn grey sq" data-act="up" ${i === 0 ? 'disabled' : ''}>${icon('up')}</button>
+        <button class="btn grey sq" data-act="down" ${i === ex.length - 1 ? 'disabled' : ''}>${icon('down')}</button>
+        <button class="btn sq" data-act="edit">${icon('pen')}</button>
+      </div>
+    </div>`).join('')}</div>
+    <div class="center"><button class="btn cyan" id="btnAdd">${icon('plus')} ${t('addExercise')}</button></div>`;
+  el.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', ev => {
+    const id = ev.currentTarget.closest('.row').dataset.id, i = ex.findIndex(x => x.id === id), act = ev.currentTarget.dataset.act;
+    if (act === 'edit') { sfx('ui'); buzz(8); return openForm(id); }
+    const j = act === 'up' ? i - 1 : i + 1; if (j < 0 || j >= ex.length) return;
+    [ex[i], ex[j]] = [ex[j], ex[i]]; save(); sfx('swap'); buzz(10);
+    renderEdit(); el.querySelectorAll('.row').forEach(r => r.style.animation = 'none'); el.querySelector(`[data-id="${id}"]`).classList.add('bump');
+  }));
+  $('#btnAdd').addEventListener('click', () => { sfx('ui'); buzz(8); openForm(null); });
+}
+function setMode(m) {
+  mode = m;
+  $('#list').classList.toggle('hidden', m !== 'list');
+  $('#edit').classList.toggle('hidden', m !== 'edit');
+  $('#btnEdit').innerHTML = m === 'edit' ? icon('check') : icon('pen');
+  $('#btnEdit').classList.toggle('grey', m !== 'edit');
+  if (m === 'edit') renderEdit(); else renderList();
+}
+$('#btnEdit').addEventListener('click', () => { sfx(mode === 'edit' ? 'back' : 'ui'); buzz(8); setMode(mode === 'edit' ? 'list' : 'edit'); });
+$('#btnSettings').innerHTML = icon('gear');
+$('#btnClose').innerHTML = icon('x');
+$('#dlgClose').innerHTML = icon('x');
+
+/* =========================== dialog =========================== */
+let dlgOpen = false;
+function openDlg(title, body, foot = '') {
+  $('#dlgTitle').textContent = title; $('#dlgBody').innerHTML = body; $('#dlgFoot').innerHTML = foot;
+  $('#dlg').classList.add('open'); $('#backdrop').classList.add('open'); $('#dlg').scrollTop = 0;
+  if (!dlgOpen) { dlgOpen = true; pushLayer('dlg', closeDlgNow); }
+}
+function closeDlgNow() { dlgOpen = false; $('#dlg').classList.remove('open'); $('#backdrop').classList.remove('open'); }
+function closeDlg() { if (dlgOpen) popLayer(); }
+$('#backdrop').addEventListener('click', () => { sfx('back'); closeDlg(); });
+$('#dlgClose').addEventListener('click', () => { sfx('back'); closeDlg(); });
+
+const stepper = (id, val, min, max, step) => `<div class="stepper"><button type="button" class="btn grey sq" data-d="-1">${icon('minus')}</button><input type="number" id="${id}" value="${val}" min="${min}" max="${max}" step="${step}" inputmode="decimal"><button type="button" class="btn grey sq" data-d="1">${icon('plus')}</button></div>`;
+function wireSteppers(root) {
+  root.querySelectorAll('.stepper').forEach(s => {
+    const inp = s.querySelector('input'), step = parseFloat(inp.step) || 1;
+    s.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      let v = (parseFloat(inp.value) || 0) + step * parseInt(b.dataset.d);
+      v = Math.max(parseFloat(inp.min), Math.min(parseFloat(inp.max), v));
+      inp.value = Math.round(v * 100) / 100; sfx('ui'); buzz(6); inp.dispatchEvent(new Event('input'));
+    }));
+  });
+}
+function openForm(id) {
+  const e = id ? state.exercises.find(x => x.id === id) : { code: '', name: '', sets: 4, reps: 10, kg: 20, rest: null, notes: '', diagram: 'body' };
+  let diagram = e.diagram;
+  openDlg(id ? t('editTitle') : t('addTitle'), `
+    <div class="grid2" style="grid-template-columns:1fr 2fr">
+      <div class="field"><label>${t('code')}</label><input type="text" id="fCodeI" value="${esc(e.code)}" maxlength="6" autocapitalize="characters"></div>
+      <div class="field"><label>${t('name')}</label><input type="text" id="fNameI" value="${esc(e.name)}" maxlength="40"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>${t('reps')}</label>${stepper('fReps', e.reps, 1, 100, 1)}</div>
+      <div class="field"><label>${t('sets')}</label>${stepper('fSets', e.sets, 1, 20, 1)}</div>
+    </div>
+    <div class="field"><label>${t('kg')}</label>${stepper('fKg', e.kg, 0, 999, 2.5)}</div>
+    <div class="field"><label>${t('restOverride')} <span id="fRestLbl"></span></label>${stepper('fRest', e.rest || 0, 0, 600, 15)}</div>
+    <div class="field"><label>${t('sprite')}</label><div class="pick" id="fPick">${GymSprites.keys.map(k => `<button type="button" data-k="${k}" class="${k === diagram ? 'sel' : ''}">${sprite(k, 0)}</button>`).join('')}</div></div>
+    <div class="field"><label>${t('notes')}</label><textarea id="fNotesI">${esc(e.notes)}</textarea></div>`,
+    `${id ? `<button class="btn red" id="fDelete">${t('delete')}</button>` : ''}<button class="btn" id="fSave">${t('save')}</button>`);
+  const body = $('#dlgBody'); wireSteppers(body);
+  body.querySelectorAll('#fPick button').forEach(b => b.addEventListener('click', () => {
+    diagram = b.dataset.k; body.querySelectorAll('#fPick button').forEach(x => x.classList.toggle('sel', x === b)); sfx('ui'); buzz(6);
+  }));
+  const restLbl = () => { const v = parseInt($('#fRest').value) || 0; $('#fRestLbl').textContent = v ? `· ${v}s` : `· ${t('useDefault')} ${state.settings.rest}s`; };
+  $('#fRest').addEventListener('input', restLbl); restLbl();
+  $('#fSave').addEventListener('click', () => {
+    const data = { code: $('#fCodeI').value.trim().toUpperCase(), name: $('#fNameI').value.trim() || t('exercise'),
+      reps: Math.max(1, parseInt($('#fReps').value) || 1), sets: Math.max(1, parseInt($('#fSets').value) || 1),
+      kg: Math.max(0, parseFloat($('#fKg').value) || 0), rest: (parseInt($('#fRest').value) || 0) || null, notes: $('#fNotesI').value.trim(), diagram };
+    if (id) { Object.assign(e, data); if (e.doneSets > e.sets) e.doneSets = e.sets; } else state.exercises.push({ id: uid(), doneSets: 0, ...data });
+    save(); sfx('coin'); buzz(20); closeDlg(); renderEdit();
+  });
+  const del = $('#fDelete');
+  if (del) del.addEventListener('click', () => { if (confirm(t('deleteConfirm'))) { state.exercises = state.exercises.filter(x => x.id !== id); save(); sfx('error'); closeDlg(); renderEdit(); } });
+}
+
+let deferredInstall = null;
+window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); deferredInstall = ev; });
+function openSettings() {
+  const s = state.settings;
+  const tog = (k, on, a = t('on'), b = t('off')) => `<button class="toggle ${on ? '' : 'off'}" data-k="${k}"><span>◄</span> ${on ? a : b} <span>►</span></button>`;
+  openDlg(t('settings'), `
+    <div class="opt"><div><div class="lab">${t('restDefault')}</div><div class="sub">${t('restDefaultSub')}</div></div><div style="width:160px">${stepper('sRest', s.rest, 5, 600, 5)}</div></div>
+    <div class="opt"><div><div class="lab">${t('sound')}</div><div class="sub">${t('soundSub')}</div></div>${tog('sound', s.sound)}</div>
+    <div class="opt"><div><div class="lab">${t('vibration')}</div></div>${tog('vibrate', s.vibrate)}</div>
+    <div class="opt"><div><div class="lab">${t('notify')}</div><div class="sub">${t('notifySub')}</div></div>${tog('notify', s.notify)}</div>
+    <div class="opt"><div><div class="lab">${t('keepAwake')}</div><div class="sub">${t('keepAwakeSub')}</div></div>${tog('wake', s.wake)}</div>
+    <div class="opt"><div><div class="lab">${t('crt')}</div><div class="sub">${t('crtSub')}</div></div>${tog('crt', s.crt)}</div>
+    <div class="opt"><div><div class="lab">${t('language')}</div></div>${tog('lang', s.lang === 'en', 'EN', 'IT').replace('class="toggle off"', 'class="toggle"')}</div>
+    ${deferredInstall ? `<div class="opt"><div><div class="lab">${t('install')}</div><div class="sub">${t('installSub')}</div></div><button class="btn cyan" id="sInstall">${t('install')}</button></div>` : ''}
+    <div class="center"><button class="btn red" id="sReset" style="font-size:9px">${t('resetData')}</button></div>
+    <div class="credits">GYM BRO · 16-BIT EDITION<br>©2026 · NO PAIN NO GAIN</div>`);
+  const body = $('#dlgBody'); wireSteppers(body);
+  $('#sRest').addEventListener('input', ev => { const v = parseInt(ev.target.value); if (v >= 5) { s.rest = v; save(); } });
+  body.querySelectorAll('.toggle').forEach(b => b.addEventListener('click', async () => {
+    const k = b.dataset.k;
+    if (k === 'lang') { s.lang = s.lang === 'en' ? 'it' : 'en'; document.documentElement.lang = s.lang; save(); sfx('ui'); openSettings(); if (mode === 'edit') renderEdit(); else renderList(); return; }
+    s[k] = !s[k];
+    if (k === 'notify' && s.notify) {
+      if (!('Notification' in window)) s.notify = false;
+      else if (Notification.permission !== 'granted') { const p = await Notification.requestPermission(); if (p !== 'granted') s.notify = false; }
+    }
+    if (k === 'crt') document.body.classList.toggle('crt', s.crt);
+    save(); sfx(s[k] ? 'coin' : 'back'); buzz(8); openSettings();
+  }));
+  const inst = $('#sInstall');
+  if (inst) inst.addEventListener('click', async () => { if (!deferredInstall) return; deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = null; closeDlg(); });
+  $('#sReset').addEventListener('click', () => { if (confirm(t('resetConfirm'))) { state.exercises = freshExercises(); save(); sfx('error'); closeDlg(); setMode('list'); } });
+}
+$('#btnSettings').addEventListener('click', () => { sfx('ui'); buzz(8); openSettings(); });
+
+/* =========================== fight screen =========================== */
+const S = { ex: null, open: false, phase: 'idle', endAt: 0, dur: 0, raf: 0, timeout: 0, interval: 0, lastShown: -1, wake: null, anim: 0, goT: 0 };
+const fight = $('#fight');
+function openSession(id) {
+  const e = state.exercises.find(x => x.id === id); if (!e) return;
+  sfx('coin'); buzz(12);
+  wipe(() => {
+    S.ex = e; S.open = true; S.phase = 'set';
+    if (isDone(e)) e.doneSets = 0;
+    $('#fCode').textContent = e.code || t('exercise'); $('#fName').textContent = e.name; $('#fKgV').textContent = e.kg;
+    $('#fNotes').textContent = e.notes || '';
+    $('#capReps').textContent = `× ${e.reps} ${t('reps').toUpperCase()}`;
+    $('#sprite').innerHTML = GymSprites.svg(e.diagram, 0, 'f0') + GymSprites.svg(e.diagram, 1, 'f1') + GymSprites.svg(e.diagram, 0, 'rest', { sweat: true });
+    $('#stamp').className = 'stamp'; $('#score').className = 'score'; $('#score').innerHTML = '';
+    fight.classList.remove('resting', 'go');
+    renderBar(); renderSub();
+    fight.classList.remove('hidden'); fight.setAttribute('aria-hidden', 'false');
+    window.scrollTo(0, 0);
+    pushLayer('fight', closeSessionNow);
+    requestWake(); startAnim();
+  });
+}
+function closeSessionNow() {
+  S.open = false; S.phase = 'idle'; stopTimer(); stopAnim();
+  fight.classList.add('hidden'); fight.classList.remove('resting', 'go'); fight.setAttribute('aria-hidden', 'true');
+  releaseWake(); save(); renderList();
+}
+function closeSession() { if (S.open) popLayer(); }
+$('#btnClose').addEventListener('click', () => { sfx('back'); buzz(8); closeSession(); });
+
+/* sprite frame animation: alternate frames while working */
+function startAnim() { stopAnim(); S.anim = setInterval(() => { if (S.phase === 'set') $('#sprite').classList.toggle('alt'); }, 420); }
+function stopAnim() { clearInterval(S.anim); $('#sprite').classList.remove('alt'); }
+
+function renderBar(flashIdx) {
+  const e = S.ex;
+  $('#bar').innerHTML = Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''} ${k === e.doneSets && S.phase === 'set' ? 'cur' : ''} ${k === flashIdx ? 'flash' : ''}"></i>`).join('');
+  const next = Math.min(e.sets, e.doneSets + 1);
+  $('#capSet').innerHTML = isDone(e) ? `<b>${t('stageClear')}</b>` : `${t('set')} <b>${next}</b> ${t('of')} ${e.sets}`;
+  $('#btnDone').textContent = S.phase === 'rest' ? t('resting') : (S.phase === 'go' ? t('go') : t('done'));
+  $('#btnDone').classList.toggle('grey', S.phase !== 'set');
+  $('#btnDone').disabled = S.phase !== 'set';
+}
+function renderSub() {
+  const el = $('#subctl');
+  if (S.phase === 'rest') {
+    el.innerHTML = `<button class="btn grey" id="btnMinus">-15s</button><button class="btn grey" id="btnPlus">+15s</button><button class="btn red" id="btnSkip">${t('skip')}</button>`;
+    $('#btnSkip').addEventListener('click', () => { if (S.phase === 'rest') { sfx('back'); buzz(8); endRest(false); } });
+    $('#btnPlus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt += 15000; S.dur += 15; sfx('ui'); buzz(6); tick(); } });
+    $('#btnMinus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt -= 15000; sfx('ui'); buzz(6); tick(); } });
+  } else el.innerHTML = `<div class="subhint">${t('tapDone')}</div>`;
+}
+
+/* the satisfying press */
+function particles(n, colors) {
+  const wrap = $('.controls');
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div'); p.className = 'px-particle';
+    const sz = 6 + Math.floor(Math.random() * 3) * 4; p.style.width = p.style.height = sz + 'px';
+    p.style.background = colors[i % colors.length];
+    const x0 = (Math.random() - .5) * W * .8, y0 = 0;
+    const a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.1, d = 70 + Math.random() * 120;
+    wrap.appendChild(p);
+    p.animate([{ transform: `translate(${x0}px,${y0}px)`, opacity: 1 }, { transform: `translate(${x0 + Math.cos(a) * d}px,${y0 + Math.sin(a) * d + 40}px)`, opacity: 0 }],
+      { duration: 500 + Math.random() * 300, easing: 'steps(7,end)', fill: 'forwards' }).onfinish = () => p.remove();
+  }
+}
+function stamp(text, cls = '', hold = 700) {
+  const s = $('#stamp'); s.textContent = text; s.className = 'stamp ' + cls; void s.offsetWidth; s.classList.add('in');
+  clearTimeout(S.stampT);
+  if (hold > 0) S.stampT = setTimeout(() => { s.classList.remove('in'); s.classList.add('out'); }, hold);
+}
+$('#btnDone').addEventListener('click', () => {
+  if (!S.open || S.phase !== 'set') return;
+  const e = S.ex;
+  e.doneSets = Math.min(e.sets, e.doneSets + 1); save();
+  const last = isDone(e);
+  sfx(last ? 'finish' : 'hit'); buzz(last ? [30, 40, 30, 40, 90] : [20, 30, 40]);
+  shake(); flash(true); particles(last ? 26 : 14, ['#ffd23f', '#f4f1ff', '#ff3b5c', '#3ef2ff']);
+  if (last) return finishExercise();
+  stamp(e.doneSets === e.sets - 1 ? t('last') : t('hit'), '', 520);
+  startRest();
+  renderBar(e.doneSets - 1);
+});
+
+function startRest() {
+  S.phase = 'rest'; S.dur = restOf(S.ex); S.endAt = Date.now() + S.dur * 1000; S.lastShown = -1;
+  $('#tLbl').textContent = t('rest'); $('#tNum').classList.remove('low');
+  renderSub(); tick();
+  clearTimeout(S.restT); S.restT = setTimeout(() => { if (S.phase === 'rest') fight.classList.add('resting'); }, 550);
+  S.interval = setInterval(tick, 250);
+  S.timeout = setTimeout(tick, S.dur * 1000 + 20);
+}
+function tick() {
+  if (S.phase !== 'rest') return;
+  const rem = S.endAt - Date.now(), secs = Math.max(0, Math.ceil(rem / 1000));
+  if (secs !== S.lastShown) {
+    S.lastShown = secs; const num = $('#tNum'); num.textContent = secs;
+    num.classList.remove('punch'); void num.offsetWidth; num.classList.add('punch');
+    num.classList.toggle('low', secs <= 3);
+    if (secs <= 3 && secs > 0) { sfx('tick3'); buzz(15); } else if (secs <= 10 && secs > 3) sfx('tick');
+  }
+  if (rem <= 0) endRest(true);
+  else if (!document.hidden) { cancelAnimationFrame(S.raf); S.raf = requestAnimationFrame(tick); }
+}
+function stopTimer() { clearInterval(S.interval); clearTimeout(S.timeout); cancelAnimationFrame(S.raf); clearTimeout(S.goT); clearTimeout(S.restT); }
+function endRest(alarm) {
+  stopTimer();
+  fight.classList.remove('resting');
+  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); return; }
+  /* READY? ... (delay) ... GO!! with a crunch */
+  S.phase = 'go'; fight.classList.add('go'); renderBar(); renderSub();
+  sfx('alarm'); buzz([120, 80, 120, 80, 200]); flash(false);
+  stamp(t('ready'), 'blink', 0);
+  if (state.settings.notify || document.hidden) notify();
+  S.goT = setTimeout(() => {
+    sfx('go'); buzz([60, 30, 140]); shake(); flash(true);
+    stamp(t('go'), 'cyan', 900);
+    S.goT = setTimeout(() => { S.phase = 'set'; fight.classList.remove('go'); renderBar(); renderSub(); }, 700);
+  }, 900);
+}
+
+function finishExercise() {
+  S.phase = 'done'; fight.classList.add('go'); renderBar(); renderSub();
+  const all = state.exercises.every(isDone), e = S.ex;
+  stamp(all ? t('allClear') : t('stageClear'), all ? 'cyan' : '', 0);
+  const vol = e.kg * e.reps * e.sets, sc = $('#score'); sc.innerHTML = `${t('volume')} <b>0</b> KG`; sc.classList.add('in');
+  const t0 = performance.now(), D = 900;
+  const roll = now => { const x = Math.min(1, (now - t0) / D); sc.querySelector('b').textContent = Math.round(vol * x); if (x < 1) requestAnimationFrame(roll); };
+  requestAnimationFrame(roll);
+  setTimeout(() => { if (all) sfx('allclear'); }, 900);
+  setTimeout(() => {
+    wipe(() => { closeSessionNow(); if (all) setTimeout(() => toast('💪 ' + t('allClear')), 300); });
+  }, all ? 2600 : 1900);
+}
+
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { if (S.phase === 'rest') tick(); if (S.open) requestWake(); } });
+
+async function requestWake() {
+  if (!state.settings.wake || !('wakeLock' in navigator) || S.wake) return;
+  try { S.wake = await navigator.wakeLock.request('screen'); S.wake.addEventListener('release', () => { S.wake = null; }); } catch (e) { S.wake = null; }
+}
+function releaseWake() { if (S.wake) { S.wake.release().catch(() => {}); S.wake = null; } }
+async function notify() {
+  if (!('Notification' in window) || Notification.permission !== 'granted' || !navigator.serviceWorker) return;
+  try { const r = await navigator.serviceWorker.ready;
+    r.showNotification(t('notifTitle'), { body: `${S.ex.name} · ${t('notifBody')}`, tag: 'gymbro-rest', renotify: true, vibrate: [200, 100, 200], icon: 'icons/icon-192.png', badge: 'icons/icon-192.png' }); } catch (e) {}
+}
+
+/* wall clock in the arena */
+function clockTick() { const d = new Date(), hh = String(d.getHours()).padStart(2, '0'), mm = String(d.getMinutes()).padStart(2, '0'); $('#clock').innerHTML = `${hh}<i>:</i>${mm}`; }
+clockTick(); setInterval(clockTick, 5000);
+
+/* =========================== boot =========================== */
+document.documentElement.lang = state.settings.lang;
+document.body.classList.toggle('crt', !!state.settings.crt);
+setMode('list');
+if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
