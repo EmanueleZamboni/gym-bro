@@ -105,10 +105,10 @@ function renderList() {
       <div>
         <span class="scode">${esc(e.code || '—')}</span>
         <div class="sname">${esc(e.name)}</div>
-        <div class="sspec"><b>${e.reps}</b>${t('reps')} <span style="margin:0 6px">×</span> <b>${e.sets}</b>${t('sets')}</div>
+        <div class="sspec"><b>${e.sets}</b>${t('sets')} <span style="margin:0 6px">·</span> <b>${e.kg}</b>KG</div>
         ${e.doneSets > 0 && !isDone(e) ? `<div class="sdots">${Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''}"></i>`).join('')}</div>` : ''}
       </div>
-      <div class="skg">${e.kg}<small>KG</small></div>
+      <div class="skg">${e.reps}<small>${t('reps')}</small></div>
       ${isDone(e) ? `<div class="stamp-clear">${t('clear')}!</div>` : ''}
     </button>`).join('')}</div>
     ${doneCount ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`;
@@ -254,7 +254,7 @@ function openSession(id) {
     S.ex = e; S.open = true; S.phase = 'set';
     if (isDone(e)) e.doneSets = 0;
     $('#fCode').textContent = e.code || t('exercise'); $('#fName').textContent = e.name;
-    $('#stReps').textContent = e.reps; $('#stRepsL').textContent = t('reps'); $('#stKg').textContent = e.kg; $('#stSetL').textContent = t('set');
+    $('#stReps').textContent = e.reps; $('#stRepsL').textContent = t('reps'); $('#stKg').textContent = e.kg;
     $('#fNotes').textContent = e.notes || '';
     $('#sprite').innerHTML = GymSprites.svg(e.diagram, 0, 'f0') + GymSprites.svg(e.diagram, 1, 'f1') + GymSprites.svg(e.diagram, 0, 'rest', { sweat: true });
     $('#stamp').className = 'stamp'; $('#score').className = 'score'; $('#score').innerHTML = '';
@@ -280,9 +280,8 @@ function stopAnim() { clearInterval(S.anim); $('#sprite').classList.remove('alt'
 
 function renderBar(flashIdx) {
   const e = S.ex;
-  $('#bar').innerHTML = Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''} ${k === e.doneSets && S.phase === 'set' ? 'cur' : ''} ${k === flashIdx ? 'flash' : ''}"></i>`).join('');
+  $('#bar').innerHTML = Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''} ${k === e.doneSets && S.phase !== 'done' ? 'cur' : ''} ${k === flashIdx ? 'flash' : ''}">${k + 1}</i>`).join('');
   const next = Math.min(e.sets, e.doneSets + 1);
-  $('#stSet').innerHTML = isDone(e) ? `${e.sets}<i>/${e.sets}</i>` : `${next}<i>/${e.sets}</i>`;
   $('#btnDone').textContent = S.phase === 'rest' ? t('resting') : (S.phase === 'go' ? t('go') : t('done'));
   $('#btnDone').classList.toggle('grey', S.phase !== 'set');
   $('#btnDone').disabled = S.phase !== 'set';

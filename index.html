@@ -71,7 +71,7 @@ svg{display:block}
 .stage:active{transform:translate(4px,4px)}
 .stage:active::after{transform:none}
 .stage.done{border-color:var(--yellow2)}
-.stage.done .sbox svg,.stage.done .sname,.stage.done .skg{opacity:.5}
+.stage.done .sbox svg,.stage.done .sname,.stage.done .skg,.stage.done .sspec{opacity:.5}
 .sbox{width:64px;height:64px;background:var(--panel2);position:relative;overflow:hidden;
   background-image:linear-gradient(transparent 70%,rgba(0,0,0,.35) 70%),
     repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 8px,transparent 8px 16px)}
@@ -81,12 +81,12 @@ svg{display:block}
 .scode{font-family:var(--fx);font-size:8px;color:var(--ink);background:var(--yellow);display:inline-block;padding:3px 5px 2px;margin-bottom:8px}
 .sname{font-family:var(--fx);font-size:10px;line-height:1.6;color:var(--white);text-transform:uppercase}
 .sspec{font-family:var(--fb);font-size:14px;color:var(--grey);margin-top:8px;letter-spacing:.5px;text-transform:uppercase}
-.sspec b{font-family:var(--fx);font-size:16px;color:var(--cyan);font-weight:400;margin-right:2px}
+.sspec b{font-family:var(--fx);font-size:11px;color:var(--white);font-weight:400;margin-right:2px}
 .sdots{display:flex;gap:3px;margin-top:8px}
 .sdots i{width:10px;height:6px;background:var(--line)}
 .sdots i.on{background:var(--yellow)}
-.skg{font-family:var(--fx);font-size:26px;color:var(--white);text-align:right;text-shadow:3px 3px 0 #000;line-height:1}
-.skg small{display:block;font-size:9px;color:var(--yellow);margin-top:8px;text-shadow:none}
+.skg{font-family:var(--fx);font-size:32px;color:var(--cyan);text-align:right;text-shadow:3px 3px 0 #000;line-height:1}
+.skg small{display:block;font-size:9px;color:var(--grey);margin-top:8px;text-shadow:none}
 .center{display:flex;justify-content:center;margin-top:24px}
 .empty{font-family:var(--fx);font-size:9px;color:var(--grey);text-align:center;padding:64px 16px;line-height:2.2}
 
@@ -111,11 +111,6 @@ svg{display:block}
 .hud{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;min-height:56px}
 .hud .name{font-family:var(--fx);font-size:10px;line-height:1.6;color:var(--white);min-width:0;text-transform:uppercase}
 .hud .name small{display:block;font-size:8px;color:var(--yellow);margin-bottom:4px}
-.bar{display:flex;gap:4px;margin-top:8px;height:14px;padding:2px;background:#000;border:2px solid var(--line)}
-.bar i{flex:1;background:var(--panel2);position:relative;transition:background .1s steps(2)}
-.bar i.on{background:var(--yellow);box-shadow:inset 0 2px 0 rgba(255,255,255,.6)}
-.bar i.cur{animation:blink .6s steps(2) infinite;outline:2px solid var(--yellow);outline-offset:-2px}
-.bar i.flash{animation:segflash .5s steps(4)}
 .arena{position:relative;flex:1;min-height:0;background:var(--panel);border:3px solid var(--line);overflow:hidden;
   background-image:linear-gradient(180deg,#221c52 0,#1b1740 60%,#151238 100%)}
 .arena::before{content:"";position:absolute;inset:0;
@@ -150,7 +145,15 @@ svg{display:block}
 .score{position:absolute;left:50%;top:38%;transform:translateX(-50%);font-family:var(--fx);font-size:11px;color:var(--white);text-shadow:2px 2px 0 #000;white-space:nowrap;opacity:0;z-index:3}
 .score.in{opacity:1}
 .score b{color:var(--yellow);font-weight:400;font-size:14px}
-.stats{display:grid;grid-template-columns:1fr 1.2fr 1.2fr;gap:8px}
+.setpill{display:flex;background:#000;border:3px solid var(--line);padding:3px;gap:3px}
+.setpill i{flex:1;font-style:normal;font-family:var(--fx);font-size:14px;text-align:center;padding:12px 0 10px;color:var(--dim);background:var(--panel);position:relative;transition:background .1s steps(2),color .1s steps(2)}
+.setpill i.on{background:var(--yellow);color:var(--ink);box-shadow:inset 0 3px 0 rgba(255,255,255,.5)}
+.setpill i.cur{background:var(--panel2);color:var(--white);box-shadow:inset 0 0 0 3px var(--cyan);animation:curblink 1s steps(2) infinite}
+.setpill i.flash{animation:segflash .5s steps(4)}
+.stats{display:grid;grid-template-columns:2fr 1fr;gap:8px}
+.stat.hero b{font-size:44px;color:var(--cyan);text-shadow:4px 4px 0 #000}
+.stat.hero{padding:12px 6px 10px}
+.stat.hero small{font-size:9px;color:var(--white)}
 .stat{background:var(--panel);border:3px solid var(--line);padding:10px 6px 8px;text-align:center;position:relative}
 .stat::after{content:"";position:absolute;inset:-3px;transform:translate(3px,3px);background:#000;z-index:-1}
 .stat b{display:block;font-family:var(--fx);font-size:22px;font-weight:400;color:var(--white);line-height:1;text-shadow:2px 2px 0 #000}
@@ -224,6 +227,7 @@ body.crt #crt{opacity:1}
 @keyframes stampout{to{opacity:0;transform:translate(-50%,-70%) scale(1.2)}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 @keyframes segflash{0%,40%{background:var(--white)}100%{background:var(--yellow)}}
+@keyframes curblink{0%,49%{box-shadow:inset 0 0 0 3px var(--cyan)}50%,100%{box-shadow:inset 0 0 0 3px var(--line)}}
 @keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-6px,3px)}50%{transform:translate(6px,-3px)}75%{transform:translate(-3px,-3px)}100%{transform:translate(0,0)}}
 @keyframes floorscroll{from{background-position:0 0,0 12px,12px -12px,-12px 0}to{background-position:-24px 0,-24px 12px,-12px -12px,-36px 0}}
 @keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(2px)}}
@@ -248,7 +252,7 @@ body.crt #crt{opacity:1}
   <section id="fight" class="fight hidden" aria-hidden="true">
     <div class="hud">
       <button class="btn grey sq" id="btnClose" aria-label="Exit"></button>
-      <div class="name"><small id="fCode"></small><span id="fName"></span><div class="bar" id="bar"></div></div>
+      <div class="name"><small id="fCode"></small><span id="fName"></span></div>
     </div>
     <div class="arena" id="arena">
       <div class="clock" id="clock"></div>
@@ -258,9 +262,9 @@ body.crt #crt{opacity:1}
       <div class="stamp" id="stamp"></div>
       <div class="score" id="score"></div>
     </div>
+    <div class="setpill" id="bar"></div>
     <div class="stats">
-      <div class="stat"><b id="stSet"></b><small id="stSetL"></small></div>
-      <div class="stat cyan"><b id="stReps"></b><small id="stRepsL"></small></div>
+      <div class="stat hero"><b id="stReps"></b><small id="stRepsL"></small></div>
       <div class="stat yellow"><b id="stKg"></b><small>KG</small></div>
     </div>
     <div class="notes" id="fNotes"></div>
