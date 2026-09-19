@@ -1,7 +1,7 @@
 /* Gym Bro chiptune synth: 16-bit console style square/triangle/noise, rendered to short WAV clips (< 5 s so Android ducks music). */
 (function (global) {
   'use strict';
-  const RATE = 22050;
+  const RATE = 22050, GAIN = 0.6;
   const sq = (f, t, d = 0.5) => ((t * f) % 1) < d ? 1 : -1;
   const tri = (f, t) => 4 * Math.abs(((t * f) % 1) - 0.5) - 1;
   let seed = 7;
@@ -37,7 +37,7 @@
     w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
     v.setUint16(22, 1, true); v.setUint32(24, RATE, true); v.setUint32(28, RATE * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
     w(36, 'data'); v.setUint32(40, n * 2, true);
-    for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, samples[i] * 32767, true);
+    for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, samples[i] * GAIN * 32767, true);
     return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
   }
   const N = { C4: 262, E4: 330, G4: 392, A4: 440, B4: 494, C5: 523, D5: 587, E5: 659, G5: 784, A5: 880, B5: 988, C6: 1047, E6: 1319, G6: 1568 };
@@ -64,12 +64,20 @@
       [{ f: 90, f1: 28, t0: 0, dur: 0.3, vol: 0.55, dec: 1.1 }, { f: 520, f1: 260, t0: 0.02, dur: 0.09, vol: 0.3, duty: 0.25 }],
       [{ t0: 0, dur: 0.26, vol: 0.7, hold: 5, dec: 1.3 }, { t0: 0.05, dur: 0.12, vol: 0.35, hold: 2, dec: 1 }])
   };
-  const urls = {};
+  const urls = {}, primed = {};
   const url = name => urls[name] || (urls[name] = wav(DEFS[name]()));
   let enabled = true;
+  /* create and load the elements ahead of time (call from a user gesture) */
+  function prime(names) {
+    for (const n of names) { if (!primed[n] && DEFS[n]) { try { const a = new Audio(url(n)); a.preload = 'auto'; a.load(); primed[n] = a; } catch (e) {} } }
+  }
   function play(name) {
     if (!enabled || !DEFS[name]) return;
-    try { const a = new Audio(url(name)); a.play().catch(() => {}); } catch (e) {}
+    try {
+      const a = primed[name];
+      if (a) { a.currentTime = 0; a.play().catch(() => { new Audio(url(name)).play().catch(() => {}); }); }
+      else new Audio(url(name)).play().catch(() => {});
+    } catch (e) {}
   }
-  global.Sfx = { play, url, setEnabled: v => { enabled = v; }, names: Object.keys(DEFS) };
+  global.Sfx = { play, prime, url, setEnabled: v => { enabled = v; }, names: Object.keys(DEFS) };
 })(typeof window !== 'undefined' ? window : globalThis);

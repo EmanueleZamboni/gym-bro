@@ -1,5 +1,5 @@
 /* Gym Bro service worker: network-first for updates, cache fallback for offline. */
-const CACHE = 'gymbro-v3';
+const CACHE = 'gymbro-v4';
 const ASSETS = ['./', './index.html', './app.js', './sprites.js', './synth.js', './manifest.webmanifest', './fonts/pressstart.woff2', './fonts/pixelify.woff2', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/favicon.svg'];
 
 self.addEventListener('install', e => {

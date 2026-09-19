@@ -9,7 +9,8 @@ const ICONS = {
   plus:  ['...##...','...##...','...##...','########','########','...##...','...##...','...##...'],
   minus: ['........','........','........','########','########','........','........','........'],
   check: ['.......#','......##','.....##.','#...##..','##.##...','.###....','..#.....','........'],
-  play:  ['#.......','###.....','#####...','#######.','#######.','#####...','###.....','#.......']
+  play:  ['#.......','###.....','#####...','#######.','#######.','#####...','###.....','#.......'],
+  log:   ['##.#####','........','##.#####','........','##.#####','........','##.#####','........']
 };
 const icon = (k, color = 'currentColor') => `<svg class="icon" viewBox="0 0 8 8" shape-rendering="crispEdges">${ICONS[k].map((r, y) => { let o = ''; for (let x = 0; x < 8; x++) if (r[x] === '#') o += `<rect x="${x}" y="${y}" width="1" height="1" fill="${color}"/>`; return o; }).join('')}</svg>`;
 
@@ -20,7 +21,8 @@ const I18N = {
     skip: 'SKIP', newWorkout: 'NEW WORKOUT', addExercise: 'ADD EXERCISE', save: 'SAVE', delete: 'DELETE', code: 'CODE', name: 'NAME', kg: 'WEIGHT (KG)',
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
-    notify: 'NOTIFICATION', notifySub: 'Android notification when rest ends. Helps with the screen off.', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
+    log: 'LOG', logEmpty: 'NO CHANGES YET.<br>EDITS AND CLEARED EXERCISES SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -30,7 +32,8 @@ const I18N = {
     skip: 'SALTA', newWorkout: 'NUOVO ALLENAMENTO', addExercise: 'AGGIUNGI ESERCIZIO', save: 'SALVA', delete: 'ELIMINA', code: 'CODICE', name: 'NOME', kg: 'PESO (KG)',
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
-    notify: 'NOTIFICA', notifySub: 'Notifica Android a fine riposo. Utile a schermo spento.', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
+    log: 'REGISTRO', logEmpty: 'ANCORA NIENTE.<br>MODIFICHE ED ESERCIZI COMPLETATI FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -54,13 +57,18 @@ const today = () => new Date().toISOString().slice(0, 10);
 const freshExercises = () => DEFAULT_EXERCISES.map(e => ({ id: uid(), rest: null, doneSets: 0, ...e }));
 let state = load();
 function load() {
-  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.exercises) { s.settings = { crt: true, ...s.settings }; return s; } } catch (e) {}
-  return { settings: { rest: 90, sound: true, vibrate: true, notify: false, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() };
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.exercises) { s.settings = { crt: true, ...s.settings }; s.log = s.log || [];
+    if (!s.settings.notifyV2) { s.settings.notify = true; s.settings.notifyV2 = true; } return s; } } catch (e) {}
+  return { log: [], settings: { rest: 90, sound: true, vibrate: true, notify: true, notifyV2: true, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() };
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 function dayCheck() { if (state.day !== today()) { state.exercises.forEach(e => e.doneSets = 0); state.day = today(); save(); } }
 const restOf = e => (e.rest && e.rest > 0) ? e.rest : state.settings.rest;
 const isDone = e => e.doneSets >= e.sets;
+function logAdd(e, kind, from, to) {
+  state.log.unshift({ t: Date.now(), code: e.code, name: e.name, kind, from, to });
+  if (state.log.length > 600) state.log.length = 600;
+}
 
 /* =========================== helpers =========================== */
 const $ = s => document.querySelector(s);
@@ -105,10 +113,11 @@ function renderList() {
       <div>
         <span class="scode">${esc(e.code || '—')}</span>
         <div class="sname">${esc(e.name)}</div>
-        <div class="sspec"><b>${e.sets}</b>${t('sets')} <span style="margin:0 6px">·</span> <b>${e.kg}</b>KG</div>
+        <div class="sspec"><b>${e.sets}</b>${t('sets')}</div>
         ${e.doneSets > 0 && !isDone(e) ? `<div class="sdots">${Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''}"></i>`).join('')}</div>` : ''}
       </div>
       <div class="skg">${e.reps}<small>${t('reps')}</small></div>
+      <div class="skg kg">${e.kg}<small>KG</small></div>
       ${isDone(e) ? `<div class="stamp-clear">${t('clear')}!</div>` : ''}
     </button>`).join('')}</div>
     ${doneCount ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`;
@@ -151,6 +160,7 @@ function setMode(m) {
 }
 $('#btnEdit').addEventListener('click', () => { setMode(mode === 'edit' ? 'list' : 'edit'); });
 $('#btnSettings').innerHTML = icon('gear');
+
 $('#btnClose').innerHTML = icon('x');
 $('#dlgClose').innerHTML = icon('x');
 
@@ -204,11 +214,14 @@ function openForm(id) {
     const data = { code: $('#fCodeI').value.trim().toUpperCase(), name: $('#fNameI').value.trim() || t('exercise'),
       reps: Math.max(1, parseInt($('#fReps').value) || 1), sets: Math.max(1, parseInt($('#fSets').value) || 1),
       kg: Math.max(0, parseFloat($('#fKg').value) || 0), rest: (parseInt($('#fRest').value) || 0) || null, notes: $('#fNotesI').value.trim(), diagram };
-    if (id) { Object.assign(e, data); if (e.doneSets > e.sets) e.doneSets = e.sets; } else state.exercises.push({ id: uid(), doneSets: 0, ...data });
+    if (id) {
+      for (const k of ['kg', 'reps', 'sets', 'rest']) if ((e[k] || 0) !== (data[k] || 0)) logAdd({ ...e, ...data }, k, e[k] || 0, data[k] || 0);
+      Object.assign(e, data); if (e.doneSets > e.sets) e.doneSets = e.sets;
+    } else { const ne = { id: uid(), doneSets: 0, ...data }; state.exercises.push(ne); logAdd(ne, 'add'); }
     save(); closeDlg(); renderEdit();
   });
   const del = $('#fDelete');
-  if (del) del.addEventListener('click', () => { if (confirm(t('deleteConfirm'))) { state.exercises = state.exercises.filter(x => x.id !== id); save(); closeDlg(); renderEdit(); } });
+  if (del) del.addEventListener('click', () => { if (confirm(t('deleteConfirm'))) { logAdd(e, 'del'); state.exercises = state.exercises.filter(x => x.id !== id); save(); closeDlg(); renderEdit(); } });
 }
 
 let deferredInstall = null;
@@ -245,6 +258,27 @@ function openSettings() {
 }
 $('#btnSettings').addEventListener('click', () => { openSettings(); });
 
+function openLog() {
+  const days = {};
+  for (const l of state.log) { const d = new Date(l.t).toISOString().slice(0, 10); (days[d] = days[d] || []).push(l); }
+  const dayLabel = d => { const td = today(), y = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+    if (d === td) return t('today'); if (d === y) return t('yesterday'); const [Y, M, D] = d.split('-'); return `${D}/${M}/${Y}`; };
+  const row = l => {
+    const hh = new Date(l.t).toTimeString().slice(0, 5);
+    let body;
+    if (l.kind === 'clear') body = `<span class="lk">${t('clear')}</span><span class="n">${l.to.reps}×${l.to.sets}</span> · <span class="n">${l.to.kg}</span> KG`;
+    else if (l.kind === 'add') body = `<span class="lk">${t('added')}</span>${esc(l.name)}`;
+    else if (l.kind === 'del') body = `<span class="lk">${t('deleted')}</span>${esc(l.name)}`;
+    else { const up = l.to > l.from; body = `<span class="lk">${l.kind === 'kg' ? 'KG' : l.kind === 'rest' ? t('rest') : t(l.kind).toUpperCase()}</span><span class="n">${l.from}</span> → <b class="n ${up ? 'up' : 'dn'}">${l.to}</b>`; }
+    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'del' ? 'del' : ''}">${esc(l.code || '—')}</span><div>${body}<span class="ln">${hh} · ${esc(l.name)}</span></div></div>`;
+  };
+  const html = state.log.length ? Object.keys(days).sort().reverse().map(d => `<div class="logday">${dayLabel(d)}</div>${days[d].map(row).join('')}`).join('') : `<div class="empty">${t('logEmpty')}</div>`;
+  openDlg(t('log'), html, state.log.length ? `<button class="btn grey" id="logClear" style="font-size:9px">${t('logClear')}</button>` : '');
+  const c = $('#logClear'); if (c) c.addEventListener('click', () => { if (confirm(t('logClearConfirm'))) { state.log = []; save(); openLog(); } });
+}
+$('#btnLog').innerHTML = icon('log');
+$('#btnLog').addEventListener('click', openLog);
+
 /* =========================== fight screen =========================== */
 const S = { ex: null, open: false, phase: 'idle', endAt: 0, dur: 0, raf: 0, timeout: 0, interval: 0, lastShown: -1, wake: null, anim: 0, goT: 0 };
 const fight = $('#fight');
@@ -267,7 +301,7 @@ function openSession(id) {
   });
 }
 function closeSessionNow() {
-  S.open = false; S.phase = 'idle'; stopTimer(); stopAnim();
+  S.open = false; S.phase = 'idle'; stopTimer(); stopAnim(); closeNotifications();
   fight.classList.add('hidden'); fight.classList.remove('resting', 'go'); fight.setAttribute('aria-hidden', 'true');
   releaseWake(); save(); renderList();
 }
@@ -319,6 +353,8 @@ function stamp(text, cls = '', hold = 700) {
 $('#btnDone').addEventListener('click', () => {
   if (!S.open || S.phase !== 'set') return;
   const e = S.ex;
+  Sfx.prime(['alarm', 'go', 'tick3']);
+  if (state.settings.notify && 'Notification' in window && Notification.permission === 'default') Notification.requestPermission().catch(() => {});
   e.doneSets = Math.min(e.sets, e.doneSets + 1); save();
   const last = isDone(e);
   sfx(last ? 'finish' : 'hit'); buzz(last ? [30, 40, 30, 40, 90] : [20, 30, 40]);
@@ -345,6 +381,7 @@ function tick() {
     num.classList.remove('punch'); void num.offsetWidth; num.classList.add('punch');
     num.classList.toggle('low', secs <= 3);
     if (secs <= 3 && secs > 0) { sfx('tick3'); buzz(15); }
+    if (secs > 0) notifyCountdown(secs);
   }
   if (rem <= 0) endRest(true);
   else if (!document.hidden) { cancelAnimationFrame(S.raf); S.raf = requestAnimationFrame(tick); }
@@ -353,12 +390,12 @@ function stopTimer() { clearInterval(S.interval); clearTimeout(S.timeout); cance
 function endRest(alarm) {
   stopTimer();
   fight.classList.remove('resting');
-  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); return; }
+  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); closeNotifications(); return; }
   /* READY? ... (delay) ... GO!! with a crunch */
   S.phase = 'go'; fight.classList.add('go'); renderBar(); renderSub();
   sfx('alarm'); buzz([120, 80, 120, 80, 200]); flash(false);
   stamp(t('ready'), 'blink', 0);
-  if (state.settings.notify || document.hidden) notify();
+  notifyAlarm();
   S.goT = setTimeout(() => {
     sfx('go'); buzz([60, 30, 140]); shake(); flash(true);
     stamp(t('go'), 'cyan', 900);
@@ -369,6 +406,7 @@ function endRest(alarm) {
 function finishExercise() {
   S.phase = 'done'; fight.classList.add('go'); renderBar(); renderSub();
   const all = state.exercises.every(isDone), e = S.ex;
+  logAdd(e, 'clear', null, { reps: e.reps, sets: e.sets, kg: e.kg }); save();
   stamp(all ? t('allClear') : t('stageClear'), all ? 'cyan' : '', 0);
   const vol = e.kg * e.reps * e.sets, sc = $('#score'); sc.innerHTML = `${t('volume')} <b>0</b> KG`; sc.classList.add('in');
   const t0 = performance.now(), D = 900;
@@ -386,11 +424,28 @@ async function requestWake() {
   try { S.wake = await navigator.wakeLock.request('screen'); S.wake.addEventListener('release', () => { S.wake = null; }); } catch (e) { S.wake = null; }
 }
 function releaseWake() { if (S.wake) { S.wake.release().catch(() => {}); S.wake = null; } }
-async function notify() {
-  if (!('Notification' in window) || Notification.permission !== 'granted' || !navigator.serviceWorker) return;
+const canNotify = () => state.settings.notify && 'Notification' in window && Notification.permission === 'granted' && navigator.serviceWorker;
+const NTAG = 'gymbro-rest';
+const fmtSecs = n => `${Math.floor(n / 60)}:${String(n % 60).padStart(2, '0')}`;
+async function notifyCountdown(secs) {
+  if (!canNotify() || S.phase !== 'rest') return;
   try { const r = await navigator.serviceWorker.ready;
-    r.showNotification(t('notifTitle'), { body: `${S.ex.name} · ${t('notifBody')}`, tag: 'gymbro-rest', renotify: true, vibrate: [200, 100, 200], icon: 'icons/icon-192.png', badge: 'icons/icon-192.png' }); } catch (e) {}
+    r.showNotification(`${t('rest')} ${fmtSecs(secs)}`, { body: `${S.ex.name} · ${t('set')} ${Math.min(S.ex.sets, S.ex.doneSets + 1)}/${S.ex.sets}`,
+      tag: NTAG, silent: true, renotify: false, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png' }); } catch (e) {}
 }
+async function notifyAlarm() {
+  if (!canNotify()) return;
+  try { const r = await navigator.serviceWorker.ready;
+    const hidden = document.hidden;
+    r.showNotification(t('notifTitle'), { body: `${S.ex.name} · ${t('notifBody')}`, tag: NTAG, renotify: hidden, silent: !hidden,
+      vibrate: hidden ? [200, 100, 200, 100, 400] : undefined, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png' });
+    if (!hidden) setTimeout(closeNotifications, 2500); } catch (e) {}
+}
+async function closeNotifications() {
+  if (!navigator.serviceWorker) return;
+  try { const r = await navigator.serviceWorker.ready; (await r.getNotifications({ tag: NTAG })).forEach(n => n.close()); } catch (e) {}
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S.phase !== 'rest') closeNotifications(); });
 
 /* wall clock in the arena */
 function clockTick() { const d = new Date(), hh = String(d.getHours()).padStart(2, '0'), mm = String(d.getMinutes()).padStart(2, '0'); $('#clock').innerHTML = `${hh}<i>:</i>${mm}`; }
