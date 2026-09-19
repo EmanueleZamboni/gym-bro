@@ -10,7 +10,7 @@ The native app is the recommended way to use Gym Bro. It runs the same UI inside
 
 1. On your phone open the [latest release](https://github.com/EmanueleZamboni/gym-bro/releases/latest) and download `gym-bro.apk`.
 2. Open the file and allow installing from this source when asked.
-3. Later releases install over the previous one and keep your data.
+3. Later releases install over the previous one and keep your data. The app checks GitHub for a newer release when opened and shows an **UPDATE** banner: tap INSTALL, it downloads the APK and opens Android's installer (Options also shows the version and a CHECK button).
 
 Every push to `main` that touches the app builds a new APK (`.github/workflows/apk.yml`). The signing key is created on the first run and stored encrypted in `android/keystore.jks.enc`; the passphrase is the `KEYSTORE_PASSWORD` repository secret.
 

@@ -61,6 +61,12 @@ svg{display:block}
 .sub b{color:var(--yellow);font-weight:400;font-size:14px}
 .topbar-actions{display:flex;gap:6px;flex:none}
 
+.upd{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 var(--gutter) 16px;max-width:528px;padding:8px 8px 8px 14px;
+  background:var(--panel);border:3px solid var(--yellow);font-family:var(--fx);font-size:9px;color:var(--white);animation:slidein .28s steps(4) both}
+@media (min-width:560px){.upd{margin-left:auto;margin-right:auto}}
+.upd b{color:var(--yellow);font-weight:400}
+.upd .btn{margin:3px 3px 8px;font-size:9px;min-height:40px}
+
 /* ---------- screens ---------- */
 .screen{padding:8px var(--gutter) 48px;max-width:560px;margin:0 auto}
 .stages{display:flex;flex-direction:column;gap:16px}
@@ -299,6 +305,7 @@ body.crt #crt{opacity:1}
       <button id="btnSettings" class="btn grey sq" aria-label="Settings"></button>
     </div>
   </header>
+  <div id="update" class="upd hidden"></div>
   <main id="list" class="screen"></main>
   <main id="edit" class="screen hidden"></main>
 

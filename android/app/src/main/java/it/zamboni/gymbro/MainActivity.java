@@ -7,6 +7,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(RestTimerPlugin.class);
+        registerPlugin(UpdaterPlugin.class);
         super.onCreate(savedInstanceState);
         // the web layer plays short chiptune clips from timers, not only from taps
         getBridge().getWebView().getSettings().setMediaPlaybackRequiresUserGesture(false);
