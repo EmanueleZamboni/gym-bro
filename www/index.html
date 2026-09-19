@@ -209,6 +209,30 @@ svg{display:block}
 .toggle span{color:var(--dim)}
 .toggle:active{transform:translate(2px,2px)}
 
+/* ---------- log / workouts ---------- */
+.tabs{display:flex;background:#000;border:3px solid var(--line);padding:3px;gap:3px;margin-bottom:16px}
+.tabs button{flex:1;font-family:var(--fx);font-size:9px;padding:12px 0 10px;color:var(--dim);background:var(--panel)}
+.tabs button.on{background:var(--yellow);color:var(--ink);box-shadow:inset 0 3px 0 rgba(255,255,255,.5)}
+.tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.tile{background:var(--ink);border:3px solid var(--line);padding:12px 4px 10px;text-align:center}
+.tile b{display:block;font-family:var(--fx);font-size:22px;font-weight:400;color:var(--cyan);line-height:1;text-shadow:2px 2px 0 #000}
+.tile small{display:block;font-family:var(--fx);font-size:7px;color:var(--grey);margin-top:8px;letter-spacing:1px}
+.cal{display:grid;grid-auto-rows:14px;gap:3px;background:#000;border:3px solid var(--line);padding:6px;margin-bottom:18px}
+.cal i{display:block;background:var(--panel2)}
+.cal i.on{background:var(--yellow);box-shadow:inset 0 2px 0 rgba(255,255,255,.5)}
+.cal i.fut{background:var(--panel)}
+.cal i.td{outline:2px solid var(--cyan);outline-offset:-2px}
+.wday{margin-bottom:16px}
+.wh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-family:var(--fx);font-size:9px;color:var(--yellow);margin-bottom:6px;flex-wrap:wrap}
+.wh span{font-family:var(--fx);font-size:8px;color:var(--grey);text-transform:uppercase}
+.wh em{font-style:normal;font-family:var(--fx);font-size:10px;color:var(--white)}
+.wrow{display:grid;grid-template-columns:44px 1fr auto auto;gap:10px;align-items:center;padding:7px 0;border-bottom:3px dotted var(--line);font-family:var(--fb);font-size:15px;color:var(--white)}
+.wrow .lc{font-family:var(--fx);font-size:7px;color:var(--ink);background:var(--green);padding:4px 3px 3px;text-align:center}
+.wrow .wn{text-transform:uppercase;font-size:14px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrow .n{font-family:var(--fx);font-size:11px;color:var(--cyan)}
+.wrow .n.kg{color:var(--yellow)}
+.wrow .n.kg small{font-size:7px;color:var(--grey);margin-left:2px}
+
 /* ---------- log ---------- */
 .logday{font-family:var(--fx);font-size:8px;color:var(--yellow);margin:18px 0 8px;letter-spacing:1px}
 .logday:first-child{margin-top:4px}

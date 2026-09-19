@@ -22,7 +22,7 @@ const I18N = {
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
-    log: 'LOG', logEmpty: 'NO CHANGES YET.<br>EDITS AND CLEARED EXERCISES SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -33,7 +33,7 @@ const I18N = {
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
-    log: 'REGISTRO', logEmpty: 'ANCORA NIENTE.<br>MODIFICHE ED ESERCIZI COMPLETATI FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -58,13 +58,21 @@ const freshExercises = () => DEFAULT_EXERCISES.map(e => ({ id: uid(), rest: null
 let state = load();
 function load() {
   try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.exercises) { s.settings = { crt: true, ...s.settings }; s.log = s.log || [];
+    if (!s.history) { s.history = {}; for (const l of [...s.log].reverse()) if (l.kind === 'clear' && l.to) historyAdd(s, l.t, { code: l.code, name: l.name, ...l.to }); }
     if (!s.settings.notifyV2) { s.settings.notify = true; s.settings.notifyV2 = true; } return s; } } catch (e) {}
-  return { log: [], settings: { rest: 90, sound: true, vibrate: true, notify: true, notifyV2: true, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() };
+  return { log: [], history: {}, settings: { rest: 90, sound: true, vibrate: true, notify: true, notifyV2: true, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() };
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 function dayCheck() { if (state.day !== today()) { state.exercises.forEach(e => e.doneSets = 0); state.day = today(); save(); } }
 const restOf = e => (e.rest && e.rest > 0) ? e.rest : state.settings.rest;
 const isDone = e => e.doneSets >= e.sets;
+const dayOf = ts => { const d = new Date(ts); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+function historyAdd(st, ts, ex) {
+  const day = dayOf(ts), list = (st.history[day] = st.history[day] || []);
+  const i = list.findIndex(x => x.code === ex.code && x.name === ex.name);
+  const entry = { t: ts, code: ex.code, name: ex.name, reps: ex.reps, sets: ex.sets, kg: ex.kg };
+  if (i >= 0) list[i] = entry; else list.push(entry);
+}
 function logAdd(e, kind, from, to) {
   state.log.unshift({ t: Date.now(), code: e.code, name: e.name, kind, from, to });
   if (state.log.length > 600) state.log.length = 600;
@@ -269,11 +277,42 @@ function openSettings() {
 }
 $('#btnSettings').addEventListener('click', () => { openSettings(); });
 
-function openLog() {
+let logTab = 'workouts';
+function dayLabel(d) {
+  const td = dayOf(Date.now()), y = dayOf(Date.now() - 864e5);
+  if (d === td) return t('today'); if (d === y) return t('yesterday');
+  const [Y, M, D] = d.split('-'); const wd = new Date(+Y, +M - 1, +D).toLocaleDateString(state.settings.lang === 'it' ? 'it-IT' : 'en-GB', { weekday: 'short' }).toUpperCase().replace('.', '');
+  return `${wd} ${D}/${M}${+Y !== new Date().getFullYear() ? '/' + Y : ''}`;
+}
+function renderWorkouts() {
+  const days = Object.keys(state.history).filter(d => state.history[d].length).sort().reverse();
+  if (!days.length) return `<div class="empty">${t('noWorkouts')}</div>`;
+  const now = new Date(), ym = dayOf(now.getTime()).slice(0, 7);
+  const thisMonth = days.filter(d => d.startsWith(ym)).length;
+  const weeks = 16, msDay = 864e5;
+  // calendar: 16 columns of weeks, 7 rows Mon..Sun, ending this week
+  const todayD = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dow = (todayD.getDay() + 6) % 7; // Mon = 0
+  const start = new Date(todayD.getTime() - (dow + (weeks - 1) * 7) * msDay);
+  const set = new Set(days);
+  let cal = '';
+  for (let r = 0; r < 7; r++) for (let c = 0; c < weeks; c++) {
+    const d = new Date(start.getTime() + (c * 7 + r) * msDay), k = dayOf(d.getTime());
+    const cls = d > todayD ? 'fut' : set.has(k) ? 'on' : ''; cal += `<i class="${cls} ${k === dayOf(now.getTime()) ? 'td' : ''}" style="grid-area:${r + 1}/${c + 1}"></i>`;
+  }
+  const inWindow = days.filter(d => d >= dayOf(start.getTime())).length;
+  const perWeek = (inWindow / weeks).toFixed(1);
+  const rows = days.map(d => {
+    const list = state.history[d], vol = list.reduce((a, x) => a + x.kg * x.reps * x.sets, 0);
+    return `<div class="wday"><div class="wh"><b>${dayLabel(d)}</b><span>${list.length} ${t('exercisesN')} · <em>${vol}</em> KG</span></div>
+      ${list.map(x => `<div class="wrow"><span class="lc">${esc(x.code || '—')}</span><span class="wn">${esc(x.name)}</span><span class="n">${x.reps}×${x.sets}</span><span class="n kg">${x.kg}<small>KG</small></span></div>`).join('')}</div>`;
+  }).join('');
+  return `<div class="tiles"><div class="tile"><b>${days.length}</b><small>${t('total')}</small></div><div class="tile"><b>${thisMonth}</b><small>${t('thisMonth')}</small></div><div class="tile"><b>${perWeek}</b><small>${t('perWeek')}</small></div></div>
+    <div class="cal" style="grid-template-columns:repeat(${weeks},1fr)">${cal}</div>${rows}`;
+}
+function renderChanges() {
   const days = {};
-  for (const l of state.log) { const d = new Date(l.t).toISOString().slice(0, 10); (days[d] = days[d] || []).push(l); }
-  const dayLabel = d => { const td = today(), y = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
-    if (d === td) return t('today'); if (d === y) return t('yesterday'); const [Y, M, D] = d.split('-'); return `${D}/${M}/${Y}`; };
+  for (const l of state.log) { const d = dayOf(l.t); (days[d] = days[d] || []).push(l); }
   const row = l => {
     const hh = new Date(l.t).toTimeString().slice(0, 5);
     let body;
@@ -283,12 +322,18 @@ function openLog() {
     else { const up = l.to > l.from; body = `<span class="lk">${l.kind === 'kg' ? 'KG' : l.kind === 'rest' ? t('rest') : t(l.kind).toUpperCase()}</span><span class="n">${l.from}</span> → <b class="n ${up ? 'up' : 'dn'}">${l.to}</b>`; }
     return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'del' ? 'del' : ''}">${esc(l.code || '—')}</span><div>${body}<span class="ln">${hh} · ${esc(l.name)}</span></div></div>`;
   };
-  const html = state.log.length ? Object.keys(days).sort().reverse().map(d => `<div class="logday">${dayLabel(d)}</div>${days[d].map(row).join('')}`).join('') : `<div class="empty">${t('logEmpty')}</div>`;
-  openDlg(t('log'), html, state.log.length ? `<button class="btn grey" id="logClear" style="font-size:9px">${t('logClear')}</button>` : '');
+  return state.log.length ? Object.keys(days).sort().reverse().map(d => `<div class="logday">${dayLabel(d)}</div>${days[d].map(row).join('')}`).join('') : `<div class="empty">${t('logEmpty')}</div>`;
+}
+function openLog(tab) {
+  if (tab) logTab = tab;
+  const tabs = `<div class="tabs"><button class="${logTab === 'workouts' ? 'on' : ''}" data-tab="workouts">${t('workouts')}</button><button class="${logTab === 'changes' ? 'on' : ''}" data-tab="changes">${t('changes')}</button></div>`;
+  const body = logTab === 'workouts' ? renderWorkouts() : renderChanges();
+  openDlg(t('log'), tabs + body, logTab === 'changes' && state.log.length ? `<button class="btn grey" id="logClear" style="font-size:9px">${t('logClear')}</button>` : '');
+  $('#dlgBody').querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => openLog(b.dataset.tab)));
   const c = $('#logClear'); if (c) c.addEventListener('click', () => { if (confirm(t('logClearConfirm'))) { state.log = []; save(); openLog(); } });
 }
 $('#btnLog').innerHTML = icon('log');
-$('#btnLog').addEventListener('click', openLog);
+$('#btnLog').addEventListener('click', () => openLog('workouts'));
 
 /* =========================== fight screen =========================== */
 const S = { ex: null, open: false, phase: 'idle', endAt: 0, dur: 0, raf: 0, timeout: 0, interval: 0, lastShown: -1, wake: null, anim: 0, goT: 0 };
@@ -420,7 +465,7 @@ function endRest(alarm) {
 function finishExercise() {
   S.phase = 'done'; fight.classList.add('go'); renderBar(); renderSub();
   const all = state.exercises.every(isDone), e = S.ex;
-  logAdd(e, 'clear', null, { reps: e.reps, sets: e.sets, kg: e.kg }); save();
+  logAdd(e, 'clear', null, { reps: e.reps, sets: e.sets, kg: e.kg }); historyAdd(state, Date.now(), e); save();
   stamp(all ? t('allClear') : t('stageClear'), all ? 'cyan' : '', 0);
   const vol = e.kg * e.reps * e.sets, sc = $('#score'); sc.innerHTML = `${t('volume')} <b>0</b> KG`; sc.classList.add('in');
   const t0 = performance.now(), D = 900;
