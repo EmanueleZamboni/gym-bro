@@ -22,7 +22,7 @@ const I18N = {
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
-    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -33,7 +33,7 @@ const I18N = {
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
-    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -140,7 +140,7 @@ function renderList() {
         <span class="scode">${esc(e.code || '—')}</span>
         <div class="sname">${esc(e.name)}</div>
         <div class="sspec"><b>${e.sets}</b>${t('sets')}</div>
-        ${e.doneSets > 0 && !isDone(e) ? `<div class="sdots">${Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''}"></i>`).join('')}</div>` : ''}
+        ${e.doneSets > 0 && !isDone(e) ? `<div class="cont">▶ ${t('continueLbl')} ${e.doneSets + 1}/${e.sets}</div>` : ''}
       </div>
       <div class="skg">${e.reps}<small>${t('reps')}</small></div>
       <div class="skg kg">${e.kg}<small>KG</small></div>
@@ -149,7 +149,7 @@ function renderList() {
     ${doneCount ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`;
   el.querySelectorAll('.stage').forEach(c => c.addEventListener('click', () => openSession(c.dataset.id)));
   const nw = $('#btnNewWorkout');
-  if (nw) nw.addEventListener('click', () => { state.exercises.forEach(e => e.doneSets = 0); save(); renderList(); });
+  if (nw) nw.addEventListener('click', () => { if (!confirm(t('newWorkoutConfirm'))) return; state.exercises.forEach(e => e.doneSets = 0); save(); renderList(); });
 }
 
 /* =========================== edit =========================== */
@@ -293,7 +293,7 @@ function dayLabel(d) {
 }
 function renderWorkouts() {
   const days = Object.keys(state.history).sort().reverse();
-  const addBtn = `<div class="center" style="margin:0 0 16px"><button class="btn cyan" id="addDay" style="font-size:9px">${icon('plus')} ${t('addPastDay')}</button></div>`;
+  const addBtn = `<div class="center" style="margin:8px 0 4px"><button class="btn grey" id="addDay" style="font-size:8px;min-height:40px">${t('addPastDay')}</button></div>`;
   if (!days.length) return addBtn + `<div class="empty">${t('noWorkouts')}</div>`;
   const now = new Date(), ym = dayOf(now.getTime()).slice(0, 7);
   const thisMonth = days.filter(d => d.startsWith(ym)).length;
@@ -316,7 +316,7 @@ function renderWorkouts() {
       ${list.map(x => `<div class="wrow"><span class="lc">${esc(x.code || '—')}</span><span class="wn">${esc(x.name)}</span><span class="n">${x.reps}×${x.sets}</span><span class="n kg">${x.kg}<small>KG</small></span></div>`).join('')}</div>`;
   }).join('');
   return `<div class="tiles"><div class="tile"><b>${days.length}</b><small>${t('total')}</small></div><div class="tile"><b>${thisMonth}</b><small>${t('thisMonth')}</small></div><div class="tile"><b>${perWeek}</b><small>${t('perWeek')}</small></div></div>
-    <div class="cal" style="grid-template-columns:repeat(${weeks},1fr)">${cal}</div>${addBtn}${rows}`;
+    <div class="cal" style="grid-template-columns:repeat(${weeks},1fr)">${cal}</div>${rows}${addBtn}`;
 }
 function renderAddDay() {
   return `<div class="field"><label>${t('date')}</label><input type="date" id="adDate" value="${dayOf(Date.now())}" max="${dayOf(Date.now())}"></div>
@@ -371,8 +371,7 @@ const fight = $('#fight');
 function openSession(id) {
   const e = state.exercises.find(x => x.id === id); if (!e) return;
   wipe(() => {
-    S.ex = e; S.open = true; S.phase = 'set';
-    if (isDone(e)) e.doneSets = 0;
+    S.ex = e; S.open = true; S.phase = isDone(e) ? 'cleared' : 'set';
     $('#fCode').textContent = e.code || t('exercise'); $('#fName').textContent = e.name;
     $('#stReps').textContent = e.reps; $('#stRepsL').textContent = t('reps'); $('#stKg').textContent = e.kg;
     $('#fNotes').textContent = e.notes || '';
@@ -402,9 +401,9 @@ function renderBar(flashIdx) {
   const e = S.ex;
   $('#bar').innerHTML = Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''} ${k === e.doneSets && S.phase !== 'done' ? 'cur' : ''} ${k === flashIdx ? 'flash' : ''}">${k + 1}</i>`).join('');
   const next = Math.min(e.sets, e.doneSets + 1);
-  $('#btnDone').textContent = S.phase === 'rest' ? t('resting') : (S.phase === 'go' ? t('go') : t('done'));
+  $('#btnDone').textContent = S.phase === 'rest' ? t('resting') : S.phase === 'go' ? t('go') : S.phase === 'cleared' ? t('again') : t('done');
   $('#btnDone').classList.toggle('grey', S.phase !== 'set');
-  $('#btnDone').disabled = S.phase !== 'set';
+  $('#btnDone').disabled = !(S.phase === 'set' || S.phase === 'cleared');
 }
 function renderSub() {
   const el = $('#subctl');
@@ -437,7 +436,9 @@ function stamp(text, cls = '', hold = 700) {
   if (hold > 0) S.stampT = setTimeout(() => { s.classList.remove('in'); s.classList.add('out'); }, hold);
 }
 $('#btnDone').addEventListener('click', () => {
-  if (!S.open || S.phase !== 'set') return;
+  if (!S.open) return;
+  if (S.phase === 'cleared') { S.ex.doneSets = 0; S.phase = 'set'; save(); renderBar(); renderSub(); return; }
+  if (S.phase !== 'set') return;
   const e = S.ex;
   Sfx.prime(['alarm', 'go', 'tick3']);
   if (!NATIVE && state.settings.notify && 'Notification' in window && Notification.permission === 'default') Notification.requestPermission().catch(() => {});
