@@ -70,6 +70,17 @@ function logAdd(e, kind, from, to) {
   if (state.log.length > 600) state.log.length = 600;
 }
 
+/* =========================== native bridge (Android APK) =========================== */
+const NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+const RT = NATIVE ? window.Capacitor.registerPlugin('RestTimer') : null;
+function nativeArm() {
+  if (!RT || !S.ex || S.phase !== 'rest') return;
+  const e = S.ex, next = Math.min(e.sets, e.doneSets + 1);
+  RT.start({ endAt: S.endAt, title: `${t('rest')} · ${e.name}`, body: `${t('set')} ${next}/${e.sets} · ${e.reps} ${t('reps')} · ${e.kg} KG`,
+    goTitle: `${t('go')} ${e.name}`, goBody: `${t('set')} ${next}/${e.sets} · ${e.reps} ${t('reps')} · ${e.kg} KG` }).catch(() => {});
+}
+function nativeDisarm() { if (RT) RT.cancel().catch(() => {}); }
+
 /* =========================== helpers =========================== */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -233,7 +244,7 @@ function openSettings() {
     <div class="opt"><div><div class="lab">${t('restDefault')}</div><div class="sub">${t('restDefaultSub')}</div></div><div style="width:160px">${stepper('sRest', s.rest, 5, 600, 5)}</div></div>
     <div class="opt"><div><div class="lab">${t('sound')}</div><div class="sub">${t('soundSub')}</div></div>${tog('sound', s.sound)}</div>
     <div class="opt"><div><div class="lab">${t('vibration')}</div></div>${tog('vibrate', s.vibrate)}</div>
-    <div class="opt"><div><div class="lab">${t('notify')}</div><div class="sub">${t('notifySub')}</div></div>${tog('notify', s.notify)}</div>
+    ${NATIVE ? '' : `<div class="opt"><div><div class="lab">${t('notify')}</div><div class="sub">${t('notifySub')}</div></div>${tog('notify', s.notify)}</div>`}
     <div class="opt"><div><div class="lab">${t('keepAwake')}</div><div class="sub">${t('keepAwakeSub')}</div></div>${tog('wake', s.wake)}</div>
     <div class="opt"><div><div class="lab">${t('crt')}</div><div class="sub">${t('crtSub')}</div></div>${tog('crt', s.crt)}</div>
     <div class="opt"><div><div class="lab">${t('language')}</div></div>${tog('lang', s.lang === 'en', 'EN', 'IT').replace('class="toggle off"', 'class="toggle"')}</div>
@@ -301,7 +312,7 @@ function openSession(id) {
   });
 }
 function closeSessionNow() {
-  S.open = false; S.phase = 'idle'; stopTimer(); stopAnim(); closeNotifications();
+  S.open = false; S.phase = 'idle'; stopTimer(); stopAnim(); closeNotifications(); nativeDisarm();
   fight.classList.add('hidden'); fight.classList.remove('resting', 'go'); fight.setAttribute('aria-hidden', 'true');
   releaseWake(); save(); renderList();
 }
@@ -325,8 +336,8 @@ function renderSub() {
   if (S.phase === 'rest') {
     el.innerHTML = `<button class="btn grey" id="btnMinus">-15s</button><button class="btn grey" id="btnPlus">+15s</button><button class="btn red" id="btnSkip">${t('skip')}</button>`;
     $('#btnSkip').addEventListener('click', () => { if (S.phase === 'rest') { endRest(false); } });
-    $('#btnPlus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt += 15000; S.dur += 15; tick(); } });
-    $('#btnMinus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt -= 15000; tick(); } });
+    $('#btnPlus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt += 15000; S.dur += 15; tick(); nativeArm(); } });
+    $('#btnMinus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt -= 15000; tick(); if (S.phase === 'rest') nativeArm(); } });
   } else el.innerHTML = '';
 }
 
@@ -354,7 +365,8 @@ $('#btnDone').addEventListener('click', () => {
   if (!S.open || S.phase !== 'set') return;
   const e = S.ex;
   Sfx.prime(['alarm', 'go', 'tick3']);
-  if (state.settings.notify && 'Notification' in window && Notification.permission === 'default') Notification.requestPermission().catch(() => {});
+  if (!NATIVE && state.settings.notify && 'Notification' in window && Notification.permission === 'default') Notification.requestPermission().catch(() => {});
+  if (RT && e.doneSets === 0) RT.requestPermission().catch(() => {});
   e.doneSets = Math.min(e.sets, e.doneSets + 1); save();
   const last = isDone(e);
   sfx(last ? 'finish' : 'hit'); buzz(last ? [30, 40, 30, 40, 90] : [20, 30, 40]);
@@ -370,6 +382,7 @@ function startRest() {
   $('#tLbl').textContent = t('rest'); $('#tNum').classList.remove('low');
   renderSub(); tick();
   clearTimeout(S.restT); S.restT = setTimeout(() => { if (S.phase === 'rest') fight.classList.add('resting'); }, 550);
+  nativeArm();
   S.interval = setInterval(tick, 250);
   S.timeout = setTimeout(tick, S.dur * 1000 + 20);
 }
@@ -390,14 +403,15 @@ function stopTimer() { clearInterval(S.interval); clearTimeout(S.timeout); cance
 function endRest(alarm) {
   stopTimer();
   fight.classList.remove('resting');
-  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); closeNotifications(); return; }
+  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); closeNotifications(); nativeDisarm(); return; }
   /* READY? ... (delay) ... GO!! with a crunch */
   S.phase = 'go'; fight.classList.add('go'); renderBar(); renderSub();
-  sfx('alarm'); buzz([120, 80, 120, 80, 200]); flash(false);
+  if (!NATIVE) { sfx('alarm'); buzz([120, 80, 120, 80, 200]); } else if (Date.now() - S.endAt > 4000) RT.dismiss().catch(() => {});
+  flash(false);
   stamp(t('ready'), 'blink', 0);
   notifyAlarm();
   S.goT = setTimeout(() => {
-    sfx('go'); buzz([60, 30, 140]); shake(); flash(true);
+    if (!NATIVE) { sfx('go'); buzz([60, 30, 140]); } shake(); flash(true);
     stamp(t('go'), 'cyan', 900);
     S.goT = setTimeout(() => { S.phase = 'set'; fight.classList.remove('go'); renderBar(); renderSub(); }, 700);
   }, 900);
@@ -420,11 +434,12 @@ function finishExercise() {
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { if (S.phase === 'rest') tick(); if (S.open) requestWake(); } });
 
 async function requestWake() {
+  if (RT) { RT.keepAwake({ on: !!state.settings.wake }).catch(() => {}); return; }
   if (!state.settings.wake || !('wakeLock' in navigator) || S.wake) return;
   try { S.wake = await navigator.wakeLock.request('screen'); S.wake.addEventListener('release', () => { S.wake = null; }); } catch (e) { S.wake = null; }
 }
-function releaseWake() { if (S.wake) { S.wake.release().catch(() => {}); S.wake = null; } }
-const canNotify = () => state.settings.notify && 'Notification' in window && Notification.permission === 'granted' && navigator.serviceWorker;
+function releaseWake() { if (RT) { RT.keepAwake({ on: false }).catch(() => {}); return; } if (S.wake) { S.wake.release().catch(() => {}); S.wake = null; } }
+const canNotify = () => !NATIVE && state.settings.notify && 'Notification' in window && Notification.permission === 'granted' && navigator.serviceWorker;
 const NTAG = 'gymbro-rest';
 const fmtSecs = n => `${Math.floor(n / 60)}:${String(n % 60).padStart(2, '0')}`;
 async function notifyCountdown(secs) {
@@ -442,7 +457,7 @@ async function notifyAlarm() {
     if (!hidden) setTimeout(closeNotifications, 2500); } catch (e) {}
 }
 async function closeNotifications() {
-  if (!navigator.serviceWorker) return;
+  if (NATIVE || !navigator.serviceWorker) return;
   try { const r = await navigator.serviceWorker.ready; (await r.getNotifications({ tag: NTAG })).forEach(n => n.close()); } catch (e) {}
 }
 document.addEventListener('visibilitychange', () => { if (!document.hidden && S.phase !== 'rest') closeNotifications(); });
@@ -455,7 +470,7 @@ clockTick(); setInterval(clockTick, 5000);
 document.documentElement.lang = state.settings.lang;
 document.body.classList.toggle('crt', !!state.settings.crt);
 setMode('list');
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && !NATIVE) {
   let hadController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController && !S.open) location.reload(); hadController = true; });
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').then(r => r.update()).catch(() => {}));

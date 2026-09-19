@@ -1,0 +1,17 @@
+{
+  "name": "gym-bro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "16-bit arcade rest-timer for the gym",
+  "scripts": {
+    "sync": "cap sync android",
+    "apk": "cd android && ./gradlew assembleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2"
+  }
+}

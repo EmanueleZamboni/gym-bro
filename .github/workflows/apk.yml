@@ -1,0 +1,72 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+    paths: ['www/**', 'android/**', 'package.json', 'package-lock.json', 'capacitor.config.json', '.github/workflows/apk.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apk
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: android-actions/setup-android@v3
+      - run: npm ci
+      - run: npx cap sync android
+
+      - name: Signing keystore (created once, stored encrypted in the repo)
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_PASSWORD" ]; then
+            echo "::error::Add a repository secret named KEYSTORE_PASSWORD (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+          if [ -f android/keystore.jks.enc ]; then
+            openssl enc -d -aes-256-cbc -pbkdf2 -in android/keystore.jks.enc -out android/app/release.jks -pass env:KEYSTORE_PASSWORD
+          else
+            keytool -genkeypair -v -keystore android/app/release.jks -storepass "$KEYSTORE_PASSWORD" -keypass "$KEYSTORE_PASSWORD" \
+              -alias gymbro -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Gym Bro, O=Gym Bro, C=IT"
+            openssl enc -aes-256-cbc -pbkdf2 -salt -in android/app/release.jks -out android/keystore.jks.enc -pass env:KEYSTORE_PASSWORD
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add android/keystore.jks.enc
+            git commit -m "Add encrypted APK signing keystore"
+            git push
+          fi
+
+      - name: Build release APK
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon -PversionCode=${{ github.run_number }}
+          ls -la app/build/outputs/apk/release/
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Gym Bro ${{ github.run_number }}
+          make_latest: true
+          files: android/app/build/outputs/apk/release/gym-bro.apk
+          body: |
+            **Install on Android:** download `gym-bro.apk` below, open it, allow installing from this source if asked.
+            Updates install over the previous version, your exercises and log are kept.
