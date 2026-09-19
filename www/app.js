@@ -22,7 +22,7 @@ const I18N = {
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
-    log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -33,7 +33,7 @@ const I18N = {
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
-    log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -59,8 +59,15 @@ let state = load();
 function load() {
   try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.exercises) { s.settings = { crt: true, ...s.settings }; s.log = s.log || [];
     if (!s.history) { s.history = {}; for (const l of [...s.log].reverse()) if (l.kind === 'clear' && l.to) historyAdd(s, l.t, { code: l.code, name: l.name, ...l.to }); }
-    if (!s.settings.notifyV2) { s.settings.notify = true; s.settings.notifyV2 = true; } return s; } } catch (e) {}
-  return { log: [], history: {}, settings: { rest: 90, sound: true, vibrate: true, notify: true, notifyV2: true, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() };
+    if (!s.settings.notifyV2) { s.settings.notify = true; s.settings.notifyV2 = true; }
+    seedKnownDays(s); return s; } } catch (e) {}
+  return seedKnownDays({ log: [], history: {}, settings: { rest: 90, sound: true, vibrate: true, notify: true, notifyV2: true, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() });
+}
+/* the owner's first three gym days, entered by hand before the history existed */
+function seedKnownDays(st) {
+  if (st.seeded0919) return st;
+  for (const d of ['2026-09-15', '2026-09-17', '2026-09-19']) if (!st.history[d]) st.history[d] = [];
+  st.seeded0919 = true; return st;
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 function dayCheck() { if (state.day !== today()) { state.exercises.forEach(e => e.doneSets = 0); state.day = today(); save(); } }
@@ -285,8 +292,9 @@ function dayLabel(d) {
   return `${wd} ${D}/${M}${+Y !== new Date().getFullYear() ? '/' + Y : ''}`;
 }
 function renderWorkouts() {
-  const days = Object.keys(state.history).filter(d => state.history[d].length).sort().reverse();
-  if (!days.length) return `<div class="empty">${t('noWorkouts')}</div>`;
+  const days = Object.keys(state.history).sort().reverse();
+  const addBtn = `<div class="center" style="margin:0 0 16px"><button class="btn cyan" id="addDay" style="font-size:9px">${icon('plus')} ${t('addPastDay')}</button></div>`;
+  if (!days.length) return addBtn + `<div class="empty">${t('noWorkouts')}</div>`;
   const now = new Date(), ym = dayOf(now.getTime()).slice(0, 7);
   const thisMonth = days.filter(d => d.startsWith(ym)).length;
   const weeks = 16, msDay = 864e5;
@@ -304,11 +312,16 @@ function renderWorkouts() {
   const perWeek = (inWindow / weeks).toFixed(1);
   const rows = days.map(d => {
     const list = state.history[d], vol = list.reduce((a, x) => a + x.kg * x.reps * x.sets, 0);
-    return `<div class="wday"><div class="wh"><b>${dayLabel(d)}</b><span>${list.length} ${t('exercisesN')} · <em>${vol}</em> KG</span></div>
+    return `<div class="wday" data-day="${d}"><div class="wh"><b>${dayLabel(d)}</b><span>${list.length ? `${list.length} ${t('exercisesN')} · <em>${vol}</em> KG` : `${t('gymDay')} · ${t('noDetails')}`}<button class="wdel" data-del="${d}" aria-label="delete">${icon('x')}</button></span></div>
       ${list.map(x => `<div class="wrow"><span class="lc">${esc(x.code || '—')}</span><span class="wn">${esc(x.name)}</span><span class="n">${x.reps}×${x.sets}</span><span class="n kg">${x.kg}<small>KG</small></span></div>`).join('')}</div>`;
   }).join('');
   return `<div class="tiles"><div class="tile"><b>${days.length}</b><small>${t('total')}</small></div><div class="tile"><b>${thisMonth}</b><small>${t('thisMonth')}</small></div><div class="tile"><b>${perWeek}</b><small>${t('perWeek')}</small></div></div>
-    <div class="cal" style="grid-template-columns:repeat(${weeks},1fr)">${cal}</div>${rows}`;
+    <div class="cal" style="grid-template-columns:repeat(${weeks},1fr)">${cal}</div>${addBtn}${rows}`;
+}
+function renderAddDay() {
+  return `<div class="field"><label>${t('date')}</label><input type="date" id="adDate" value="${dayOf(Date.now())}" max="${dayOf(Date.now())}"></div>
+    <div class="field"><label>${t('pickExercises')}</label><div class="picklist">${state.exercises.map(e => `<button type="button" class="pk" data-id="${e.id}"><span class="lc">${esc(e.code || '—')}</span><span class="wn">${esc(e.name)}</span><span class="n">${e.reps}×${e.sets} · ${e.kg}KG</span></button>`).join('')}</div></div>
+    <div class="dlg-btns"><button class="btn grey" id="adCancel">${t('cancel')}</button><button class="btn" id="adSave">${t('save')}</button></div>`;
 }
 function renderChanges() {
   const days = {};
@@ -327,9 +340,26 @@ function renderChanges() {
 function openLog(tab) {
   if (tab) logTab = tab;
   const tabs = `<div class="tabs"><button class="${logTab === 'workouts' ? 'on' : ''}" data-tab="workouts">${t('workouts')}</button><button class="${logTab === 'changes' ? 'on' : ''}" data-tab="changes">${t('changes')}</button></div>`;
-  const body = logTab === 'workouts' ? renderWorkouts() : renderChanges();
-  openDlg(t('log'), tabs + body, logTab === 'changes' && state.log.length ? `<button class="btn grey" id="logClear" style="font-size:9px">${t('logClear')}</button>` : '');
-  $('#dlgBody').querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => openLog(b.dataset.tab)));
+  const content = logTab === 'workouts' ? renderWorkouts() : renderChanges();
+  openDlg(t('log'), tabs + content, logTab === 'changes' && state.log.length ? `<button class="btn grey" id="logClear" style="font-size:9px">${t('logClear')}</button>` : '');
+  const body = $('#dlgBody');
+  body.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => openLog(b.dataset.tab)));
+  body.querySelectorAll('.wdel').forEach(b => b.addEventListener('click', () => { if (confirm(t('deleteDay'))) { delete state.history[b.dataset.del]; save(); openLog('workouts'); } }));
+  const add = $('#addDay');
+  if (add) add.addEventListener('click', () => {
+    body.innerHTML = tabs + renderAddDay(); $('#dlgFoot').innerHTML = '';
+    const picked = new Set();
+    body.querySelectorAll('.pk').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; picked.has(id) ? picked.delete(id) : picked.add(id); b.classList.toggle('on', picked.has(id)); }));
+    body.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => openLog(b.dataset.tab)));
+    $('#adCancel').addEventListener('click', () => openLog('workouts'));
+    $('#adSave').addEventListener('click', () => {
+      const d = $('#adDate').value; if (!d) return;
+      const [Y, M, D] = d.split('-').map(Number), ts = new Date(Y, M - 1, D, 12).getTime();
+      state.history[d] = state.history[d] || [];
+      for (const e of state.exercises) if (picked.has(e.id)) historyAdd(state, ts, e);
+      save(); openLog('workouts');
+    });
+  });
   const c = $('#logClear'); if (c) c.addEventListener('click', () => { if (confirm(t('logClearConfirm'))) { state.log = []; save(); openLog(); } });
 }
 $('#btnLog').innerHTML = icon('log');

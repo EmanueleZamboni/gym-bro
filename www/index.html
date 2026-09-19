@@ -184,7 +184,7 @@ svg{display:block}
 .field{margin-bottom:16px}
 .field label{display:block;font-family:var(--fx);font-size:8px;color:var(--grey);margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase}
 .field label span{color:var(--cyan)}
-.field input[type=text],.field textarea{width:100%;background:var(--ink);border:3px solid var(--line);padding:12px 12px;outline:none;color:var(--white);font-family:var(--fb);font-size:19px;font-weight:500}
+.field input[type=text],.field input[type=date],.field textarea{width:100%;background:var(--ink);border:3px solid var(--line);padding:12px 12px;outline:none;color:var(--white);font-family:var(--fb);font-size:19px;font-weight:500}
 .field input:focus,.field textarea:focus{border-color:var(--yellow)}
 .field textarea{min-height:76px;resize:vertical;font-size:17px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -226,6 +226,18 @@ svg{display:block}
 .wh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-family:var(--fx);font-size:9px;color:var(--yellow);margin-bottom:6px;flex-wrap:wrap}
 .wh span{font-family:var(--fx);font-size:8px;color:var(--grey);text-transform:uppercase}
 .wh em{font-style:normal;font-family:var(--fx);font-size:10px;color:var(--white)}
+.wdel{width:28px;height:28px;display:inline-grid;place-items:center;color:var(--dim);margin-left:8px;vertical-align:middle}
+.wdel svg{width:12px;height:12px}
+.picklist{display:flex;flex-direction:column;gap:8px}
+.pk{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;text-align:left;padding:10px;background:var(--ink);border:3px solid var(--line);font-family:var(--fb);font-size:14px;color:var(--grey)}
+.pk .lc{font-family:var(--fx);font-size:7px;color:var(--ink);background:var(--line);padding:4px 3px 3px;text-align:center}
+.pk .wn{text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .n{font-family:var(--fx);font-size:9px;color:var(--dim)}
+.pk.on{border-color:var(--green);color:var(--white)}
+.pk.on .lc{background:var(--green)}
+.pk.on .n{color:var(--cyan)}
+.dlg-btns{display:flex;gap:12px;margin:8px 0 4px}
+.dlg-btns .btn{flex:1;min-height:52px;font-size:11px}
 .wrow{display:grid;grid-template-columns:44px 1fr auto auto;gap:10px;align-items:center;padding:7px 0;border-bottom:3px dotted var(--line);font-family:var(--fb);font-size:15px;color:var(--white)}
 .wrow .lc{font-family:var(--fx);font-size:7px;color:var(--ink);background:var(--green);padding:4px 3px 3px;text-align:center}
 .wrow .wn{text-transform:uppercase;font-size:14px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
