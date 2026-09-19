@@ -25,7 +25,9 @@ Every push to `main` that touches the app builds a new APK (`.github/workflows/a
 - **Workout** screen: tap an exercise to start it. Exercises you finished today get a tick. The ticks reset automatically the next day, or with **New workout**.
 - **Exercise** screen: an animated pixel sprite shows the machine. Press **DONE** after every set: screen shake, HIT! stamp, pixel burst, power-bar segment fills. The rest timer starts; **+15s / −15s / Skip** adjust it. At zero: bell, READY?, then GO!! with a crunch, flash and rumble. Last set: STAGE CLEAR with your volume (kg × reps × sets).
 - **Edit** (pen icon): change reps, sets, weight, notes, the diagram, per-exercise rest. Add or delete exercises, reorder with the arrows.
-- **Options** (gear icon): rest time, sound, rumble, system notification, keep-screen-on, CRT scanlines, language (EN / IT).
+- **Options** (gear icon): rest time, sound, rumble, keep-screen-on, CRT scanlines, language (EN / IT), routines.
+- **Routines**: several named exercise lists. With one routine nothing changes; with more, NEW WORKOUT asks which one and the header shows its name (tap it to switch). Manage them under Options → Routines.
+- **Log** (list icon): WORKOUTS tab with gym days, stats and a pixel calendar; CHANGES tab with every reps / sets / kg edit. Tapping an exercise's name on its screen shows that exercise's own history. A green ▲ JUST UPPED line appears when you raised reps or kg since you last cleared it.
 
 ## Under the hood
 

@@ -22,7 +22,7 @@ const I18N = {
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
-    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -33,7 +33,7 @@ const I18N = {
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
-    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -56,12 +56,22 @@ const uid = () => Math.random().toString(36).slice(2, 9);
 const today = () => new Date().toISOString().slice(0, 10);
 const freshExercises = () => DEFAULT_EXERCISES.map(e => ({ id: uid(), rest: null, doneSets: 0, ...e }));
 let state = load();
+/* routines: several named exercise lists; state.exercises always points at the active one */
+function migrateRoutines(st) {
+  if (!st.routines) { st.routines = [{ id: uid(), name: 'ROUTINE A', exercises: st.exercises || [] }]; st.routine = st.routines[0].id; delete st.exercises; }
+  if (!st.routines.find(r => r.id === st.routine)) st.routine = st.routines[0].id;
+  Object.defineProperty(st, 'exercises', { enumerable: false, configurable: true,
+    get() { return (st.routines.find(r => r.id === st.routine) || st.routines[0]).exercises; },
+    set(v) { (st.routines.find(r => r.id === st.routine) || st.routines[0]).exercises = v; } });
+  return st;
+}
+const activeRoutine = () => state.routines.find(r => r.id === state.routine) || state.routines[0];
 function load() {
-  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.exercises) { s.settings = { crt: true, ...s.settings }; s.log = s.log || [];
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && (s.routines || s.exercises)) { s.settings = { crt: true, ...s.settings }; s.log = s.log || [];
     if (!s.history) { s.history = {}; for (const l of [...s.log].reverse()) if (l.kind === 'clear' && l.to) historyAdd(s, l.t, { code: l.code, name: l.name, ...l.to }); }
     if (!s.settings.notifyV2) { s.settings.notify = true; s.settings.notifyV2 = true; }
-    seedKnownDays(s); return s; } } catch (e) {}
-  return seedKnownDays({ log: [], history: {}, settings: { rest: 90, sound: true, vibrate: true, notify: true, notifyV2: true, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() });
+    seedKnownDays(s); return migrateRoutines(s); } } catch (e) {}
+  return migrateRoutines(seedKnownDays({ log: [], history: {}, settings: { rest: 90, sound: true, vibrate: true, notify: true, notifyV2: true, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() }));
 }
 /* the owner's first three gym days, entered by hand before the history existed */
 function seedKnownDays(st) {
@@ -70,7 +80,7 @@ function seedKnownDays(st) {
   st.seeded0919 = true; return st;
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
-function dayCheck() { if (state.day !== today()) { state.exercises.forEach(e => e.doneSets = 0); state.day = today(); save(); } }
+function dayCheck() { if (state.day !== today()) { state.routines.forEach(r => r.exercises.forEach(e => e.doneSets = 0)); state.day = today(); save(); } }
 const restOf = e => (e.rest && e.rest > 0) ? e.rest : state.settings.rest;
 const isDone = e => e.doneSets >= e.sets;
 const dayOf = ts => { const d = new Date(ts); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
@@ -80,6 +90,20 @@ function historyAdd(st, ts, ex) {
   const entry = { t: ts, code: ex.code, name: ex.name, reps: ex.reps, sets: ex.sets, kg: ex.kg };
   if (i >= 0) list[i] = entry; else list.push(entry);
 }
+const sameEx = (e, l) => e.code ? l.code === e.code : l.name === e.name;
+/* changes to reps/sets/kg since this exercise was last cleared (or in the last 14 days) */
+function deltaFor(e) {
+  const lastClear = state.log.find(l => l.kind === 'clear' && sameEx(e, l));
+  const since = lastClear ? lastClear.t : Date.now() - 14 * 864e5, out = {};
+  for (const l of state.log) {
+    if (l.t <= since) break;
+    if (!sameEx(e, l) || !['kg', 'reps', 'sets'].includes(l.kind)) continue;
+    if (!out[l.kind]) out[l.kind] = { from: l.from, to: l.to }; else out[l.kind].from = l.from;
+  }
+  for (const k in out) if (out[k].from === out[k].to) delete out[k];
+  return out;
+}
+const kindLabel = k => k === 'kg' ? 'KG' : k === 'rest' ? t('rest') : t(k).toUpperCase();
 function logAdd(e, kind, from, to) {
   state.log.unshift({ t: Date.now(), code: e.code, name: e.name, kind, from, to });
   if (state.log.length > 600) state.log.length = 600;
@@ -170,9 +194,11 @@ const sprite = (k, f = 0, opts) => GymSprites.svg(k, f, '', opts);
 function renderList() {
   dayCheck();
   const el = $('#list'), ex = state.exercises, doneCount = ex.filter(isDone).length;
-  $('#subtitle').innerHTML = `<b>${doneCount}/${ex.length}</b> ${t('clearedToday')}`;
-  if (!ex.length) { el.innerHTML = `<div class="empty">${t('empty')}</div>`; return; }
-  el.innerHTML = `<div class="stages">${ex.map((e, i) => `
+  const multi = state.routines.length > 1;
+  $('#subtitle').innerHTML = `${multi ? `<span class="rname">${esc(activeRoutine().name)}</span><br>` : ''}<b>${doneCount}/${ex.length}</b> ${t('clearedToday')}`;
+  $('#subtitle').classList.toggle('tap', multi);
+  if (!ex.length) { el.innerHTML = `<div class="empty">${t('empty')}</div>${multi ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`; const b = $('#btnNewWorkout'); if (b) b.addEventListener('click', newWorkout); return; }
+  el.innerHTML = `<div class="stages">${ex.map((e, i) => { const dl = deltaFor(e); return `
     <button class="stage ${isDone(e) ? 'done' : ''}" data-id="${e.id}" style="--i:${i}">
       <div class="sbox">${sprite(e.diagram, 0)}</div>
       <div>
@@ -181,20 +207,20 @@ function renderList() {
         <div class="sspec"><b>${e.sets}</b>${t('sets')}</div>
         ${e.doneSets > 0 && !isDone(e) ? `<div class="cont">▶ ${t('continueLbl')} ${e.doneSets + 1}/${e.sets}</div>` : ''}
       </div>
-      <div class="skg">${e.reps}<small>${t('reps')}</small></div>
-      <div class="skg kg">${e.kg}<small>KG</small></div>
+      <div class="skg">${dl.reps ? `<i class="${dl.reps.to > dl.reps.from ? 'up' : 'dn'}">${dl.reps.to > dl.reps.from ? '▲' : '▼'}</i>` : ''}${e.reps}<small>${t('reps')}</small></div>
+      <div class="skg kg">${dl.kg ? `<i class="${dl.kg.to > dl.kg.from ? 'up' : 'dn'}">${dl.kg.to > dl.kg.from ? '▲' : '▼'}</i>` : ''}${e.kg}<small>KG</small></div>
       ${isDone(e) ? `<div class="stamp-clear">${t('clear')}!</div>` : ''}
-    </button>`).join('')}</div>
-    ${doneCount ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`;
+    </button>`; }).join('')}</div>
+    ${doneCount || multi ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`;
   el.querySelectorAll('.stage').forEach(c => c.addEventListener('click', () => openSession(c.dataset.id)));
   const nw = $('#btnNewWorkout');
-  if (nw) nw.addEventListener('click', () => { if (!confirm(t('newWorkoutConfirm'))) return; state.exercises.forEach(e => e.doneSets = 0); save(); renderList(); });
+  if (nw) nw.addEventListener('click', newWorkout);
 }
 
 /* =========================== edit =========================== */
 function renderEdit() {
   const el = $('#edit'), ex = state.exercises;
-  $('#subtitle').innerHTML = t('edit');
+  $('#subtitle').innerHTML = state.routines.length > 1 ? `${t('edit')}<br><span class="rname">${esc(activeRoutine().name)}</span>` : t('edit');
   el.innerHTML = `<div class="stages">${ex.map((e, i) => `
     <div class="row" data-id="${e.id}" style="--i:${i}">
       <div class="sbox">${sprite(e.diagram, 0)}</div>
@@ -302,6 +328,7 @@ function openSettings() {
     <div class="opt"><div><div class="lab">${t('keepAwake')}</div><div class="sub">${t('keepAwakeSub')}</div></div>${tog('wake', s.wake)}</div>
     <div class="opt"><div><div class="lab">${t('crt')}</div><div class="sub">${t('crtSub')}</div></div>${tog('crt', s.crt)}</div>
     <div class="opt"><div><div class="lab">${t('language')}</div></div>${tog('lang', s.lang === 'en', 'EN', 'IT').replace('class="toggle off"', 'class="toggle"')}</div>
+    <div class="opt"><div><div class="lab">${t('routines')}</div><div class="sub">${esc(activeRoutine().name)} · ${state.routines.length}</div></div><button class="toggle" id="sRoutines">${t('edit')}</button></div>
     ${NATIVE ? `<div class="opt"><div><div class="lab">${t('version')}</div><div class="sub" id="sVer">…</div></div><button class="toggle" id="sCheck">${t('check')}</button></div>` : ''}
     ${deferredInstall ? `<div class="opt"><div><div class="lab">${t('install')}</div><div class="sub">${t('installSub')}</div></div><button class="btn cyan" id="sInstall">${t('install')}</button></div>` : ''}
     <div class="center"><button class="btn red" id="sReset" style="font-size:9px">${t('resetData')}</button></div>`);
@@ -318,6 +345,7 @@ function openSettings() {
     if (k === 'crt') document.body.classList.toggle('crt', s.crt);
     save(); openSettings();
   }));
+  $('#sRoutines').addEventListener('click', () => openRoutinePicker(false));
   if (UP) { UP.getVersion().then(v => { const el = $('#sVer'); if (el) el.textContent = `v${v.versionCode} · ${v.versionName}`; }).catch(() => {}); $('#sCheck').addEventListener('click', () => checkUpdate(true)); }
   const inst = $('#sInstall');
   if (inst) inst.addEventListener('click', async () => { if (!deferredInstall) return; deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = null; closeDlg(); });
@@ -403,6 +431,58 @@ function openLog(tab) {
   });
   const c = $('#logClear'); if (c) c.addEventListener('click', () => { if (confirm(t('logClearConfirm'))) { state.log = []; save(); openLog(); } });
 }
+function newWorkout() {
+  if (state.routines.length < 2) { if (!confirm(t('newWorkoutConfirm'))) return; state.exercises.forEach(e => e.doneSets = 0); save(); renderList(); return; }
+  openRoutinePicker(true);
+}
+function openRoutinePicker(forNew) {
+  const rows = state.routines.map(r => `<div class="rrow ${r.id === state.routine ? 'on' : ''}">
+      <button class="rpick" data-id="${r.id}"><b>${esc(r.name)}</b><span>${r.exercises.length} ${t('exercisesN')}${r.id === state.routine ? ' · ' + t('current') : ''}</span></button>
+      <button class="btn grey sq" data-ren="${r.id}">${icon('pen')}</button>
+      ${state.routines.length > 1 ? `<button class="btn grey sq" data-delr="${r.id}">${icon('x')}</button>` : ''}</div>`).join('');
+  openDlg(forNew ? t('newWorkoutPick') : t('routines'), `<div class="rlist">${rows}</div>`, `<button class="btn cyan" id="addRoutine">${icon('plus')} ${t('addRoutine')}</button>`);
+  const body = $('#dlgBody');
+  body.querySelectorAll('.rpick').forEach(b => b.addEventListener('click', () => {
+    const r = state.routines.find(x => x.id === b.dataset.id); if (!r) return;
+    if (forNew) { if (r.exercises.some(e => e.doneSets > 0) && !confirm(t('newWorkoutConfirm'))) return; r.exercises.forEach(e => e.doneSets = 0); }
+    state.routine = r.id; save(); closeDlg(); setMode('list');
+  }));
+  body.querySelectorAll('[data-ren]').forEach(b => b.addEventListener('click', () => {
+    const r = state.routines.find(x => x.id === b.dataset.ren); const n = prompt(t('routineName'), r.name);
+    if (n && n.trim()) { r.name = n.trim().toUpperCase(); save(); openRoutinePicker(forNew); if (mode === 'edit') renderEdit(); else renderList(); }
+  }));
+  body.querySelectorAll('[data-delr]').forEach(b => b.addEventListener('click', () => {
+    if (!confirm(t('deleteRoutine'))) return;
+    state.routines = state.routines.filter(x => x.id !== b.dataset.delr);
+    if (!state.routines.find(x => x.id === state.routine)) state.routine = state.routines[0].id;
+    save(); openRoutinePicker(forNew); if (mode === 'edit') renderEdit(); else renderList();
+  }));
+  $('#addRoutine').addEventListener('click', () => {
+    const n = prompt(t('routineName'), `ROUTINE ${String.fromCharCode(65 + state.routines.length)}`);
+    if (!n || !n.trim()) return;
+    const r = { id: uid(), name: n.trim().toUpperCase(), exercises: [] };
+    state.routines.push(r); state.routine = r.id; save(); closeDlg(); setMode('edit');
+  });
+}
+$('#subtitle').addEventListener('click', () => { if (state.routines.length > 1) openRoutinePicker(false); });
+
+function openExerciseLog(e) {
+  const items = [];
+  for (const [d, list] of Object.entries(state.history)) for (const x of list) if (sameEx(e, x)) items.push({ t: x.t, kind: 'clear', to: x });
+  for (const l of state.log) if (sameEx(e, l) && l.kind !== 'clear') items.push(l);
+  items.sort((a, b) => b.t - a.t);
+  const row = l => {
+    let body;
+    if (l.kind === 'clear') body = `<span class="lk">${t('clear')}</span><span class="n">${l.to.reps}×${l.to.sets}</span> · <span class="n">${l.to.kg}</span> KG`;
+    else if (l.kind === 'add') body = `<span class="lk">${t('added')}</span>`;
+    else if (l.kind === 'del') body = `<span class="lk">${t('deleted')}</span>`;
+    else { const up = l.to > l.from; body = `<span class="lk">${kindLabel(l.kind)}</span><span class="n">${l.from}</span> → <b class="n ${up ? 'up' : 'dn'}">${l.to}</b>`; }
+    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : ''}">${l.kind === 'clear' ? '✓' : '✎'}</span><div>${body}<span class="ln">${dayLabel(dayOf(l.t))} · ${new Date(l.t).toTimeString().slice(0, 5)}</span></div></div>`;
+  };
+  openDlg(`${e.code ? e.code + ' · ' : ''}${e.name}`.toUpperCase(), items.length ? items.map(row).join('') : `<div class="empty">${t('noExLog')}</div>`);
+}
+$('#fName').addEventListener('click', () => { if (S.ex) openExerciseLog(S.ex); });
+
 $('#btnLog').innerHTML = icon('log');
 $('#btnLog').addEventListener('click', () => openLog('workouts'));
 
@@ -416,6 +496,8 @@ function openSession(id) {
     $('#fCode').textContent = e.code || t('exercise'); $('#fName').textContent = e.name;
     $('#stReps').textContent = e.reps; $('#stRepsL').textContent = t('reps'); $('#stKg').textContent = e.kg;
     $('#fNotes').textContent = e.notes || '';
+    const dl = deltaFor(e), parts = Object.keys(dl).map(k => { const up = dl[k].to > dl[k].from; return `<span class="${up ? 'up' : 'dn'}">${up ? '▲' : '▼'} ${up ? t('justUpped') : t('lowered')} · ${kindLabel(k)} ${dl[k].from} → ${dl[k].to}</span>`; });
+    $('#fDelta').innerHTML = parts.join('<br>'); $('#fDelta').classList.toggle('hidden', !parts.length);
     $('#sprite').innerHTML = GymSprites.svg(e.diagram, 0, 'f0') + GymSprites.svg(e.diagram, 1, 'f1') + GymSprites.svg(e.diagram, 0, 'rest', { sweat: true });
     $('#stamp').className = 'stamp'; $('#score').className = 'score'; $('#score').innerHTML = '';
     fight.classList.remove('resting', 'go');
