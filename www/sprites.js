@@ -103,12 +103,14 @@
         p.rect(12, 16, 12, 1, 'n'); p.rect(11, 14, 2, 5, 'Y'); }
     ],
     abs: [
-      p => { backrest(p, 5, 9, 14); seat(p, 5, 22, 12); post(p, 9, 24, 6); base(p, 5, 30, 12); stack(p, 25, 20); p.rect(20, 4, 2, 18, 'M'); p.rect(20, 4, 1, 18, 'm');
-        athlete(p, { head: [11, 9], neck: [11, 13], hip: [11, 21], knee: [17, 21], ankle: [17, 28], shoulder: [11, 15], elbow: [15, 13], hand: [16, 8] });
-        pad(p, 15, 6, 4, 2); pad(p, 15, 15, 3, 4); },
-      p => { backrest(p, 5, 9, 14); seat(p, 5, 22, 12); post(p, 9, 24, 6); base(p, 5, 30, 12); stack(p, 25, 14); p.rect(20, 4, 2, 18, 'M'); p.rect(20, 4, 1, 18, 'm');
-        athlete(p, { head: [15, 12], neck: [14, 15], hip: [11, 21], knee: [17, 21], ankle: [17, 28], shoulder: [14, 16], elbow: [18, 15], hand: [19, 11] });
-        pad(p, 18, 9, 4, 2); pad(p, 18, 17, 3, 4); }
+      p => { backrest(p, 4, 8, 15); seat(p, 4, 22, 12); post(p, 8, 24, 6); base(p, 4, 30, 12); stack(p, 25, 20);
+        p.rect(20, 4, 2, 20, 'M'); p.rect(20, 4, 1, 20, 'm'); p.rect(15, 8, 6, 1, 'n');
+        athlete(p, { head: [10, 9], neck: [10, 13], hip: [10, 21], knee: [16, 21], ankle: [16, 28], shoulder: [10, 15], elbow: [14, 12], hand: [15, 9] });
+        pad(p, 14, 14, 3, 5); },
+      p => { backrest(p, 4, 8, 15); seat(p, 4, 22, 12); post(p, 8, 24, 6); base(p, 4, 30, 12); stack(p, 25, 14);
+        p.rect(20, 4, 2, 20, 'M'); p.rect(20, 4, 1, 20, 'm'); p.rect(16, 13, 5, 1, 'n');
+        athlete(p, { head: [14, 13], neck: [13, 16], hip: [10, 21], knee: [16, 21], ankle: [16, 28], shoulder: [13, 17], elbow: [16, 15], hand: [16, 13] });
+        pad(p, 16, 18, 3, 4); }
     ],
     legcurl: [
       p => { backrest(p, 5, 7, 16); seat(p, 5, 21, 12); post(p, 9, 23, 7); base(p, 5, 30, 10); stack(p, 25, 22);
@@ -119,14 +121,14 @@
         pad(p, 11, 17, 6, 2); pad(p, 17, 28, 4, 2); p.line(18, 23, 19, 29, 'm', 1); }
     ],
     legpress: [
-      p => { base(p, 2, 30, 28); p.line(3, 28, 14, 14, 'M', 3); p.line(4, 27, 13, 16, 'm', 1); p.rect(2, 27, 7, 2, 'M');
-        p.line(12, 4, 30, 22, 'n', 1); stack(p, 26, 26);
-        athlete(p, { head: [14, 11], neck: [13, 15], hip: [8, 23], knee: [16, 18], ankle: [20, 13], shoulder: [13, 17], elbow: [10, 20], hand: [8, 21] });
-        p.line(19, 15, 25, 9, 'Y', 3); p.line(20, 16, 26, 10, 'y', 1); },
-      p => { base(p, 2, 30, 28); p.line(3, 28, 14, 14, 'M', 3); p.line(4, 27, 13, 16, 'm', 1); p.rect(2, 27, 7, 2, 'M');
-        p.line(12, 4, 30, 22, 'n', 1); stack(p, 26, 22);
-        athlete(p, { head: [14, 11], neck: [13, 15], hip: [8, 23], knee: [17, 15], ankle: [24, 9], shoulder: [13, 17], elbow: [10, 20], hand: [8, 21] });
-        p.line(23, 11, 29, 5, 'Y', 3); p.line(24, 12, 30, 6, 'y', 1); }
+      p => { base(p, 1, 30, 30); p.line(2, 27, 11, 11, 'M', 3); p.line(3, 26, 10, 13, 'm', 1); p.rect(1, 27, 9, 2, 'M'); p.rect(1, 26, 9, 1, 'm');
+        p.line(9, 1, 31, 23, 'n', 1); p.rect(24, 22, 6, 6, 'G'); p.rect(24, 22, 6, 1, 'n');
+        athlete(p, { head: [6, 9], neck: [7, 13], hip: [11, 22], knee: [15, 17], ankle: [19, 14], shoulder: [7, 15], elbow: [9, 20], hand: [13, 22] });
+        p.line(17, 8, 25, 16, 'Y', 3); p.line(18, 10, 26, 18, 'y', 1); },
+      p => { base(p, 1, 30, 30); p.line(2, 27, 11, 11, 'M', 3); p.line(3, 26, 10, 13, 'm', 1); p.rect(1, 27, 9, 2, 'M'); p.rect(1, 26, 9, 1, 'm');
+        p.line(9, 1, 31, 23, 'n', 1); p.rect(24, 22, 6, 6, 'G'); p.rect(24, 22, 6, 1, 'n');
+        athlete(p, { head: [6, 9], neck: [7, 13], hip: [11, 22], knee: [18, 15], ankle: [24, 9], shoulder: [7, 15], elbow: [9, 20], hand: [13, 22] });
+        p.line(22, 3, 30, 11, 'Y', 3); p.line(23, 5, 31, 13, 'y', 1); }
     ],
     dumbbell: [
       p => { base(p, 4, 30, 24);
