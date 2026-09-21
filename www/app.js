@@ -127,6 +127,26 @@ function nativeShowSet() {
   if (S.phase !== 'set') { if (S.phase === 'cleared') RT.dismiss().catch(() => {}); return; }
   RT.showSet({ title: setTitle(S.ex), body: setBody(S.ex), doneLabel: t('done') }).catch(err => toast(`${t('nativeErr')}: ${(err && err.message) || err}`));
 }
+function nativePip() {
+  if (!RT) return;
+  const on = S.open && (S.phase === 'set' || S.phase === 'rest' || S.phase === 'go');
+  RT.setPip({ enabled: on, mode: S.phase === 'rest' ? 'rest' : 'set', doneLabel: t('done'), skipLabel: t('skip'), plusLabel: '+15S' }).catch(() => {});
+}
+let inPip = false;
+function setPipUI(on) {
+  inPip = on; document.body.classList.toggle('pip', on);
+  $('#pipView').classList.toggle('hidden', !on);
+  renderPip();
+}
+function renderPip() {
+  if (!inPip) return;
+  const e = S.ex;
+  if (!e || !S.open) { $('#pipNum').textContent = '—'; $('#pipLbl').textContent = ''; return; }
+  const next = Math.min(e.sets, e.doneSets + 1);
+  if (S.phase === 'rest') { const secs = Math.max(0, Math.ceil((S.endAt - Date.now()) / 1000)); $('#pipNum').textContent = fmtSecs(secs); $('#pipNum').classList.toggle('low', secs <= 3); $('#pipLbl').textContent = `${t('rest')} → ${t('set')} ${next}/${e.sets} · ${e.reps} ${t('reps').toUpperCase()}`; }
+  else if (S.phase === 'go') { $('#pipNum').textContent = t('go'); $('#pipLbl').textContent = `${t('set')} ${next}/${e.sets} · ${e.reps} ${t('reps').toUpperCase()}`; }
+  else { $('#pipNum').textContent = `${t('set')} ${next}/${e.sets}`; $('#pipNum').classList.remove('low'); $('#pipLbl').textContent = `${e.reps} ${t('reps').toUpperCase()} · ${e.kg} KG · ${e.name}`; }
+}
 function handleNativeAction(name) {
   if (!S.open) return;
   if (name === 'done' && S.phase === 'set') pressDone();
@@ -135,11 +155,20 @@ function handleNativeAction(name) {
 }
 if (RT) {
   RT.addListener('action', e => handleNativeAction(e && e.name));
+  RT.addListener('pip', e => setPipUI(!!(e && e.on)));
   const consume = () => RT.consumeAction().then(r => { if (r && r.name) handleNativeAction(r.name); }).catch(() => {});
-  setTimeout(consume, 800);
+  setTimeout(() => { restoreLive(); setTimeout(consume, 900); }, 300);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) consume(); });
 }
 function nativeDisarm() { if (RT) RT.cancel().catch(() => {}); }
+function saveLive() { state.live = S.open && S.ex ? { id: S.ex.id, phase: S.phase, endAt: S.endAt || 0 } : null; save(); }
+function restoreLive() {
+  const l = state.live; if (!l) return false;
+  const e = state.exercises.find(x => x.id === l.id); if (!e || isDone(e)) { state.live = null; save(); return false; }
+  const resume = l.phase === 'rest' && l.endAt > Date.now() ? { endAt: l.endAt } : null;
+  openSession(e.id, resume);
+  return true;
+}
 
 /* in-app updater (APK): check GitHub releases, download, hand to the system installer */
 const UP = NATIVE ? window.Capacitor.registerPlugin('Updater') : null;
@@ -563,7 +592,7 @@ $('#btnLog').addEventListener('click', () => openLog('workouts'));
 /* =========================== fight screen =========================== */
 const S = { ex: null, open: false, phase: 'idle', endAt: 0, dur: 0, raf: 0, timeout: 0, interval: 0, lastShown: -1, wake: null, anim: 0, goT: 0 };
 const fight = $('#fight');
-function openSession(id) {
+function openSession(id, resume) {
   const e = state.exercises.find(x => x.id === id); if (!e) return;
   wipe(() => {
     S.ex = e; S.open = true; S.phase = isDone(e) ? 'cleared' : 'set';
@@ -580,11 +609,13 @@ function openSession(id) {
     window.scrollTo(0, 0);
     pushLayer('fight', closeSessionNow);
     if (RT) RT.requestPermission().catch(() => {});
-    requestWake(); startAnim(); nativeShowSet();
+    requestWake(); startAnim();
+    if (resume && resume.endAt > Date.now()) startRest(resume.endAt); else nativeShowSet();
+    nativePip(); saveLive();
   });
 }
 function closeSessionNow() {
-  S.open = false; S.phase = 'idle'; stopTimer(); stopAnim(); closeNotifications(); nativeDisarm();
+  S.open = false; S.phase = 'idle'; stopTimer(); stopAnim(); closeNotifications(); nativeDisarm(); nativePip(); state.live = null;
   fight.classList.add('hidden'); fight.classList.remove('resting', 'go'); fight.setAttribute('aria-hidden', 'true');
   releaseWake(); save(); renderList();
 }
@@ -638,7 +669,7 @@ function stamp(text, cls = '', hold = 700) {
 $('#btnDone').addEventListener('click', pressDone);
 function pressDone() {
   if (!S.open) return;
-  if (S.phase === 'cleared') { S.ex.doneSets = 0; S.phase = 'set'; save(); renderBar(); renderSub(); nativeShowSet(); return; }
+  if (S.phase === 'cleared') { S.ex.doneSets = 0; S.phase = 'set'; save(); renderBar(); renderSub(); nativeShowSet(); nativePip(); saveLive(); renderPip(); return; }
   if (S.phase !== 'set') return;
   const e = S.ex;
   Sfx.prime(['alarm', 'go', 'tick3']);
@@ -653,12 +684,13 @@ function pressDone() {
   renderBar(e.doneSets - 1);
 }
 
-function startRest() {
-  S.phase = 'rest'; S.dur = restOf(S.ex); S.endAt = Date.now() + S.dur * 1000; S.lastShown = -1;
+function startRest(endAtOverride) {
+  S.phase = 'rest'; S.dur = restOf(S.ex); S.endAt = endAtOverride || (Date.now() + S.dur * 1000); S.lastShown = -1;
+  if (endAtOverride) fight.classList.add('resting');
   $('#tLbl').textContent = t('rest'); $('#tNum').classList.remove('low');
   renderSub(); tick();
   clearTimeout(S.restT); S.restT = setTimeout(() => { if (S.phase === 'rest') fight.classList.add('resting'); }, 550);
-  nativeArm();
+  nativeArm(); nativePip(); saveLive();
   S.interval = setInterval(tick, 250);
   S.timeout = setTimeout(tick, S.dur * 1000 + 20);
 }
@@ -671,6 +703,7 @@ function tick() {
     num.classList.toggle('low', secs <= 3);
     if (secs <= 3 && secs > 0) { sfx('tick3'); buzz(15); }
     if (secs > 0) notifyCountdown(secs);
+    renderPip();
   }
   if (rem <= 0) endRest(true);
   else if (!document.hidden) { cancelAnimationFrame(S.raf); S.raf = requestAnimationFrame(tick); }
@@ -679,9 +712,9 @@ function stopTimer() { clearInterval(S.interval); clearTimeout(S.timeout); cance
 function endRest(alarm) {
   stopTimer();
   fight.classList.remove('resting');
-  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); closeNotifications(); nativeShowSet(); return; }
+  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); closeNotifications(); nativeShowSet(); nativePip(); saveLive(); renderPip(); return; }
   /* READY? ... (delay) ... GO!! with a crunch */
-  S.phase = 'go'; fight.classList.add('go'); renderBar(); renderSub();
+  S.phase = 'go'; fight.classList.add('go'); renderBar(); renderSub(); nativePip(); renderPip();
   if (!NATIVE) { sfx('alarm'); buzz([120, 80, 120, 80, 200]); } else if (Date.now() - S.endAt > 4000) RT.dismiss().catch(() => {});
   flash(false);
   stamp(t('ready'), 'blink', 0);
@@ -689,12 +722,12 @@ function endRest(alarm) {
   S.goT = setTimeout(() => {
     if (!NATIVE) { sfx('go'); buzz([60, 30, 140]); } shake(); flash(true);
     stamp(t('go'), 'cyan', 900);
-    S.goT = setTimeout(() => { S.phase = 'set'; fight.classList.remove('go'); renderBar(); renderSub(); nativeShowSet(); }, 700);
+    S.goT = setTimeout(() => { S.phase = 'set'; fight.classList.remove('go'); renderBar(); renderSub(); nativeShowSet(); nativePip(); saveLive(); renderPip(); }, 700);
   }, 900);
 }
 
 function finishExercise() {
-  S.phase = 'done'; fight.classList.add('go'); renderBar(); renderSub();
+  S.phase = 'done'; fight.classList.add('go'); renderBar(); renderSub(); nativePip(); state.live = null;
   const all = state.exercises.every(isDone), e = S.ex;
   logAdd(e, 'clear', null, { reps: e.reps, sets: e.sets, kg: e.kg }); historyAdd(state, Date.now(), e); save();
   stamp(all ? t('allClear') : t('stageClear'), all ? 'cyan' : '', 0);

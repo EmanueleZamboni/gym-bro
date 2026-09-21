@@ -71,6 +71,23 @@ public class RestTimerPlugin extends Plugin {
         }
     }
 
+    void emitPip(boolean on) {
+        JSObject d = new JSObject();
+        d.put("on", on);
+        notifyListeners("pip", d);
+    }
+
+    @PluginMethod
+    public void setPip(PluginCall call) {
+        final boolean enabled = Boolean.TRUE.equals(call.getBoolean("enabled", false));
+        final String mode = call.getString("mode", "set"), done = call.getString("doneLabel"), skip = call.getString("skipLabel"), plus = call.getString("plusLabel");
+        if (getActivity() instanceof MainActivity) {
+            final MainActivity a = (MainActivity) getActivity();
+            a.runOnUiThread(() -> a.setPip(enabled, mode, done, skip, plus));
+        }
+        call.resolve();
+    }
+
     @PluginMethod
     public void consumeAction(PluginCall call) {
         SharedPreferences sp = getContext().getSharedPreferences("gymbro", Context.MODE_PRIVATE);

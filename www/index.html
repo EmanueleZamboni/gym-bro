@@ -285,6 +285,14 @@ svg{display:block}
 .logrow .up{color:var(--green)}.logrow .dn{color:var(--red)}
 .logrow .ln{color:var(--grey);font-size:13px;display:block;margin-top:2px}
 
+/* ---------- picture-in-picture ---------- */
+.pipview{position:fixed;inset:0;z-index:90;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4vh;padding:2vh 4vw;text-align:center}
+.pipnum{font-family:var(--fx);font-size:min(30vh,10vw);line-height:1;color:var(--white);text-shadow:.6vw .6vw 0 var(--red),1.2vw 1.2vw 0 #000;white-space:nowrap}
+.pipnum.low{color:var(--yellow)}
+.piplbl{font-family:var(--fx);font-size:min(7vh,3.4vw);color:var(--cyan);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+body.pip .topbar,body.pip .screen,body.pip .fight,body.pip #update,body.pip .dlg,body.pip .backdrop,body.pip .toast{display:none!important}
+body.pip #crt{opacity:0}
+
 /* ---------- overlays ---------- */
 #wipe{position:fixed;inset:0;z-index:60;display:grid;pointer-events:none;overflow:hidden}
 #wipe i{background:var(--ink);transform:scale(0);transition:transform .12s steps(3)}
@@ -359,6 +367,7 @@ body.crt #crt{opacity:1}
   <div class="backdrop" id="backdrop"></div>
   <div class="dlg" id="dlg"><div class="title"><span id="dlgTitle"></span><button class="btn sq" id="dlgClose" aria-label="Close"></button></div><div class="body" id="dlgBody"></div><div class="foot" id="dlgFoot"></div></div>
   <div class="toast" id="toast"></div>
+  <div id="pipView" class="pipview hidden"><div class="pipnum" id="pipNum"></div><div class="piplbl" id="pipLbl"></div></div>
   <div id="crt"></div>
 </div>
 <script src="capacitor.js"></script>
