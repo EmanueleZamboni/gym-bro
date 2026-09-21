@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.WindowManager;
@@ -16,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
@@ -32,10 +34,78 @@ public class RestTimerPlugin extends Plugin {
     static final int NOTIF_ID = 1001;
     static final int REQ_ALARM = 2001;
     static final int REQ_OPEN = 2002;
+    static RestTimerPlugin instance;
 
     @Override
     public void load() {
+        instance = this;
         createChannels(getContext());
+    }
+
+    @Override
+    protected void handleOnDestroy() {
+        if (instance == this) instance = null;
+    }
+
+    /* notification action buttons -> broadcast -> back to the web layer */
+    static PendingIntent actionIntent(Context ctx, String act) {
+        Intent i = new Intent(ctx, ActionReceiver.class).setAction("it.zamboni.gymbro.ACT_" + act.toUpperCase()).putExtra("act", act);
+        int req = act.equals("done") ? 3001 : act.equals("skip") ? 3002 : 3003;
+        return PendingIntent.getBroadcast(ctx, req, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }
+
+    static void dispatch(Context ctx, String act) {
+        if (instance != null && instance.getBridge() != null) {
+            JSObject d = new JSObject();
+            d.put("name", act);
+            instance.notifyListeners("action", d, true);
+        } else {
+            ctx.getSharedPreferences("gymbro", Context.MODE_PRIVATE).edit().putString("pendingAction", act).apply();
+            try {
+                Intent open = new Intent(ctx, MainActivity.class);
+                open.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                ctx.startActivity(open);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    @PluginMethod
+    public void consumeAction(PluginCall call) {
+        SharedPreferences sp = getContext().getSharedPreferences("gymbro", Context.MODE_PRIVATE);
+        String a = sp.getString("pendingAction", null);
+        sp.edit().remove("pendingAction").apply();
+        JSObject r = new JSObject();
+        r.put("name", a);
+        call.resolve(r);
+    }
+
+    /* persistent notification while a set is in progress: reps + DONE */
+    static void postSet(Context ctx, String title, String body, String doneLabel) {
+        createChannels(ctx);
+        Notification n = new NotificationCompat.Builder(ctx, CH_TIMER)
+            .setSmallIcon(R.drawable.ic_stat_timer)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
+            .setSilent(true)
+            .setShowWhen(false)
+            .setContentIntent(openAppIntent(ctx))
+            .addAction(0, doneLabel == null ? "DONE" : doneLabel, actionIntent(ctx, "done"))
+            .setCategory(NotificationCompat.CATEGORY_WORKOUT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .build();
+        notifySafe(ctx, n);
+    }
+
+    @PluginMethod
+    public void showSet(PluginCall call) {
+        Context ctx = getContext();
+        ensurePermission();
+        AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+        am.cancel(alarmIntent(ctx, new Intent(ctx, AlarmReceiver.class)));
+        postSet(ctx, call.getString("title", "SET"), call.getString("body", ""), call.getString("doneLabel", "DONE"));
+        call.resolve();
     }
 
     static void createChannels(Context ctx) {
@@ -72,6 +142,8 @@ public class RestTimerPlugin extends Plugin {
         String body = call.getString("body", "");
         String goTitle = call.getString("goTitle", "GO!!");
         String goBody = call.getString("goBody", "");
+        String skipLabel = call.getString("skipLabel", "SKIP");
+        String plusLabel = call.getString("plusLabel", "+15S");
         Context ctx = getContext();
         ensurePermission();
 
@@ -87,6 +159,8 @@ public class RestTimerPlugin extends Plugin {
             .setWhen(endAt)
             .setShowWhen(true)
             .setContentIntent(openAppIntent(ctx))
+            .addAction(0, skipLabel, actionIntent(ctx, "skip"))
+            .addAction(0, plusLabel, actionIntent(ctx, "plus"))
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .build();
@@ -95,6 +169,9 @@ public class RestTimerPlugin extends Plugin {
         Intent fire = new Intent(ctx, AlarmReceiver.class);
         fire.putExtra("goTitle", goTitle);
         fire.putExtra("goBody", goBody);
+        fire.putExtra("nextTitle", call.getString("nextTitle"));
+        fire.putExtra("nextBody", call.getString("nextBody"));
+        fire.putExtra("doneLabel", call.getString("doneLabel", "DONE"));
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         am.cancel(alarmIntent(ctx, fire));
         am.setAlarmClock(new AlarmManager.AlarmClockInfo(endAt, openAppIntent(ctx)), alarmIntent(ctx, fire));

@@ -29,6 +29,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         String goTitle = intent.getStringExtra("goTitle");
         String goBody = intent.getStringExtra("goBody");
+        final String nextTitle = intent.getStringExtra("nextTitle");
+        final String nextBody = intent.getStringExtra("nextBody");
+        final String doneLabel = intent.getStringExtra("doneLabel");
         RestTimerPlugin.createChannels(ctx);
         Notification n = new NotificationCompat.Builder(ctx, RestTimerPlugin.CH_ALARM)
             .setSmallIcon(R.drawable.ic_stat_timer)
@@ -47,7 +50,15 @@ public class AlarmReceiver extends BroadcastReceiver {
         final Sounds s = new Sounds(ctx.getApplicationContext());
         s.play(R.raw.alarm, () -> {
             vibrate(ctx, new long[]{0, 60, 30, 140});
-            s.play(R.raw.go, () -> { s.release(); try { wl.release(); } catch (Exception ignored) {} result.finish(); });
+            s.play(R.raw.go, () -> {
+                s.release();
+                // after GO, put the next set's notification (with DONE) back up, even if the web layer is asleep
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    if (nextTitle != null) RestTimerPlugin.postSet(ctx, nextTitle, nextBody == null ? "" : nextBody, doneLabel);
+                    try { wl.release(); } catch (Exception ignored) {}
+                    result.finish();
+                }, 2500);
+            });
         });
     }
 

@@ -112,11 +112,32 @@ function logAdd(e, kind, from, to) {
 /* =========================== native bridge (Android APK) =========================== */
 const NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 const RT = NATIVE ? window.Capacitor.registerPlugin('RestTimer') : null;
+const setTitle = e => { const next = Math.min(e.sets, e.doneSets + 1); return `${t('set')} ${next}/${e.sets} · ${e.reps} ${t('reps').toUpperCase()}`; };
+const setBody = e => `${e.name} · ${e.kg} KG`;
 function nativeArm() {
   if (!RT || !S.ex || S.phase !== 'rest') return;
-  const e = S.ex, next = Math.min(e.sets, e.doneSets + 1);
-  RT.start({ endAt: S.endAt, title: `${t('rest')} · ${e.name}`, body: `${t('set')} ${next}/${e.sets} · ${e.reps} ${t('reps')} · ${e.kg} KG`,
-    goTitle: `${t('go')} ${e.name}`, goBody: `${t('set')} ${next}/${e.sets} · ${e.reps} ${t('reps')} · ${e.kg} KG` }).catch(() => {});
+  const e = S.ex;
+  RT.start({ endAt: S.endAt, title: `${t('rest')} → ${setTitle(e)}`, body: setBody(e),
+    goTitle: `${t('go')} ${setTitle(e)}`, goBody: setBody(e),
+    skipLabel: t('skip'), plusLabel: '+15S', nextTitle: setTitle(e), nextBody: setBody(e), doneLabel: t('done') }).catch(() => {});
+}
+/* persistent notification while working a set: reps + DONE button */
+function nativeShowSet() {
+  if (!RT || !S.open || !S.ex) return;
+  if (S.phase !== 'set') { if (S.phase === 'cleared') RT.dismiss().catch(() => {}); return; }
+  RT.showSet({ title: setTitle(S.ex), body: setBody(S.ex), doneLabel: t('done') }).catch(() => {});
+}
+function handleNativeAction(name) {
+  if (!S.open) return;
+  if (name === 'done' && S.phase === 'set') pressDone();
+  else if (name === 'skip' && S.phase === 'rest') endRest(false);
+  else if (name === 'plus' && S.phase === 'rest') { S.endAt += 15000; S.dur += 15; tick(); nativeArm(); }
+}
+if (RT) {
+  RT.addListener('action', e => handleNativeAction(e && e.name));
+  const consume = () => RT.consumeAction().then(r => { if (r && r.name) handleNativeAction(r.name); }).catch(() => {});
+  setTimeout(consume, 800);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) consume(); });
 }
 function nativeDisarm() { if (RT) RT.cancel().catch(() => {}); }
 
@@ -547,7 +568,7 @@ function openSession(id) {
     fight.classList.remove('hidden'); fight.setAttribute('aria-hidden', 'false');
     window.scrollTo(0, 0);
     pushLayer('fight', closeSessionNow);
-    requestWake(); startAnim();
+    requestWake(); startAnim(); nativeShowSet();
   });
 }
 function closeSessionNow() {
@@ -602,9 +623,10 @@ function stamp(text, cls = '', hold = 700) {
   clearTimeout(S.stampT);
   if (hold > 0) S.stampT = setTimeout(() => { s.classList.remove('in'); s.classList.add('out'); }, hold);
 }
-$('#btnDone').addEventListener('click', () => {
+$('#btnDone').addEventListener('click', pressDone);
+function pressDone() {
   if (!S.open) return;
-  if (S.phase === 'cleared') { S.ex.doneSets = 0; S.phase = 'set'; save(); renderBar(); renderSub(); return; }
+  if (S.phase === 'cleared') { S.ex.doneSets = 0; S.phase = 'set'; save(); renderBar(); renderSub(); nativeShowSet(); return; }
   if (S.phase !== 'set') return;
   const e = S.ex;
   Sfx.prime(['alarm', 'go', 'tick3']);
@@ -618,7 +640,7 @@ $('#btnDone').addEventListener('click', () => {
   stamp(e.doneSets === e.sets - 1 ? t('last') : t('hit'), '', 520);
   startRest();
   renderBar(e.doneSets - 1);
-});
+}
 
 function startRest() {
   S.phase = 'rest'; S.dur = restOf(S.ex); S.endAt = Date.now() + S.dur * 1000; S.lastShown = -1;
@@ -646,7 +668,7 @@ function stopTimer() { clearInterval(S.interval); clearTimeout(S.timeout); cance
 function endRest(alarm) {
   stopTimer();
   fight.classList.remove('resting');
-  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); closeNotifications(); nativeDisarm(); return; }
+  if (!alarm) { S.phase = 'set'; renderBar(); renderSub(); closeNotifications(); nativeShowSet(); return; }
   /* READY? ... (delay) ... GO!! with a crunch */
   S.phase = 'go'; fight.classList.add('go'); renderBar(); renderSub();
   if (!NATIVE) { sfx('alarm'); buzz([120, 80, 120, 80, 200]); } else if (Date.now() - S.endAt > 4000) RT.dismiss().catch(() => {});
@@ -656,7 +678,7 @@ function endRest(alarm) {
   S.goT = setTimeout(() => {
     if (!NATIVE) { sfx('go'); buzz([60, 30, 140]); } shake(); flash(true);
     stamp(t('go'), 'cyan', 900);
-    S.goT = setTimeout(() => { S.phase = 'set'; fight.classList.remove('go'); renderBar(); renderSub(); }, 700);
+    S.goT = setTimeout(() => { S.phase = 'set'; fight.classList.remove('go'); renderBar(); renderSub(); nativeShowSet(); }, 700);
   }, 900);
 }
 
