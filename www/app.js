@@ -22,7 +22,7 @@ const I18N = {
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
-    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisWeek: 'THIS WEEK', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisWeek: 'THIS WEEK', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', resetToday: 'RESET TODAY', resetTodayConfirm: "Reset this exercise for today? It is also removed from today's workout record.", routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -33,7 +33,7 @@ const I18N = {
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
-    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisWeek: 'QUESTA SETT.', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisWeek: 'QUESTA SETT.', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', resetToday: 'AZZERA OGGI', resetTodayConfirm: 'Azzerare questo esercizio per oggi? Viene tolto anche dal registro di oggi.', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -212,9 +212,46 @@ function renderList() {
       ${isDone(e) ? `<div class="stamp-clear">${t('clear')}!</div>` : ''}
     </button>`; }).join('')}</div>
     ${doneCount || multi ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`;
-  el.querySelectorAll('.stage').forEach(c => c.addEventListener('click', () => openSession(c.dataset.id)));
+  el.querySelectorAll('.stage').forEach(c => {
+    c.addEventListener('click', () => { if (suppressClick) return; openSession(c.dataset.id); });
+    longPress(c, () => openExerciseMenu(c.dataset.id));
+  });
   const nw = $('#btnNewWorkout');
   if (nw) nw.addEventListener('click', newWorkout);
+}
+
+/* long press: hold ~500 ms without moving */
+let suppressClick = false;
+function longPress(el, fn) {
+  let timer = 0, x0 = 0, y0 = 0;
+  const clear = () => { clearTimeout(timer); timer = 0; el.classList.remove('hold'); };
+  el.addEventListener('pointerdown', ev => {
+    if (ev.button && ev.button !== 0) return;
+    x0 = ev.clientX; y0 = ev.clientY; el.classList.add('hold');
+    timer = setTimeout(() => { timer = 0; el.classList.remove('hold'); suppressClick = true; setTimeout(() => { suppressClick = false; }, 700); buzz(20); fn(); }, 500);
+  });
+  el.addEventListener('pointermove', ev => { if (timer && Math.hypot(ev.clientX - x0, ev.clientY - y0) > 10) clear(); });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(n => el.addEventListener(n, clear));
+  el.addEventListener('contextmenu', ev => ev.preventDefault());
+}
+function resetExerciseToday(e) {
+  e.doneSets = 0;
+  const d = dayOf(Date.now());
+  if (state.history[d]) { state.history[d] = state.history[d].filter(x => !sameEx(e, x)); if (!state.history[d].length) delete state.history[d]; }
+  state.log = state.log.filter(l => !(l.kind === 'clear' && sameEx(e, l) && dayOf(l.t) === d));
+  save(); renderList();
+}
+function openExerciseMenu(id) {
+  const e = state.exercises.find(x => x.id === id); if (!e) return;
+  openDlg(`${e.code ? e.code + ' · ' : ''}${e.name}`.toUpperCase(), `<div class="menu">
+      <button class="btn red" id="mReset">${t('resetToday')}</button>
+      <button class="btn grey" id="mEdit">${t('edit')}</button>
+      <button class="btn grey" id="mHist">${t('exLog')}</button>
+      <button class="btn grey" id="mCancel">${t('cancel')}</button></div>`);
+  $('#mReset').addEventListener('click', () => { if (confirm(t('resetTodayConfirm'))) { resetExerciseToday(e); closeDlg(); } });
+  $('#mEdit').addEventListener('click', () => { setMode('edit'); openForm(e.id); });
+  $('#mHist').addEventListener('click', () => openExerciseLog(e));
+  $('#mCancel').addEventListener('click', closeDlg);
 }
 
 /* =========================== edit =========================== */
@@ -264,7 +301,7 @@ function openDlg(title, body, foot = '') {
 }
 function closeDlgNow() { dlgOpen = false; $('#dlg').classList.remove('open'); $('#backdrop').classList.remove('open'); }
 function closeDlg() { if (dlgOpen) popLayer(); }
-$('#backdrop').addEventListener('click', () => { closeDlg(); });
+$('#backdrop').addEventListener('click', () => { if (!suppressClick) closeDlg(); });
 $('#dlgClose').addEventListener('click', () => { closeDlg(); });
 
 const stepper = (id, val, min, max, step) => `<div class="stepper"><button type="button" class="btn grey sq" data-d="-1">${icon('minus')}</button><input type="number" id="${id}" value="${val}" min="${min}" max="${max}" step="${step}" inputmode="decimal"><button type="button" class="btn grey sq" data-d="1">${icon('plus')}</button></div>`;

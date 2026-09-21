@@ -77,6 +77,10 @@ svg{display:block}
   animation:slidein .28s steps(4) both;animation-delay:calc(var(--i,0)*50ms);position:relative}
 .stage::after{content:"";position:absolute;inset:-3px;transform:translate(4px,4px);background:#000;z-index:-1}
 .stage:active{transform:translate(4px,4px)}
+.stage.hold{animation:holdglow .5s steps(5) forwards}
+@keyframes holdglow{to{border-color:var(--cyan);box-shadow:inset 0 0 0 3px var(--cyan)}}
+.menu{display:flex;flex-direction:column;gap:6px;padding-bottom:4px}
+.menu .btn{width:calc(100% - 6px);min-height:52px;font-size:11px}
 .stage:active::after{transform:none}
 .stage.done{border-color:var(--yellow2)}
 .stage.done .sbox svg,.stage.done .sname,.stage.done .skg,.stage.done .sspec{opacity:.5}
