@@ -527,7 +527,9 @@ function stopAnim() { clearInterval(S.anim); $('#sprite').classList.remove('alt'
 
 function renderBar(flashIdx) {
   const e = S.ex;
-  $('#bar').innerHTML = Array.from({ length: e.sets }, (_, k) => `<i class="${k < e.doneSets ? 'on' : ''} ${k === e.doneSets && S.phase !== 'done' ? 'cur' : ''} ${k === flashIdx ? 'flash' : ''}">${k + 1}</i>`).join('');
+  const resting = S.phase === 'rest';
+  $('#bar').innerHTML = Array.from({ length: e.sets }, (_, k) =>
+    `${resting && k === e.doneSets ? '<em class="restbar"></em>' : ''}<i class="${k < e.doneSets ? 'on' : ''} ${k === e.doneSets && !resting && S.phase !== 'done' ? 'cur' : ''} ${k === flashIdx ? 'flash' : ''}">${k + 1}</i>`).join('');
   const next = Math.min(e.sets, e.doneSets + 1);
   $('#btnDone').textContent = S.phase === 'rest' ? t('resting') : S.phase === 'go' ? t('go') : S.phase === 'cleared' ? t('again') : t('done');
   $('#btnDone').classList.toggle('grey', S.phase !== 'set');
