@@ -10,7 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.view.WindowManager;
 
 import androidx.core.app.ActivityCompat;
@@ -213,10 +215,79 @@ public class RestTimerPlugin extends Plugin {
     }
 
     private void ensurePermission() {
-        if (Build.VERSION.SDK_INT >= 33 &&
+        if (Build.VERSION.SDK_INT >= 33 && getActivity() != null &&
             ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 77);
+            getActivity().runOnUiThread(() -> ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 77));
         }
+    }
+
+    /* diagnostics: can we show notifications at all? */
+    @PluginMethod
+    public void notifStatus(PluginCall call) {
+        Context ctx = getContext();
+        boolean perm = Build.VERSION.SDK_INT < 33 || ActivityCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
+        boolean enabled = NotificationManagerCompat.from(ctx).areNotificationsEnabled();
+        boolean chTimer = true, chAlarm = true;
+        if (Build.VERSION.SDK_INT >= 26) {
+            createChannels(ctx);
+            NotificationManager nm = ctx.getSystemService(NotificationManager.class);
+            NotificationChannel a = nm.getNotificationChannel(CH_TIMER), b = nm.getNotificationChannel(CH_ALARM);
+            chTimer = a == null || a.getImportance() != NotificationManager.IMPORTANCE_NONE;
+            chAlarm = b == null || b.getImportance() != NotificationManager.IMPORTANCE_NONE;
+        }
+        JSObject r = new JSObject();
+        r.put("permission", perm);
+        r.put("enabled", enabled);
+        r.put("timerChannel", chTimer);
+        r.put("alarmChannel", chAlarm);
+        r.put("ok", perm && enabled && chTimer && chAlarm);
+        r.put("manufacturer", Build.MANUFACTURER);
+        call.resolve(r);
+    }
+
+    @PluginMethod
+    public void openNotificationSettings(PluginCall call) {
+        Context ctx = getContext();
+        try {
+            Intent i;
+            if (Build.VERSION.SDK_INT >= 26) {
+                i = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, ctx.getPackageName());
+            } else {
+                i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + ctx.getPackageName()));
+            }
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ctx.startActivity(i);
+            call.resolve();
+        } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    @PluginMethod
+    public void openBatterySettings(PluginCall call) {
+        Context ctx = getContext();
+        try {
+            Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + ctx.getPackageName()));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ctx.startActivity(i);
+            call.resolve();
+        } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    @PluginMethod
+    public void test(PluginCall call) {
+        Context ctx = getContext();
+        ensurePermission();
+        createChannels(ctx);
+        Notification n = new NotificationCompat.Builder(ctx, CH_ALARM)
+            .setSmallIcon(R.drawable.ic_stat_timer)
+            .setContentTitle(call.getString("title", "GYM BRO · TEST"))
+            .setContentText(call.getString("body", "Notifications work."))
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(ctx))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setTimeoutAfter(15000)
+            .build();
+        try { NotificationManagerCompat.from(ctx).notify(NOTIF_ID + 1, n); } catch (SecurityException ignored) {}
+        call.resolve();
     }
 
     static void notifySafe(Context ctx, Notification n) {
