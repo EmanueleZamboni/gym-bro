@@ -22,7 +22,7 @@ const I18N = {
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
-    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisWeek: 'THIS WEEK', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', nativeErr: 'ALARM ERROR', notifs: 'NOTIFICATIONS', notifOk: 'Allowed. The countdown, DONE / SKIP buttons and GO alert show here.', notifBlocked: 'BLOCKED. Tap SETTINGS and allow notifications for Gym Bro.', notifXiaomi: 'Xiaomi phone: also set Battery saver to No restrictions and enable Autostart, or the alarm is killed in the background.', test: 'TEST', settingsBtn: 'SETTINGS', battery: 'BATTERY', resetToday: 'RESET TODAY', resetTodayConfirm: "Reset this exercise for today? It is also removed from today's workout record.", routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisWeek: 'THIS WEEK', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', finishWorkout: 'FINISH WORKOUT', finishConfirm: "Close today's workout? What you did so far is saved to the register and the list resets.", savedToday: 'WORKOUT SAVED TODAY', partialLbl: 'PARTIAL', nativeErr: 'ALARM ERROR', notifs: 'NOTIFICATIONS', notifOk: 'Allowed. The countdown, DONE / SKIP buttons and GO alert show here.', notifBlocked: 'BLOCKED. Tap SETTINGS and allow notifications for Gym Bro.', notifXiaomi: 'Xiaomi phone: also set Battery saver to No restrictions and enable Autostart, or the alarm is killed in the background.', test: 'TEST', settingsBtn: 'SETTINGS', battery: 'BATTERY', resetToday: 'RESET TODAY', resetTodayConfirm: "Reset this exercise for today? It is also removed from today's workout record.", routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -33,7 +33,7 @@ const I18N = {
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
-    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisWeek: 'QUESTA SETT.', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', nativeErr: 'ERRORE ALLARME', notifs: 'NOTIFICHE', notifOk: 'Consentite. Qui compaiono il conto alla rovescia, i tasti FATTO / SALTA e l\'avviso VIA.', notifBlocked: 'BLOCCATE. Tocca IMPOSTAZIONI e consenti le notifiche a Gym Bro.', notifXiaomi: 'Telefono Xiaomi: imposta anche Risparmio batteria su Nessuna restrizione e attiva l\'Avvio automatico, altrimenti l\'allarme viene ucciso in background.', test: 'PROVA', settingsBtn: 'IMPOSTAZIONI', battery: 'BATTERIA', resetToday: 'AZZERA OGGI', resetTodayConfirm: 'Azzerare questo esercizio per oggi? Viene tolto anche dal registro di oggi.', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisWeek: 'QUESTA SETT.', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', finishWorkout: 'CHIUDI ALLENAMENTO', finishConfirm: 'Chiudere l\'allenamento di oggi? Quello che hai fatto finora viene salvato nel registro e la lista si azzera.', savedToday: 'ALLENAMENTO SALVATO OGGI', partialLbl: 'PARZIALE', nativeErr: 'ERRORE ALLARME', notifs: 'NOTIFICHE', notifOk: 'Consentite. Qui compaiono il conto alla rovescia, i tasti FATTO / SALTA e l\'avviso VIA.', notifBlocked: 'BLOCCATE. Tocca IMPOSTAZIONI e consenti le notifiche a Gym Bro.', notifXiaomi: 'Telefono Xiaomi: imposta anche Risparmio batteria su Nessuna restrizione e attiva l\'Avvio automatico, altrimenti l\'allarme viene ucciso in background.', test: 'PROVA', settingsBtn: 'IMPOSTAZIONI', battery: 'BATTERIA', resetToday: 'AZZERA OGGI', resetTodayConfirm: 'Azzerare questo esercizio per oggi? Viene tolto anche dal registro di oggi.', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -88,12 +88,13 @@ function historyAdd(st, ts, ex) {
   const day = dayOf(ts), list = (st.history[day] = st.history[day] || []);
   const i = list.findIndex(x => x.code === ex.code && x.name === ex.name);
   const entry = { t: ts, code: ex.code, name: ex.name, reps: ex.reps, sets: ex.sets, kg: ex.kg };
+  if (ex.plan && ex.plan !== ex.sets) entry.plan = ex.plan;
   if (i >= 0) list[i] = entry; else list.push(entry);
 }
 const sameEx = (e, l) => e.code ? l.code === e.code : l.name === e.name;
 /* changes to reps/sets/kg since this exercise was last cleared (or in the last 14 days) */
 function deltaFor(e) {
-  const lastClear = state.log.find(l => l.kind === 'clear' && sameEx(e, l));
+  const lastClear = state.log.find(l => (l.kind === 'clear' || l.kind === 'partial') && sameEx(e, l));
   const since = lastClear ? lastClear.t : Date.now() - 14 * 864e5, out = {};
   for (const l of state.log) {
     if (l.t <= since) break;
@@ -244,8 +245,9 @@ const sprite = (k, f = 0, opts) => GymSprites.svg(k, f, '', opts);
 function renderList() {
   dayCheck();
   const el = $('#list'), ex = state.exercises, doneCount = ex.filter(isDone).length;
-  const multi = state.routines.length > 1;
-  $('#subtitle').innerHTML = `${multi ? `<span class="rname">${esc(activeRoutine().name)}</span><br>` : ''}<b>${doneCount}/${ex.length}</b> ${t('clearedToday')}`;
+  const multi = state.routines.length > 1, anyProgress = ex.some(e => e.doneSets > 0);
+  const savedToday = !anyProgress && (state.history[dayOf(Date.now())] || []).length > 0;
+  $('#subtitle').innerHTML = `${multi ? `<span class="rname">${esc(activeRoutine().name)}</span><br>` : ''}${savedToday ? `<span class="saved">✓ ${t('savedToday')}</span>` : `<b>${doneCount}/${ex.length}</b> ${t('clearedToday')}`}`;
   $('#subtitle').classList.toggle('tap', multi);
   if (!ex.length) { el.innerHTML = `<div class="empty">${t('empty')}</div>${multi ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`; const b = $('#btnNewWorkout'); if (b) b.addEventListener('click', newWorkout); return; }
   el.innerHTML = `<div class="stages">${ex.map((e, i) => { const dl = deltaFor(e); return `
@@ -261,7 +263,8 @@ function renderList() {
       <div class="skg kg">${dl.kg ? `<i class="${dl.kg.to > dl.kg.from ? 'up' : 'dn'}">${dl.kg.to > dl.kg.from ? '▲' : '▼'}</i>` : ''}${e.kg}<small>KG</small></div>
       ${isDone(e) ? `<div class="stamp-clear">${t('clear')}!</div>` : ''}
     </button>`; }).join('')}</div>
-    ${doneCount || multi ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`;
+    ${anyProgress || doneCount || multi ? `<div class="center" style="gap:10px;flex-wrap:wrap">${anyProgress ? `<button class="btn" id="btnFinish">${t('finishWorkout')}</button>` : ''}${doneCount || multi ? `<button class="btn ${anyProgress ? 'grey' : 'cyan'}" id="btnNewWorkout">${t('newWorkout')}</button>` : ''}</div>` : ''}`;
+  const fin = $('#btnFinish'); if (fin) fin.addEventListener('click', finishWorkout);
   el.querySelectorAll('.stage').forEach(c => {
     c.addEventListener('click', () => { if (suppressClick) return; openSession(c.dataset.id); });
     longPress(c, () => openExerciseMenu(c.dataset.id));
@@ -485,7 +488,7 @@ function renderWorkouts() {
   const rows = days.map(d => {
     const list = state.history[d], vol = list.reduce((a, x) => a + x.kg * x.reps * x.sets, 0);
     return `<div class="wday" data-day="${d}"><div class="wh"><b>${dayLabel(d)}</b><span>${list.length ? `${list.length} ${t('exercisesN')} · <em>${vol}</em> KG` : `${t('gymDay')} · ${t('noDetails')}`}<button class="wdel" data-del="${d}" aria-label="delete">${icon('x')}</button></span></div>
-      ${list.map(x => `<div class="wrow"><span class="lc">${esc(x.code || '—')}</span><span class="wn">${esc(x.name)}</span><span class="n">${x.reps}×${x.sets}</span><span class="n kg">${x.kg}<small>KG</small></span></div>`).join('')}</div>`;
+      ${list.map(x => `<div class="wrow"><span class="lc ${x.plan ? 'part' : ''}">${esc(x.code || '—')}</span><span class="wn">${esc(x.name)}</span><span class="n">${x.reps}×${x.sets}${x.plan ? `<i>/${x.plan}</i>` : ''}</span><span class="n kg">${x.kg}<small>KG</small></span></div>`).join('')}</div>`;
   }).join('');
   return `<div class="tiles"><div class="tile"><b>${days.length}</b><small>${t('total')}</small></div><div class="tile"><b>${thisWeek}</b><small>${t('thisWeek')}</small></div><div class="tile"><b>${thisMonth}</b><small>${t('thisMonth')}</small></div><div class="tile"><b>${perWeek}</b><small>${t('perWeek')}</small></div></div>
     <div class="cal" style="grid-template-columns:repeat(${weeks},1fr)">${cal}</div>${rows}${addBtn}`;
@@ -501,11 +504,11 @@ function renderChanges() {
   const row = l => {
     const hh = new Date(l.t).toTimeString().slice(0, 5);
     let body;
-    if (l.kind === 'clear') body = `<span class="lk">${t('clear')}</span><span class="n">${l.to.reps}×${l.to.sets}</span> · <span class="n">${l.to.kg}</span> KG`;
+    if (l.kind === 'clear' || l.kind === 'partial') body = `<span class="lk">${l.kind === 'clear' ? t('clear') : t('partialLbl')}</span><span class="n">${l.to.reps}×${l.to.sets}${l.to.plan ? '/' + l.to.plan : ''}</span> · <span class="n">${l.to.kg}</span> KG`;
     else if (l.kind === 'add') body = `<span class="lk">${t('added')}</span>${esc(l.name)}`;
     else if (l.kind === 'del') body = `<span class="lk">${t('deleted')}</span>${esc(l.name)}`;
     else { const up = l.to > l.from; body = `<span class="lk">${l.kind === 'kg' ? 'KG' : l.kind === 'rest' ? t('rest') : t(l.kind).toUpperCase()}</span><span class="n">${l.from}</span> → <b class="n ${up ? 'up' : 'dn'}">${l.to}</b>`; }
-    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'del' ? 'del' : ''}">${esc(l.code || '—')}</span><div>${body}<span class="ln">${hh} · ${esc(l.name)}</span></div></div>`;
+    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'partial' ? 'part' : l.kind === 'del' ? 'del' : ''}">${esc(l.code || '—')}</span><div>${body}<span class="ln">${hh} · ${esc(l.name)}</span></div></div>`;
   };
   return state.log.length ? Object.keys(days).sort().reverse().map(d => `<div class="logday">${dayLabel(d)}</div>${days[d].map(row).join('')}`).join('') : `<div class="empty">${t('logEmpty')}</div>`;
 }
@@ -533,6 +536,17 @@ function openLog(tab) {
     });
   });
   const c = $('#logClear'); if (c) c.addEventListener('click', () => { if (confirm(t('logClearConfirm'))) { state.log = []; save(); openLog(); } });
+}
+function finishWorkout() {
+  if (!confirm(t('finishConfirm'))) return;
+  const ts = Date.now(), d = dayOf(ts);
+  state.history[d] = state.history[d] || [];
+  for (const e of state.exercises) if (e.doneSets > 0 && !isDone(e)) {
+    historyAdd(state, ts, { ...e, sets: e.doneSets, plan: e.sets });
+    logAdd(e, 'partial', null, { reps: e.reps, sets: e.doneSets, kg: e.kg, plan: e.sets });
+  }
+  state.exercises.forEach(e => e.doneSets = 0);
+  state.live = null; save(); renderList(); toast('✓ ' + t('savedToday'));
 }
 function newWorkout() {
   if (state.routines.length < 2) { if (!confirm(t('newWorkoutConfirm'))) return; state.exercises.forEach(e => e.doneSets = 0); save(); renderList(); return; }
@@ -571,16 +585,16 @@ $('#subtitle').addEventListener('click', () => { if (state.routines.length > 1) 
 
 function openExerciseLog(e) {
   const items = [];
-  for (const [d, list] of Object.entries(state.history)) for (const x of list) if (sameEx(e, x)) items.push({ t: x.t, kind: 'clear', to: x });
-  for (const l of state.log) if (sameEx(e, l) && l.kind !== 'clear') items.push(l);
+  for (const [d, list] of Object.entries(state.history)) for (const x of list) if (sameEx(e, x)) items.push({ t: x.t, kind: x.plan ? 'partial' : 'clear', to: x });
+  for (const l of state.log) if (sameEx(e, l) && l.kind !== 'clear' && l.kind !== 'partial') items.push(l);
   items.sort((a, b) => b.t - a.t);
   const row = l => {
     let body;
-    if (l.kind === 'clear') body = `<span class="lk">${t('clear')}</span><span class="n">${l.to.reps}×${l.to.sets}</span> · <span class="n">${l.to.kg}</span> KG`;
+    if (l.kind === 'clear' || l.kind === 'partial') body = `<span class="lk">${l.kind === 'clear' ? t('clear') : t('partialLbl')}</span><span class="n">${l.to.reps}×${l.to.sets}${l.to.plan ? '/' + l.to.plan : ''}</span> · <span class="n">${l.to.kg}</span> KG`;
     else if (l.kind === 'add') body = `<span class="lk">${t('added')}</span>`;
     else if (l.kind === 'del') body = `<span class="lk">${t('deleted')}</span>`;
     else { const up = l.to > l.from; body = `<span class="lk">${kindLabel(l.kind)}</span><span class="n">${l.from}</span> → <b class="n ${up ? 'up' : 'dn'}">${l.to}</b>`; }
-    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : ''}">${l.kind === 'clear' ? '✓' : '✎'}</span><div>${body}<span class="ln">${dayLabel(dayOf(l.t))} · ${new Date(l.t).toTimeString().slice(0, 5)}</span></div></div>`;
+    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'partial' ? 'part' : ''}">${l.kind === 'clear' ? '✓' : l.kind === 'partial' ? '½' : '✎'}</span><div>${body}<span class="ln">${dayLabel(dayOf(l.t))} · ${new Date(l.t).toTimeString().slice(0, 5)}</span></div></div>`;
   };
   openDlg(`${e.code ? e.code + ' · ' : ''}${e.name}`.toUpperCase(), items.length ? items.map(row).join('') : `<div class="empty">${t('noExLog')}</div>`);
 }
