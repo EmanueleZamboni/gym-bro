@@ -5,7 +5,10 @@ import android.app.RemoteAction;
 import android.content.res.Configuration;
 import android.graphics.drawable.Icon;
 import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import android.util.Rational;
 
 import androidx.annotation.NonNull;
@@ -25,9 +28,25 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(RestTimerPlugin.class);
         registerPlugin(UpdaterPlugin.class);
+        installCrashLogger();
         super.onCreate(savedInstanceState);
         // the web layer plays short chiptune clips from timers, not only from taps
         getBridge().getWebView().getSettings().setMediaPlaybackRequiresUserGesture(false);
+    }
+
+    /* record uncaught exceptions so Options can show them */
+    private void installCrashLogger() {
+        final Thread.UncaughtExceptionHandler prev = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler((th, ex) -> {
+            try {
+                StringWriter sw = new StringWriter();
+                ex.printStackTrace(new PrintWriter(sw));
+                String txt = sw.toString();
+                if (txt.length() > 4000) txt = txt.substring(0, 4000);
+                getSharedPreferences("gymbro", Context.MODE_PRIVATE).edit().putString("lastCrash", txt).putLong("lastCrashAt", System.currentTimeMillis()).commit();
+            } catch (Exception ignored) {}
+            if (prev != null) prev.uncaughtException(th, ex);
+        });
     }
 
     /* ---- picture-in-picture: floating timer with DONE / SKIP / +15S controls ---- */

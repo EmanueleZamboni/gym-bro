@@ -154,6 +154,10 @@ public class RestTimerPlugin extends Plugin {
 
     @PluginMethod
     public void start(PluginCall call) {
+        try { startImpl(call); } catch (Exception e) { call.reject(e.getClass().getSimpleName() + ": " + e.getMessage()); }
+    }
+
+    private void startImpl(PluginCall call) {
         Object endAtV = call.getData().opt("endAt");
         long endAt = 0;
         if (endAtV instanceof Number) endAt = ((Number) endAtV).longValue();
@@ -195,7 +199,56 @@ public class RestTimerPlugin extends Plugin {
         fire.putExtra("doneLabel", call.getString("doneLabel", "DONE"));
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         am.cancel(alarmIntent(ctx, fire));
-        am.setAlarmClock(new AlarmManager.AlarmClockInfo(endAt, openAppIntent(ctx)), alarmIntent(ctx, fire));
+        String mode = "exact";
+        try {
+            if (Build.VERSION.SDK_INT < 31 || am.canScheduleExactAlarms()) {
+                am.setAlarmClock(new AlarmManager.AlarmClockInfo(endAt, openAppIntent(ctx)), alarmIntent(ctx, fire));
+            } else {
+                mode = "inexact";
+                am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, endAt, alarmIntent(ctx, fire));
+            }
+        } catch (SecurityException e) {
+            mode = "inexact";
+            am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, endAt, alarmIntent(ctx, fire));
+        }
+        JSObject r = new JSObject();
+        r.put("mode", mode);
+        call.resolve(r);
+    }
+
+    @PluginMethod
+    public void exactAlarmStatus(PluginCall call) {
+        AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        JSObject r = new JSObject();
+        r.put("ok", Build.VERSION.SDK_INT < 31 || am.canScheduleExactAlarms());
+        call.resolve(r);
+    }
+
+    @PluginMethod
+    public void openExactAlarmSettings(PluginCall call) {
+        try {
+            if (Build.VERSION.SDK_INT >= 31) {
+                Intent i = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + getContext().getPackageName()));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(i);
+            }
+            call.resolve();
+        } catch (Exception e) { call.reject(e.getMessage()); }
+    }
+
+    /* last uncaught crash, recorded by MainActivity, for the diagnostics row */
+    @PluginMethod
+    public void lastCrash(PluginCall call) {
+        SharedPreferences sp = getContext().getSharedPreferences("gymbro", Context.MODE_PRIVATE);
+        JSObject r = new JSObject();
+        r.put("text", sp.getString("lastCrash", null));
+        r.put("at", sp.getLong("lastCrashAt", 0));
+        call.resolve(r);
+    }
+
+    @PluginMethod
+    public void clearCrash(PluginCall call) {
+        getContext().getSharedPreferences("gymbro", Context.MODE_PRIVATE).edit().remove("lastCrash").remove("lastCrashAt").apply();
         call.resolve();
     }
 
@@ -310,6 +363,6 @@ public class RestTimerPlugin extends Plugin {
     }
 
     static void notifySafe(Context ctx, Notification n) {
-        try { NotificationManagerCompat.from(ctx).notify(NOTIF_ID, n); } catch (SecurityException ignored) {}
+        try { NotificationManagerCompat.from(ctx).notify(NOTIF_ID, n); } catch (Exception ignored) {}
     }
 }
