@@ -137,9 +137,11 @@ public class RestTimerPlugin extends Plugin {
 
     @PluginMethod
     public void start(PluginCall call) {
-        Double endAtD = call.getDouble("endAt");
-        if (endAtD == null) { call.reject("endAt required"); return; }
-        long endAt = endAtD.longValue();
+        Object endAtV = call.getData().opt("endAt");
+        long endAt = 0;
+        if (endAtV instanceof Number) endAt = ((Number) endAtV).longValue();
+        else if (endAtV instanceof String) { try { endAt = (long) Double.parseDouble((String) endAtV); } catch (Exception ignored) {} }
+        if (endAt <= 0) { call.reject("endAt required"); return; }
         String title = call.getString("title", "Rest");
         String body = call.getString("body", "");
         String goTitle = call.getString("goTitle", "GO!!");
