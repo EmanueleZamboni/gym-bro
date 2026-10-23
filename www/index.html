@@ -190,10 +190,25 @@ svg{display:block}
 .rrow.on .rpick{border-color:var(--yellow)}
 .rpick b{display:block;font-family:var(--fx);font-size:10px;color:var(--white);font-weight:400;margin-bottom:6px}
 .rpick span{font-family:var(--fb);font-size:13px;color:var(--grey);text-transform:uppercase}
+.tag{display:inline-block;font-family:var(--fx);font-size:7px;padding:4px 5px 3px;margin-left:6px;vertical-align:top;color:var(--ink);letter-spacing:.5px}
+.tag.easy{background:var(--green)}.tag.normal{background:var(--grey)}.tag.hard{background:var(--red);color:var(--white)}
+.tag.nudge-up{background:var(--cyan)}
+.tag.sm{margin-left:0;font-size:6px}
+.feel{text-align:center;font-family:var(--fx);font-size:8px;line-height:1.8}
+.feel .tag{margin:0 0 6px;font-size:8px}
+.nudge{margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.nudge.up{color:var(--green)}.nudge.dn{color:var(--red)}
+.nudge .btn{margin:3px 3px 8px;min-height:36px;font-size:9px;padding:0 12px}
+.btn.feel-easy{background:var(--green);color:var(--ink);box-shadow:inset 0 4px 0 rgba(255,255,255,.45),inset 0 -4px 0 rgba(0,0,0,.28),0 5px 0 #2a9a2a,0 5px 0 3px #000,0 0 0 3px #000}
+.btn.feel-easy:active,.btn.feel-easy.pressed{transform:translateY(5px);box-shadow:inset 0 4px 0 rgba(255,255,255,.3),inset 0 -2px 0 rgba(0,0,0,.28),0 0 0 #2a9a2a,0 0 0 3px #000}
+.feelask{width:100%;text-align:center}
+.feelask .lbl{font-family:var(--fx);font-size:10px;color:var(--yellow);margin-bottom:10px;animation:blink 1s steps(2) infinite}
+.feelbtns{display:flex;gap:8px}
+.feelbtns .btn{flex:1;min-height:56px;font-size:11px;margin:3px 3px 8px}
 .notes{font-family:var(--fb);font-size:15px;color:var(--grey);line-height:1.3;min-height:0;max-height:40px;overflow:hidden;text-align:center;padding:0 4px}
 .controls{position:relative}
 .px-particle{position:absolute;width:8px;height:8px;background:var(--yellow);pointer-events:none;z-index:5;left:50%;top:50%}
-.subctl{display:flex;gap:8px;justify-content:center;min-height:56px;align-items:center}
+.subctl{display:flex;gap:8px;justify-content:center;min-height:56px;align-items:center;flex-wrap:wrap}
 .subctl:empty{min-height:56px}
 .subctl .btn{flex:1;min-height:44px;font-size:9px;margin:3px 3px 8px}
 
@@ -268,7 +283,7 @@ svg{display:block}
 .pk.on .n{color:var(--cyan)}
 .dlg-btns{display:flex;gap:12px;margin:8px 0 4px}
 .dlg-btns .btn{flex:1;min-height:52px;font-size:11px}
-.wrow{display:grid;grid-template-columns:44px 1fr auto auto;gap:10px;align-items:center;padding:7px 0;border-bottom:3px dotted var(--line);font-family:var(--fb);font-size:15px;color:var(--white)}
+.wrow{display:grid;grid-template-columns:44px 1fr auto auto auto;gap:10px;align-items:center;padding:7px 0;border-bottom:3px dotted var(--line);font-family:var(--fb);font-size:15px;color:var(--white)}
 .wrow .lc{font-family:var(--fx);font-size:7px;color:var(--ink);background:var(--green);padding:4px 3px 3px;text-align:center}
 .wrow .wn{text-transform:uppercase;font-size:14px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wrow .n{font-family:var(--fx);font-size:11px;color:var(--cyan)}
@@ -361,6 +376,7 @@ body.crt #crt{opacity:1}
       <div class="stat yellow"><b id="stKg"></b><small>KG</small></div>
     </div>
     <div class="delta hidden" id="fDelta"></div>
+    <div class="feel hidden" id="fFeel"></div>
     <div class="notes" id="fNotes"></div>
     <div class="controls"><button class="btn big" id="btnDone">DONE</button></div>
     <div class="subctl" id="subctl"></div>
