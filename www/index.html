@@ -174,7 +174,9 @@ svg{display:block}
 .stat{padding:12px 6px 10px}
 .stat small{font-size:9px;color:var(--white)}
 .stat.hero b{color:var(--cyan)}
-.stat{background:var(--panel);border:3px solid var(--line);padding:10px 6px 8px;text-align:center;position:relative}
+.stat{background:var(--panel);border:3px solid var(--line);padding:10px 6px 8px;text-align:center;position:relative;width:100%;transition:transform .06s steps(2)}
+.stat:active{transform:translate(3px,3px)}
+.stat:active::after{transform:none}
 .stat::after{content:"";position:absolute;inset:-3px;transform:translate(3px,3px);background:#000;z-index:-1}
 .stat b{display:block;font-family:var(--fx);font-size:22px;font-weight:400;color:var(--white);line-height:1;text-shadow:2px 2px 0 #000}
 .stat.cyan b{color:var(--cyan)}.stat.yellow b{color:var(--yellow)}
@@ -312,6 +314,17 @@ svg{display:block}
 body.pip .topbar,body.pip .screen,body.pip .fight,body.pip #update,body.pip .dlg,body.pip .backdrop,body.pip .toast{display:none!important}
 body.pip #crt{opacity:0}
 
+/* ---------- scroll wheel ---------- */
+.wheelwrap{position:relative;height:280px;background:var(--ink);border:3px solid var(--line);overflow:hidden}
+.wheelhi{position:absolute;left:8px;right:8px;top:112px;height:56px;border:3px solid var(--yellow);pointer-events:none;z-index:2;box-shadow:0 0 12px rgba(255,210,63,.35)}
+.wheel{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;padding:112px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.wheel::-webkit-scrollbar{display:none}
+.wi{height:56px;scroll-snap-align:center;display:grid;place-items:center;font-family:var(--fx);font-size:18px;color:var(--dim);transition:color .1s,transform .1s steps(2)}
+.wi.on{color:var(--white);font-size:26px;text-shadow:3px 3px 0 #000}
+.wheelwrap::before,.wheelwrap::after{content:"";position:absolute;left:0;right:0;height:90px;z-index:1;pointer-events:none}
+.wheelwrap::before{top:0;background:linear-gradient(var(--ink),transparent)}
+.wheelwrap::after{bottom:0;background:linear-gradient(transparent,var(--ink))}
+
 /* ---------- overlays ---------- */
 #wipe{position:fixed;inset:0;z-index:60;display:grid;pointer-events:none;overflow:hidden}
 #wipe i{background:var(--ink);transform:scale(0);transition:transform .12s steps(3)}
@@ -372,8 +385,8 @@ body.crt #crt{opacity:1}
     </div>
     <div class="setpill" id="bar"></div>
     <div class="stats">
-      <div class="stat hero"><b id="stReps"></b><small id="stRepsL"></small></div>
-      <div class="stat yellow"><b id="stKg"></b><small>KG</small></div>
+      <button class="stat hero" id="stRepsBox"><b id="stReps"></b><small id="stRepsL"></small></button>
+      <button class="stat yellow" id="stKgBox"><b id="stKg"></b><small>KG</small></button>
     </div>
     <div class="delta hidden" id="fDelta"></div>
     <div class="feel hidden" id="fFeel"></div>
