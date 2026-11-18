@@ -22,7 +22,7 @@ const I18N = {
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
-    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisWeek: 'THIS WEEK', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', sync: 'SYNC TO CLAUDE', syncSub: 'Publishes the register to the data branch of the gym-bro repo, where every Claude chat can read it.', syncToken: 'GitHub token', syncNow: 'SYNC NOW', syncSaved: 'TOKEN SAVED', syncOk: 'SYNCED', syncFail: 'SYNC FAILED', lastSync: 'Last sync', never: 'never', syncNoToken: 'No token yet.', syncMissing: 'CLAUDE SYNC NOT SET · TAP TO FIX', tokenOk: 'TOKEN OK', tokenBad: 'TOKEN REJECTED', lastErr: 'Last error', pickReps: 'REPS', pickKg: 'KG', howWasIt: 'HOW WAS IT?', easy: 'EASY', normal: 'NORMAL', hard: 'HARD', lastTime: 'LAST TIME', easyStreak: 'EASY {n}× IN A ROW', tryUp: 'TRY', hardStreak: 'HARD {n}× IN A ROW · MAYBE LOWER THE WEIGHT', kgUpped: 'KG {a} → {b}', exactOk: 'Exact alarm allowed.', exactBlocked: 'Exact alarm BLOCKED: the bell can be minutes late. Tap ALARM and allow it.', alarmBtn: 'ALARM', lastCrash: 'LAST CRASH', crashClear: 'CLEAR', inexactWarn: 'ALARM NOT EXACT · allow it in Options', finishWorkout: 'FINISH WORKOUT', finishConfirm: "Close today's workout? What you did so far is saved to the register and the list resets.", savedToday: 'WORKOUT SAVED TODAY', partialLbl: 'PARTIAL', nativeErr: 'ALARM ERROR', notifs: 'NOTIFICATIONS', notifOk: 'Allowed. The countdown, DONE / SKIP buttons and GO alert show here.', notifBlocked: 'BLOCKED. Tap SETTINGS and allow notifications for Gym Bro.', notifXiaomi: 'Xiaomi phone: also set Battery saver to No restrictions and enable Autostart, or the alarm is killed in the background.', test: 'TEST', settingsBtn: 'SETTINGS', battery: 'BATTERY', resetToday: 'RESET TODAY', resetTodayConfirm: "Reset this exercise for today? It is also removed from today's workout record.", routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisWeek: 'THIS WEEK', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', sync: 'SYNC WITH SEGRETARIO', syncSub: 'Automatic. Register and data go to the Segretario after every change; routines edited by Claude chats come back here.', syncOff: 'Not configured in this build.', fromClaude: 'FROM CLAUDE', pulled: 'ROUTINES UPDATED FROM CLAUDE', syncNow: 'SYNC NOW', syncSaved: 'TOKEN SAVED', syncOk: 'SYNCED', syncFail: 'SYNC FAILED', lastSync: 'Last sync', never: 'never', syncNoToken: 'No token yet.', syncMissing: 'CLAUDE SYNC NOT SET · TAP TO FIX', tokenOk: 'TOKEN OK', tokenBad: 'TOKEN REJECTED', lastErr: 'Last error', pickReps: 'REPS', pickKg: 'KG', howWasIt: 'HOW WAS IT?', easy: 'EASY', normal: 'NORMAL', hard: 'HARD', lastTime: 'LAST TIME', easyStreak: 'EASY {n}× IN A ROW', tryUp: 'TRY', hardStreak: 'HARD {n}× IN A ROW · MAYBE LOWER THE WEIGHT', kgUpped: 'KG {a} → {b}', exactOk: 'Exact alarm allowed.', exactBlocked: 'Exact alarm BLOCKED: the bell can be minutes late. Tap ALARM and allow it.', alarmBtn: 'ALARM', lastCrash: 'LAST CRASH', crashClear: 'CLEAR', inexactWarn: 'ALARM NOT EXACT · allow it in Options', finishWorkout: 'FINISH WORKOUT', finishConfirm: "Close today's workout? What you did so far is saved to the register and the list resets.", savedToday: 'WORKOUT SAVED TODAY', partialLbl: 'PARTIAL', nativeErr: 'ALARM ERROR', notifs: 'NOTIFICATIONS', notifOk: 'Allowed. The countdown, DONE / SKIP buttons and GO alert show here.', notifBlocked: 'BLOCKED. Tap SETTINGS and allow notifications for Gym Bro.', notifXiaomi: 'Xiaomi phone: also set Battery saver to No restrictions and enable Autostart, or the alarm is killed in the background.', test: 'TEST', settingsBtn: 'SETTINGS', battery: 'BATTERY', resetToday: 'RESET TODAY', resetTodayConfirm: "Reset this exercise for today? It is also removed from today's workout record.", routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -33,7 +33,7 @@ const I18N = {
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
-    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisWeek: 'QUESTA SETT.', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', sync: 'SYNC CON CLAUDE', syncSub: 'Pubblica il registro nel ramo data del repo gym-bro, dove ogni chat Claude può leggerlo.', syncToken: 'Token GitHub', syncNow: 'SINCRONIZZA ORA', syncSaved: 'TOKEN SALVATO', syncOk: 'SINCRONIZZATO', syncFail: 'SYNC FALLITA', lastSync: 'Ultima sync', never: 'mai', syncNoToken: 'Nessun token.', syncMissing: 'SYNC CLAUDE NON ATTIVA · TOCCA', tokenOk: 'TOKEN OK', tokenBad: 'TOKEN RIFIUTATO', lastErr: 'Ultimo errore', pickReps: 'RIPETIZIONI', pickKg: 'KG', howWasIt: "COM'È ANDATA?", easy: 'FACILE', normal: 'NORMALE', hard: 'DURO', lastTime: 'ULTIMA VOLTA', easyStreak: 'FACILE {n}× DI FILA', tryUp: 'PROVA', hardStreak: 'DURO {n}× DI FILA · FORSE ABBASSA IL PESO', kgUpped: 'KG {a} → {b}', exactOk: 'Allarme esatto consentito.', exactBlocked: 'Allarme esatto BLOCCATO: la campana può arrivare in ritardo di minuti. Tocca ALLARME e consentilo.', alarmBtn: 'ALLARME', lastCrash: 'ULTIMO CRASH', crashClear: 'CANCELLA', inexactWarn: 'ALLARME NON ESATTO · consentilo nelle Opzioni', finishWorkout: 'CHIUDI ALLENAMENTO', finishConfirm: 'Chiudere l\'allenamento di oggi? Quello che hai fatto finora viene salvato nel registro e la lista si azzera.', savedToday: 'ALLENAMENTO SALVATO OGGI', partialLbl: 'PARZIALE', nativeErr: 'ERRORE ALLARME', notifs: 'NOTIFICHE', notifOk: 'Consentite. Qui compaiono il conto alla rovescia, i tasti FATTO / SALTA e l\'avviso VIA.', notifBlocked: 'BLOCCATE. Tocca IMPOSTAZIONI e consenti le notifiche a Gym Bro.', notifXiaomi: 'Telefono Xiaomi: imposta anche Risparmio batteria su Nessuna restrizione e attiva l\'Avvio automatico, altrimenti l\'allarme viene ucciso in background.', test: 'PROVA', settingsBtn: 'IMPOSTAZIONI', battery: 'BATTERIA', resetToday: 'AZZERA OGGI', resetTodayConfirm: 'Azzerare questo esercizio per oggi? Viene tolto anche dal registro di oggi.', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisWeek: 'QUESTA SETT.', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', sync: 'SYNC CON IL SEGRETARIO', syncSub: 'Automatica. Registro e dati vanno al Segretario a ogni modifica; le schede modificate dalle chat Claude tornano qui.', syncOff: 'Non configurata in questa build.', fromClaude: 'DA CLAUDE', pulled: 'SCHEDE AGGIORNATE DA CLAUDE', syncNow: 'SINCRONIZZA ORA', syncSaved: 'TOKEN SALVATO', syncOk: 'SINCRONIZZATO', syncFail: 'SYNC FALLITA', lastSync: 'Ultima sync', never: 'mai', syncNoToken: 'Nessun token.', syncMissing: 'SYNC CLAUDE NON ATTIVA · TOCCA', tokenOk: 'TOKEN OK', tokenBad: 'TOKEN RIFIUTATO', lastErr: 'Ultimo errore', pickReps: 'RIPETIZIONI', pickKg: 'KG', howWasIt: "COM'È ANDATA?", easy: 'FACILE', normal: 'NORMALE', hard: 'DURO', lastTime: 'ULTIMA VOLTA', easyStreak: 'FACILE {n}× DI FILA', tryUp: 'PROVA', hardStreak: 'DURO {n}× DI FILA · FORSE ABBASSA IL PESO', kgUpped: 'KG {a} → {b}', exactOk: 'Allarme esatto consentito.', exactBlocked: 'Allarme esatto BLOCCATO: la campana può arrivare in ritardo di minuti. Tocca ALLARME e consentilo.', alarmBtn: 'ALLARME', lastCrash: 'ULTIMO CRASH', crashClear: 'CANCELLA', inexactWarn: 'ALLARME NON ESATTO · consentilo nelle Opzioni', finishWorkout: 'CHIUDI ALLENAMENTO', finishConfirm: 'Chiudere l\'allenamento di oggi? Quello che hai fatto finora viene salvato nel registro e la lista si azzera.', savedToday: 'ALLENAMENTO SALVATO OGGI', partialLbl: 'PARZIALE', nativeErr: 'ERRORE ALLARME', notifs: 'NOTIFICHE', notifOk: 'Consentite. Qui compaiono il conto alla rovescia, i tasti FATTO / SALTA e l\'avviso VIA.', notifBlocked: 'BLOCCATE. Tocca IMPOSTAZIONI e consenti le notifiche a Gym Bro.', notifXiaomi: 'Telefono Xiaomi: imposta anche Risparmio batteria su Nessuna restrizione e attiva l\'Avvio automatico, altrimenti l\'allarme viene ucciso in background.', test: 'PROVA', settingsBtn: 'IMPOSTAZIONI', battery: 'BATTERIA', resetToday: 'AZZERA OGGI', resetTodayConfirm: 'Azzerare questo esercizio per oggi? Viene tolto anche dal registro di oggi.', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -232,15 +232,14 @@ async function installUpdate() {
 }
 
 /* =========================== sync: publish the register to GitHub (branch data) =========================== */
-const SYNC_REPO = 'EmanueleZamboni/gym-bro', SYNC_BRANCH = 'data';
-const SYNC_RAW = `https://raw.githubusercontent.com/${SYNC_REPO}/${SYNC_BRANCH}/`;
+const SYNC = (typeof window !== 'undefined' && window.GYMBRO_SYNC && window.GYMBRO_SYNC.url && window.GYMBRO_SYNC.token) ? window.GYMBRO_SYNC : null;
 function buildRegister() {
   const L = [], d2 = n => String(n).padStart(2, '0'), ts = new Date();
   L.push(`# Gym Bro · registro allenamenti di Ema`, ``, `Aggiornato: ${ts.getFullYear()}-${d2(ts.getMonth() + 1)}-${d2(ts.getDate())} ${d2(ts.getHours())}:${d2(ts.getMinutes())} (dal telefono, app Gym Bro).`, ``);
   const days = Object.keys(state.history).sort().reverse();
   const now = new Date(), ym = dayOf(now.getTime()).slice(0, 7);
   L.push(`## Riepilogo`, ``, `- Giorni di palestra totali: ${days.length}`, `- Questo mese: ${days.filter(d => d.startsWith(ym)).length}`, `- Ultimo allenamento: ${days[0] || '-'}`, ``);
-  L.push(`## Schede attuali`, ``);
+  L.push(`## Schede attuali`, ``, `Per cambiare reps, serie, kg, riposo o note di un esercizio da una chat: modifica il documento "schede" (JSON) del progetto Gym Bro con documento_salva. L'app lo applica alla prossima apertura.`, ``);
   for (const r of state.routines) {
     L.push(`### ${r.name}${r.id === state.routine ? ' (attiva)' : ''}`, ``, `| Codice | Esercizio | Reps | Serie | Kg | Riposo | Ultima volta | Note |`, `|---|---|---|---|---|---|---|---|`);
     for (const e of r.exercises) { const lf = lastFeel(e); L.push(`| ${e.code || ''} | ${e.name} | ${e.reps} | ${e.sets} | ${e.kg} | ${e.rest || state.settings.rest}s | ${lf ? t(lf) : ''} | ${(e.notes || '').replace(/\|/g, '/')} |`); }
@@ -256,50 +255,87 @@ function buildRegister() {
   L.push(`## Modifiche recenti (reps / serie / kg)`, ``);
   for (const l of state.log.slice(0, 120)) {
     if (l.kind === 'clear' || l.kind === 'partial') continue;
-    const when = `${dayOf(l.t)} ${new Date(l.t).toTimeString().slice(0, 5)}`;
-    if (l.kind === 'add') L.push(`- ${when} · aggiunto ${l.code || ''} ${l.name}`);
-    else if (l.kind === 'del') L.push(`- ${when} · eliminato ${l.code || ''} ${l.name}`);
-    else L.push(`- ${when} · ${l.code || ''} ${l.name}: ${kindLabel(l.kind)} ${l.from} → ${l.to}`);
+    const when = `${dayOf(l.t)} ${new Date(l.t).toTimeString().slice(0, 5)}`, who = l.by === 'claude' ? ' (da Claude)' : '';
+    if (l.kind === 'add') L.push(`- ${when} · aggiunto ${l.code || ''} ${l.name}${who}`);
+    else if (l.kind === 'del') L.push(`- ${when} · eliminato ${l.code || ''} ${l.name}${who}`);
+    else L.push(`- ${when} · ${l.code || ''} ${l.name}: ${kindLabel(l.kind)} ${l.from} → ${l.to}${who}`);
   }
-  L.push(``, `---`, `File JSON completo: ${SYNC_RAW}gymbro.json`, ``);
   return L.join('\n');
 }
-const b64 = s => btoa(unescape(encodeURIComponent(s)));
-async function ghPut(path, content, token, message) {
-  const url = `https://api.github.com/repos/${SYNC_REPO}/contents/${path}`;
-  const h = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' };
-  let sha;
-  const g = await fetch(`${url}?ref=${SYNC_BRANCH}`, { headers: h, cache: 'no-store' });
-  if (g.ok) sha = (await g.json()).sha;
-  const r = await fetch(url, { method: 'PUT', headers: h, body: JSON.stringify({ message, content: b64(content), branch: SYNC_BRANCH, sha }) });
-  if (!r.ok) { let m = ''; try { m = (await r.json()).message || ''; } catch (e) {} throw new Error(`HTTP ${r.status} ${m}`.trim()); }
+/* the routines as chats see and edit them (document "schede" of project Gym Bro) */
+function buildSchede() {
+  return { routines: state.routines.map(r => ({ name: r.name, exercises: r.exercises.map(e => ({ code: e.code || '', name: e.name, reps: e.reps, sets: e.sets, kg: e.kg, rest: e.rest || null, notes: e.notes || '', diagram: e.diagram || 'body' })) })), active: activeRoutine().name };
 }
-async function checkToken(token) {
-  const r = await fetch(`https://api.github.com/repos/${SYNC_REPO}/branches/${SYNC_BRANCH}`, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' }, cache: 'no-store' });
-  if (!r.ok) { let m = ''; try { m = (await r.json()).message || ''; } catch (e) {} throw new Error(`HTTP ${r.status} ${m}`.trim()); }
+const num = (v, d) => { const n = parseFloat(v); return Number.isFinite(n) ? n : d; };
+/* apply a "schede" document edited by a chat; every change is logged as from Claude */
+function applySchede(doc) {
+  if (!doc || !Array.isArray(doc.routines)) return 0;
+  let changes = 0;
+  const upper = v => String(v || '').trim().toUpperCase();
+  for (const rd of doc.routines) {
+    if (!rd || !rd.name) continue;
+    let r = state.routines.find(x => x.name === upper(rd.name));
+    if (!r) { r = { id: uid(), name: upper(rd.name), exercises: [] }; state.routines.push(r); changes++; }
+    const seen = new Set();
+    for (const ed of (rd.exercises || [])) {
+      if (!ed || !ed.name) continue;
+      const code = upper(ed.code);
+      let e = r.exercises.find(x => (code && upper(x.code) === code) || x.name.trim().toLowerCase() === String(ed.name).trim().toLowerCase());
+      const want = { code, name: String(ed.name).trim(), reps: Math.max(1, Math.round(num(ed.reps, 10))), sets: Math.max(1, Math.round(num(ed.sets, 4))), kg: Math.max(0, num(ed.kg, 0)), rest: num(ed.rest, 0) > 0 ? Math.round(num(ed.rest, 0)) : null, notes: String(ed.notes || '').trim(), diagram: GymSprites.keys.includes(ed.diagram) ? ed.diagram : (e ? e.diagram : 'body') };
+      if (!e) { e = { id: uid(), doneSets: 0, ...want }; r.exercises.push(e); logAdd(e, 'add'); state.log[0].by = 'claude'; changes++; }
+      else {
+        for (const k of ['kg', 'reps', 'sets', 'rest']) if ((e[k] || 0) !== (want[k] || 0)) { logAdd({ ...e, ...want }, k, e[k] || 0, want[k] || 0); state.log[0].by = 'claude'; changes++; }
+        if (e.name !== want.name || (e.notes || '') !== want.notes || e.code !== want.code || e.diagram !== want.diagram) changes++;
+        Object.assign(e, want); if (e.doneSets > e.sets) e.doneSets = e.sets;
+      }
+      seen.add(e.id);
+    }
+    for (const e of r.exercises.slice()) if (!seen.has(e.id)) { logAdd(e, 'del'); state.log[0].by = 'claude'; r.exercises = r.exercises.filter(x => x !== e); changes++; }
+  }
+  if (doc.active) { const r = state.routines.find(x => x.name === upper(doc.active)); if (r && r.id !== state.routine) { state.routine = r.id; changes++; } }
+  return changes;
+}
+async function segreq(path, method, body) {
+  const url = SYNC.url.replace(/\/$/, '') + path;
+  const headers = { Authorization: `Bearer ${SYNC.token}`, Accept: 'application/json', 'Content-Type': 'application/json' };
+  const P = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.CapacitorHttp;
+  if (NATIVE && P) {
+    const r = await P.request({ url, method, headers, data: body || undefined, connectTimeout: 15000, readTimeout: 20000 });
+    if (r.status >= 400) throw new Error(`HTTP ${r.status}`);
+    return typeof r.data === 'string' ? JSON.parse(r.data || '{}') : (r.data || {});
+  }
+  const r = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined, cache: 'no-store' });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
 }
 let syncBusy = false, syncT = 0;
 async function syncNow(manual) {
-  const token = state.settings.syncToken; if (!token) { if (manual) toast(t('syncNoToken')); return; }
+  if (!SYNC) { if (manual) toast(t('syncOff')); return; }
   if (syncBusy) return; syncBusy = true;
   try {
-    const stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
-    const { syncToken, ...settings } = state.settings;
-    const json = JSON.stringify({ exportedAt: Date.now(), routines: state.routines, routine: state.routine, history: state.history, log: state.log, settings }, null, 1);
-    await ghPut('registro.md', buildRegister(), token, `Gym Bro: registro ${stamp}`);
-    await ghPut('gymbro.json', json, token, `Gym Bro: dati ${stamp}`);
-    state.settings.lastSync = Date.now(); state.settings.syncErr = null; save(); if (manual) toast('✓ ' + t('syncOk'));
+    const now = Date.now();
+    const { syncErr, lastSync, schedeVersion, ...settings } = state.settings;
+    const data = { exportedAt: now, routines: state.routines, routine: state.routine, history: state.history, log: state.log, settings };
+    // 1. pull: routines edited by chats since the version we applied last
+    const pulled = await segreq('/gymbro/pull', 'GET');
+    if (pulled && pulled.version && pulled.version !== state.settings.schedeVersion && pulled.schede) {
+      const n = applySchede(pulled.schede);
+      state.settings.schedeVersion = pulled.version; save();
+      if (n) { toast('☁ ' + t('pulled')); if (mode === 'edit') renderEdit(); else renderList(); if (S.open && S.ex) refreshStats(); }
+    }
+    // 2. push: register, full data, and our current routines
+    const res = await segreq('/gymbro/push', 'POST', { updatedAt: now, registro: buildRegister(), data, schede: buildSchede() });
+    if (res && res.version) state.settings.schedeVersion = res.version;
+    state.settings.lastSync = now; state.settings.syncErr = null; save(); if (manual) toast('✓ ' + t('syncOk'));
     renderSyncStatus();
   } catch (e) { state.settings.syncErr = `${new Date().toLocaleString()} · ${e.message}`; save(); renderSyncStatus(); if (manual) toast(`${t('syncFail')} · ${e.message}`); }
   syncBusy = false;
 }
 function renderSyncStatus() {
-  const s = state.settings;
-  const b = $('#syncBanner'); if (b) b.classList.toggle('hidden', !!s.syncToken);
-  const el = $('#sSyncLast'); if (!el) return;
-  el.innerHTML = `${t('lastSync')}: ${s.lastSync ? new Date(s.lastSync).toLocaleString() : t('never')}${s.syncErr ? `<br><span class="dn">${t('lastErr')}: ${esc(s.syncErr)}</span>` : ''}`;
+  const s = state.settings, el = $('#sSyncLast'); if (!el) return;
+  el.innerHTML = !SYNC ? t('syncOff') : `${t('lastSync')}: ${s.lastSync ? new Date(s.lastSync).toLocaleString() : t('never')}${s.syncErr ? `<br><span class="dn">${t('lastErr')}: ${esc(s.syncErr)}</span>` : ''}`;
 }
-function syncSoon() { if (!state.settings.syncToken) return; clearTimeout(syncT); syncT = setTimeout(() => syncNow(false), 8000); }
+function syncSoon() { if (!SYNC) return; clearTimeout(syncT); syncT = setTimeout(() => syncNow(false), 8000); }
 
 /* =========================== helpers =========================== */
 const $ = s => document.querySelector(s);
@@ -493,7 +529,7 @@ function openForm(id) {
     save(); closeDlg(); renderEdit(); syncSoon();
   });
   const del = $('#fDelete');
-  if (del) del.addEventListener('click', () => { if (confirm(t('deleteConfirm'))) { logAdd(e, 'del'); state.exercises = state.exercises.filter(x => x.id !== id); save(); closeDlg(); renderEdit(); } });
+  if (del) del.addEventListener('click', () => { if (confirm(t('deleteConfirm'))) { logAdd(e, 'del'); state.exercises = state.exercises.filter(x => x.id !== id); save(); closeDlg(); renderEdit(); syncSoon(); } });
 }
 
 let deferredInstall = null;
@@ -510,7 +546,7 @@ function openSettings() {
     <div class="opt"><div><div class="lab">${t('crt')}</div><div class="sub">${t('crtSub')}</div></div>${tog('crt', s.crt)}</div>
     <div class="opt"><div><div class="lab">${t('language')}</div></div>${tog('lang', s.lang === 'en', 'EN', 'IT').replace('class="toggle off"', 'class="toggle"')}</div>
     <div class="opt"><div><div class="lab">${t('routines')}</div><div class="sub">${esc(activeRoutine().name)} · ${state.routines.length}</div></div><button class="toggle" id="sRoutines">${t('edit')}</button></div>
-    <div class="opt" style="flex-wrap:wrap"><div style="flex:1 1 100%"><div class="lab">${t('sync')}</div><div class="sub">${t('syncSub')}</div><div class="sub" id="sSyncLast"></div></div><input type="password" id="sTok" placeholder="${t('syncToken')}" value="${esc(s.syncToken || '')}" autocomplete="off" style="flex:1 1 100%;background:var(--ink);border:3px solid var(--line);padding:10px;color:var(--white);font-family:var(--fb);font-size:15px"><div class="seg" style="gap:6px;background:none;border:0;padding:0"><button class="toggle" id="sTokSave">${t('save')}</button><button class="toggle" id="sSyncNow">${t('syncNow')}</button></div></div>
+    <div class="opt" style="flex-wrap:wrap"><div style="flex:1 1 100%"><div class="lab">${t('sync')}</div><div class="sub">${t('syncSub')}</div><div class="sub" id="sSyncLast"></div></div><button class="toggle" id="sSyncNow">${t('syncNow')}</button></div>
     ${NATIVE ? `<div class="opt" style="flex-wrap:wrap"><div style="flex:1 1 100%"><div class="lab">${t('notifs')}</div><div class="sub" id="sNotif">…</div></div><div class="seg" style="gap:6px;background:none;border:0;padding:0"><button class="toggle" id="sNotifTest">${t('test')}</button><button class="toggle" id="sNotifSet">${t('settingsBtn')}</button><button class="toggle" id="sNotifBat">${t('battery')}</button><button class="toggle" id="sNotifAlarm">${t('alarmBtn')}</button></div></div><div class="opt hidden" id="sCrashRow" style="flex-wrap:wrap"><div style="flex:1 1 100%"><div class="lab">${t('lastCrash')}</div><pre class="sub crash" id="sCrash"></pre></div><button class="toggle" id="sCrashClear">${t('crashClear')}</button></div>` : ''}
     ${NATIVE ? `<div class="opt"><div><div class="lab">${t('version')}</div><div class="sub" id="sVer">…</div></div><button class="toggle" id="sCheck">${t('check')}</button></div>` : ''}
     ${deferredInstall ? `<div class="opt"><div><div class="lab">${t('install')}</div><div class="sub">${t('installSub')}</div></div><button class="btn cyan" id="sInstall">${t('install')}</button></div>` : ''}
@@ -530,8 +566,6 @@ function openSettings() {
   }));
   $('#sRoutines').addEventListener('click', () => openRoutinePicker(false));
   renderSyncStatus();
-  $('#sTokSave').addEventListener('click', async () => { s.syncToken = $('#sTok').value.trim() || null; s.syncErr = null; save(); renderSyncStatus(); if (!s.syncToken) return;
-    try { await checkToken(s.syncToken); toast('✓ ' + t('tokenOk')); await syncNow(true); } catch (e) { s.syncErr = `${new Date().toLocaleString()} · ${e.message}`; save(); renderSyncStatus(); toast(`${t('tokenBad')} · ${e.message}`); } });
   $('#sSyncNow').addEventListener('click', () => syncNow(true));
   if (RT) {
     const refresh = () => Promise.all([RT.notifStatus(), RT.exactAlarmStatus().catch(() => ({ ok: true }))]).then(([st, ex]) => { const el = $('#sNotif'); if (!el) return;
@@ -552,7 +586,6 @@ function openSettings() {
   $('#sReset').addEventListener('click', () => { if (confirm(t('resetConfirm'))) { state.exercises = freshExercises(); save(); closeDlg(); setMode('list'); } });
 }
 $('#btnSettings').addEventListener('click', () => { openSettings(); });
-$('#syncBanner').addEventListener('click', () => { openSettings(); setTimeout(() => { const el = $('#sTok'); if (el) { el.scrollIntoView({ block: 'center' }); el.focus(); } }, 350); });
 
 let logTab = 'workouts';
 function dayLabel(d) {
@@ -666,11 +699,11 @@ function openRoutinePicker(forNew) {
   }));
   body.querySelectorAll('[data-ren]').forEach(b => b.addEventListener('click', () => {
     const r = state.routines.find(x => x.id === b.dataset.ren); const n = prompt(t('routineName'), r.name);
-    if (n && n.trim()) { r.name = n.trim().toUpperCase(); save(); openRoutinePicker(forNew); if (mode === 'edit') renderEdit(); else renderList(); }
+    if (n && n.trim()) { r.name = n.trim().toUpperCase(); save(); syncSoon(); openRoutinePicker(forNew); if (mode === 'edit') renderEdit(); else renderList(); }
   }));
   body.querySelectorAll('[data-delr]').forEach(b => b.addEventListener('click', () => {
     if (!confirm(t('deleteRoutine'))) return;
-    state.routines = state.routines.filter(x => x.id !== b.dataset.delr);
+    state.routines = state.routines.filter(x => x.id !== b.dataset.delr); syncSoon();
     if (!state.routines.find(x => x.id === state.routine)) state.routine = state.routines[0].id;
     save(); openRoutinePicker(forNew); if (mode === 'edit') renderEdit(); else renderList();
   }));
@@ -678,7 +711,7 @@ function openRoutinePicker(forNew) {
     const n = prompt(t('routineName'), `ROUTINE ${String.fromCharCode(65 + state.routines.length)}`);
     if (!n || !n.trim()) return;
     const r = { id: uid(), name: n.trim().toUpperCase(), exercises: [] };
-    state.routines.push(r); state.routine = r.id; save(); closeDlg(); setMode('edit');
+    state.routines.push(r); state.routine = r.id; save(); syncSoon(); closeDlg(); setMode('edit');
   });
 }
 $('#subtitle').addEventListener('click', () => { if (state.routines.length > 1) openRoutinePicker(false); });
@@ -945,7 +978,7 @@ clockTick(); setInterval(clockTick, 5000);
 document.documentElement.lang = state.settings.lang;
 document.body.classList.toggle('crt', !!state.settings.crt);
 setMode('list');
-renderSyncStatus();
+if (SYNC) { setTimeout(() => syncNow(false), 2500); document.addEventListener('visibilitychange', () => { if (!document.hidden && (!state.settings.lastSync || Date.now() - state.settings.lastSync > 30 * 60e3)) syncSoon(); }); }
 if (UP) { setTimeout(() => checkUpdate(false), 2500); document.addEventListener('visibilitychange', () => { if (!document.hidden) checkUpdate(false); }); }
 if ('serviceWorker' in navigator && !NATIVE) {
   let hadController = !!navigator.serviceWorker.controller;

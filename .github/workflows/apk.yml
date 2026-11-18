@@ -31,6 +31,17 @@ jobs:
           SDKM=$(ls -d "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | tail -1)
           yes | "$SDKM" --licenses > /dev/null 2>&1 || true
       - run: npm ci
+      - name: Segretario sync config (from repository secrets; absent = sync off)
+        env:
+          SYNC_URL: ${{ secrets.SEGRETARIO_SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.SEGRETARIO_SYNC_TOKEN }}
+        run: |
+          if [ -n "$SYNC_URL" ] && [ -n "$SYNC_TOKEN" ]; then
+            printf 'window.GYMBRO_SYNC = {url:%s, token:%s};\n' "$(jq -Rn --arg v "$SYNC_URL" '$v')" "$(jq -Rn --arg v "$SYNC_TOKEN" '$v')" > www/config.js
+            echo "sync config written"
+          else
+            echo "no sync secrets: building without Segretario sync"
+          fi
       - run: npx cap sync android
 
       - name: Signing keystore (created once, stored encrypted in the repo)
