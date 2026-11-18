@@ -517,7 +517,7 @@ function openSettings() {
     <div class="center"><button class="btn red" id="sReset" style="font-size:9px">${t('resetData')}</button></div>`);
   const body = $('#dlgBody'); wireSteppers(body);
   $('#sRest').addEventListener('input', ev => { const v = parseInt(ev.target.value); if (v >= 5) { s.rest = v; save(); } });
-  body.querySelectorAll('.toggle').forEach(b => b.addEventListener('click', async () => {
+  body.querySelectorAll('.toggle[data-k]').forEach(b => b.addEventListener('click', async () => {
     const k = b.dataset.k;
     if (k === 'lang') { s.lang = s.lang === 'en' ? 'it' : 'en'; document.documentElement.lang = s.lang; save(); openSettings(); if (mode === 'edit') renderEdit(); else renderList(); return; }
     s[k] = !s[k];
