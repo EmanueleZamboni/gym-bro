@@ -22,7 +22,7 @@ const I18N = {
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
     notify: 'STATUS BAR TIMER', notifySub: 'Countdown in the notification shade while you rest, and an alarm notification at zero. Rings even if the app is in the background.',
-    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisWeek: 'THIS WEEK', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', pickReps: 'REPS', pickKg: 'KG', howWasIt: 'HOW WAS IT?', easy: 'EASY', normal: 'NORMAL', hard: 'HARD', lastTime: 'LAST TIME', easyStreak: 'EASY {n}× IN A ROW', tryUp: 'TRY', hardStreak: 'HARD {n}× IN A ROW · MAYBE LOWER THE WEIGHT', kgUpped: 'KG {a} → {b}', exactOk: 'Exact alarm allowed.', exactBlocked: 'Exact alarm BLOCKED: the bell can be minutes late. Tap ALARM and allow it.', alarmBtn: 'ALARM', lastCrash: 'LAST CRASH', crashClear: 'CLEAR', inexactWarn: 'ALARM NOT EXACT · allow it in Options', finishWorkout: 'FINISH WORKOUT', finishConfirm: "Close today's workout? What you did so far is saved to the register and the list resets.", savedToday: 'WORKOUT SAVED TODAY', partialLbl: 'PARTIAL', nativeErr: 'ALARM ERROR', notifs: 'NOTIFICATIONS', notifOk: 'Allowed. The countdown, DONE / SKIP buttons and GO alert show here.', notifBlocked: 'BLOCKED. Tap SETTINGS and allow notifications for Gym Bro.', notifXiaomi: 'Xiaomi phone: also set Battery saver to No restrictions and enable Autostart, or the alarm is killed in the background.', test: 'TEST', settingsBtn: 'SETTINGS', battery: 'BATTERY', resetToday: 'RESET TODAY', resetTodayConfirm: "Reset this exercise for today? It is also removed from today's workout record.", routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
+    cancel: 'CANCEL', log: 'LOG', workouts: 'WORKOUTS', changes: 'CHANGES', total: 'TOTAL', thisWeek: 'THIS WEEK', thisMonth: 'THIS MONTH', perWeek: 'PER WEEK', exercisesN: 'EXERCISES', noWorkouts: 'NO WORKOUTS YET.<br>CLEAR AN EXERCISE AND IT LANDS HERE.', addPastDay: 'ADD PAST DAY', sync: 'SYNC TO CLAUDE', syncSub: 'Publishes the register to the data branch of the gym-bro repo, where every Claude chat can read it.', syncToken: 'GitHub token', syncNow: 'SYNC NOW', syncSaved: 'TOKEN SAVED', syncOk: 'SYNCED', syncFail: 'SYNC FAILED', lastSync: 'Last sync', never: 'never', syncNoToken: 'No token yet.', pickReps: 'REPS', pickKg: 'KG', howWasIt: 'HOW WAS IT?', easy: 'EASY', normal: 'NORMAL', hard: 'HARD', lastTime: 'LAST TIME', easyStreak: 'EASY {n}× IN A ROW', tryUp: 'TRY', hardStreak: 'HARD {n}× IN A ROW · MAYBE LOWER THE WEIGHT', kgUpped: 'KG {a} → {b}', exactOk: 'Exact alarm allowed.', exactBlocked: 'Exact alarm BLOCKED: the bell can be minutes late. Tap ALARM and allow it.', alarmBtn: 'ALARM', lastCrash: 'LAST CRASH', crashClear: 'CLEAR', inexactWarn: 'ALARM NOT EXACT · allow it in Options', finishWorkout: 'FINISH WORKOUT', finishConfirm: "Close today's workout? What you did so far is saved to the register and the list resets.", savedToday: 'WORKOUT SAVED TODAY', partialLbl: 'PARTIAL', nativeErr: 'ALARM ERROR', notifs: 'NOTIFICATIONS', notifOk: 'Allowed. The countdown, DONE / SKIP buttons and GO alert show here.', notifBlocked: 'BLOCKED. Tap SETTINGS and allow notifications for Gym Bro.', notifXiaomi: 'Xiaomi phone: also set Battery saver to No restrictions and enable Autostart, or the alarm is killed in the background.', test: 'TEST', settingsBtn: 'SETTINGS', battery: 'BATTERY', resetToday: 'RESET TODAY', resetTodayConfirm: "Reset this exercise for today? It is also removed from today's workout record.", routines: 'ROUTINES', addRoutine: 'ADD ROUTINE', routineName: 'Routine name', deleteRoutine: 'Delete this routine and its exercises?', justUpped: 'JUST UPPED', lowered: 'LOWERED', exLog: 'HISTORY', newWorkoutPick: 'NEW WORKOUT · PICK A ROUTINE', current: 'CURRENT', noExLog: 'NOTHING YET FOR THIS EXERCISE.', update: 'UPDATE', installNow: 'INSTALL', downloading: 'DOWNLOADING', upToDate: 'UP TO DATE', updFail: 'UPDATE CHECK FAILED', version: 'VERSION', check: 'CHECK', allowInstall: 'Allow installs from Gym Bro, then tap INSTALL again.', again: 'DO AGAIN?', continueLbl: 'CONTINUE', newWorkoutConfirm: "Reset today's ticks? The workout history keeps today's exercises.", noDetails: 'NO DETAILS', date: 'DATE', pickExercises: 'EXERCISES DONE (OPTIONAL)', deleteDay: 'Delete this gym day?', gymDay: 'GYM DAY', logEmpty: 'NO CHANGES YET.<br>EDITS SHOW UP HERE.', logClear: 'CLEAR LOG', logClearConfirm: 'Delete the whole log?', added: 'ADDED', deleted: 'DELETED', today: 'TODAY', yesterday: 'YESTERDAY', keepAwake: 'SCREEN ON', keepAwakeSub: 'While an exercise is open',
     crt: 'CRT SCANLINES', crtSub: 'Retro monitor look', language: 'LANGUAGE', resetData: 'RESTORE DEFAULT EXERCISES', install: 'INSTALL APP', installSub: 'Add to home screen, full screen and offline',
     empty: 'NO STAGES YET.<br>ADD ONE FROM EDIT.', deleteConfirm: 'Delete this exercise?', resetConfirm: 'Replace all exercises with the defaults?', exercise: 'EXERCISE',
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
@@ -33,7 +33,7 @@ const I18N = {
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
     notify: 'TIMER NELLA BARRA', notifySub: 'Conto alla rovescia nelle notifiche durante il riposo e notifica di allarme a zero. Suona anche con l\'app in background.',
-    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisWeek: 'QUESTA SETT.', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', pickReps: 'RIPETIZIONI', pickKg: 'KG', howWasIt: "COM'È ANDATA?", easy: 'FACILE', normal: 'NORMALE', hard: 'DURO', lastTime: 'ULTIMA VOLTA', easyStreak: 'FACILE {n}× DI FILA', tryUp: 'PROVA', hardStreak: 'DURO {n}× DI FILA · FORSE ABBASSA IL PESO', kgUpped: 'KG {a} → {b}', exactOk: 'Allarme esatto consentito.', exactBlocked: 'Allarme esatto BLOCCATO: la campana può arrivare in ritardo di minuti. Tocca ALLARME e consentilo.', alarmBtn: 'ALLARME', lastCrash: 'ULTIMO CRASH', crashClear: 'CANCELLA', inexactWarn: 'ALLARME NON ESATTO · consentilo nelle Opzioni', finishWorkout: 'CHIUDI ALLENAMENTO', finishConfirm: 'Chiudere l\'allenamento di oggi? Quello che hai fatto finora viene salvato nel registro e la lista si azzera.', savedToday: 'ALLENAMENTO SALVATO OGGI', partialLbl: 'PARZIALE', nativeErr: 'ERRORE ALLARME', notifs: 'NOTIFICHE', notifOk: 'Consentite. Qui compaiono il conto alla rovescia, i tasti FATTO / SALTA e l\'avviso VIA.', notifBlocked: 'BLOCCATE. Tocca IMPOSTAZIONI e consenti le notifiche a Gym Bro.', notifXiaomi: 'Telefono Xiaomi: imposta anche Risparmio batteria su Nessuna restrizione e attiva l\'Avvio automatico, altrimenti l\'allarme viene ucciso in background.', test: 'PROVA', settingsBtn: 'IMPOSTAZIONI', battery: 'BATTERIA', resetToday: 'AZZERA OGGI', resetTodayConfirm: 'Azzerare questo esercizio per oggi? Viene tolto anche dal registro di oggi.', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
+    cancel: 'ANNULLA', log: 'REGISTRO', workouts: 'ALLENAMENTI', changes: 'MODIFICHE', total: 'TOTALE', thisWeek: 'QUESTA SETT.', thisMonth: 'QUESTO MESE', perWeek: 'A SETTIMANA', exercisesN: 'ESERCIZI', noWorkouts: 'NESSUN ALLENAMENTO.<br>COMPLETA UN ESERCIZIO E APPARE QUI.', addPastDay: 'AGGIUNGI GIORNO', sync: 'SYNC CON CLAUDE', syncSub: 'Pubblica il registro nel ramo data del repo gym-bro, dove ogni chat Claude può leggerlo.', syncToken: 'Token GitHub', syncNow: 'SINCRONIZZA ORA', syncSaved: 'TOKEN SALVATO', syncOk: 'SINCRONIZZATO', syncFail: 'SYNC FALLITA', lastSync: 'Ultima sync', never: 'mai', syncNoToken: 'Nessun token.', pickReps: 'RIPETIZIONI', pickKg: 'KG', howWasIt: "COM'È ANDATA?", easy: 'FACILE', normal: 'NORMALE', hard: 'DURO', lastTime: 'ULTIMA VOLTA', easyStreak: 'FACILE {n}× DI FILA', tryUp: 'PROVA', hardStreak: 'DURO {n}× DI FILA · FORSE ABBASSA IL PESO', kgUpped: 'KG {a} → {b}', exactOk: 'Allarme esatto consentito.', exactBlocked: 'Allarme esatto BLOCCATO: la campana può arrivare in ritardo di minuti. Tocca ALLARME e consentilo.', alarmBtn: 'ALLARME', lastCrash: 'ULTIMO CRASH', crashClear: 'CANCELLA', inexactWarn: 'ALLARME NON ESATTO · consentilo nelle Opzioni', finishWorkout: 'CHIUDI ALLENAMENTO', finishConfirm: 'Chiudere l\'allenamento di oggi? Quello che hai fatto finora viene salvato nel registro e la lista si azzera.', savedToday: 'ALLENAMENTO SALVATO OGGI', partialLbl: 'PARZIALE', nativeErr: 'ERRORE ALLARME', notifs: 'NOTIFICHE', notifOk: 'Consentite. Qui compaiono il conto alla rovescia, i tasti FATTO / SALTA e l\'avviso VIA.', notifBlocked: 'BLOCCATE. Tocca IMPOSTAZIONI e consenti le notifiche a Gym Bro.', notifXiaomi: 'Telefono Xiaomi: imposta anche Risparmio batteria su Nessuna restrizione e attiva l\'Avvio automatico, altrimenti l\'allarme viene ucciso in background.', test: 'PROVA', settingsBtn: 'IMPOSTAZIONI', battery: 'BATTERIA', resetToday: 'AZZERA OGGI', resetTodayConfirm: 'Azzerare questo esercizio per oggi? Viene tolto anche dal registro di oggi.', routines: 'SCHEDE', addRoutine: 'AGGIUNGI SCHEDA', routineName: 'Nome della scheda', deleteRoutine: 'Eliminare questa scheda e i suoi esercizi?', justUpped: 'APPENA AUMENTATO', lowered: 'DIMINUITO', exLog: 'STORICO', newWorkoutPick: 'NUOVO ALLENAMENTO · SCEGLI LA SCHEDA', current: 'ATTUALE', noExLog: 'ANCORA NIENTE PER QUESTO ESERCIZIO.', update: 'AGGIORNAMENTO', installNow: 'INSTALLA', downloading: 'SCARICO', upToDate: 'GIÀ AGGIORNATA', updFail: 'CONTROLLO FALLITO', version: 'VERSIONE', check: 'CONTROLLA', allowInstall: 'Consenti le installazioni da Gym Bro, poi tocca di nuovo INSTALLA.', again: 'RIFARE?', continueLbl: 'CONTINUA', newWorkoutConfirm: 'Azzerare le spunte di oggi? Lo storico degli allenamenti resta.', noDetails: 'SENZA DETTAGLI', date: 'DATA', pickExercises: 'ESERCIZI FATTI (FACOLTATIVO)', deleteDay: 'Eliminare questo giorno di palestra?', gymDay: 'PALESTRA', logEmpty: 'ANCORA NIENTE.<br>LE MODIFICHE FINISCONO QUI.', logClear: 'SVUOTA REGISTRO', logClearConfirm: 'Cancellare tutto il registro?', added: 'AGGIUNTO', deleted: 'ELIMINATO', today: 'OGGI', yesterday: 'IERI', keepAwake: 'SCHERMO ACCESO', keepAwakeSub: 'Mentre un esercizio è aperto',
     crt: 'SCANLINE CRT', crtSub: 'Effetto monitor retro', language: 'LINGUA', resetData: 'RIPRISTINA ESERCIZI', install: 'INSTALLA APP', installSub: 'Aggiungi alla Home, a tutto schermo e offline',
     empty: 'NESSUN ESERCIZIO.<br>AGGIUNGILO DA MODIFICA.', deleteConfirm: 'Eliminare questo esercizio?', resetConfirm: 'Sostituire tutti gli esercizi con quelli predefiniti?', exercise: 'ESERCIZIO',
     hint: '▲▼ SCEGLI · TOCCA PER INIZIARE', tapDone: 'PREMI FATTO DOPO OGNI SERIE', notifTitle: 'Riposo finito', notifBody: 'VIA! Prossima serie', exit: 'ESCI', of: 'DI', on: 'ON', off: 'OFF',
@@ -123,7 +123,7 @@ function setFeel(e, feel) {
   const d = dayOf(Date.now()), list = state.history[d] || [];
   const h = list.find(x => sameEx(e, x)); if (h) h.feel = feel;
   const l = state.log.find(x => x.kind === 'clear' && sameEx(e, x) && dayOf(x.t) === d); if (l && l.to) l.to.feel = feel;
-  save();
+  save(); syncSoon();
 }
 const kindLabel = k => k === 'kg' ? 'KG' : k === 'rest' ? t('rest') : t(k).toUpperCase();
 function logAdd(e, kind, from, to) {
@@ -230,6 +230,66 @@ async function installUpdate() {
   } catch (e) { toast(t('updFail')); const btn = $('#updGo'); if (btn) { btn.textContent = t('installNow'); btn.disabled = false; } }
   updBusy = false;
 }
+
+/* =========================== sync: publish the register to GitHub (branch data) =========================== */
+const SYNC_REPO = 'EmanueleZamboni/gym-bro', SYNC_BRANCH = 'data';
+const SYNC_RAW = `https://raw.githubusercontent.com/${SYNC_REPO}/${SYNC_BRANCH}/`;
+function buildRegister() {
+  const L = [], d2 = n => String(n).padStart(2, '0'), ts = new Date();
+  L.push(`# Gym Bro · registro allenamenti di Ema`, ``, `Aggiornato: ${ts.getFullYear()}-${d2(ts.getMonth() + 1)}-${d2(ts.getDate())} ${d2(ts.getHours())}:${d2(ts.getMinutes())} (dal telefono, app Gym Bro).`, ``);
+  const days = Object.keys(state.history).sort().reverse();
+  const now = new Date(), ym = dayOf(now.getTime()).slice(0, 7);
+  L.push(`## Riepilogo`, ``, `- Giorni di palestra totali: ${days.length}`, `- Questo mese: ${days.filter(d => d.startsWith(ym)).length}`, `- Ultimo allenamento: ${days[0] || '-'}`, ``);
+  L.push(`## Schede attuali`, ``);
+  for (const r of state.routines) {
+    L.push(`### ${r.name}${r.id === state.routine ? ' (attiva)' : ''}`, ``, `| Codice | Esercizio | Reps | Serie | Kg | Riposo | Ultima volta | Note |`, `|---|---|---|---|---|---|---|---|`);
+    for (const e of r.exercises) { const lf = lastFeel(e); L.push(`| ${e.code || ''} | ${e.name} | ${e.reps} | ${e.sets} | ${e.kg} | ${e.rest || state.settings.rest}s | ${lf ? t(lf) : ''} | ${(e.notes || '').replace(/\|/g, '/')} |`); }
+    L.push(``);
+  }
+  L.push(`## Allenamenti (dal più recente)`, ``);
+  for (const d of days) {
+    const list = state.history[d], vol = list.reduce((a, x) => a + x.kg * x.reps * x.sets, 0);
+    L.push(`### ${d}${list.length ? ` · ${list.length} esercizi · volume ${vol} kg` : ' · giorno di palestra, senza dettagli'}`);
+    for (const x of list) L.push(`- ${x.code || ''} ${x.name}: ${x.reps}×${x.sets}${x.plan ? `/${x.plan} (parziale)` : ''} · ${x.kg} kg${x.feel ? ` · ${t(x.feel)}` : ''}`);
+    L.push(``);
+  }
+  L.push(`## Modifiche recenti (reps / serie / kg)`, ``);
+  for (const l of state.log.slice(0, 120)) {
+    if (l.kind === 'clear' || l.kind === 'partial') continue;
+    const when = `${dayOf(l.t)} ${new Date(l.t).toTimeString().slice(0, 5)}`;
+    if (l.kind === 'add') L.push(`- ${when} · aggiunto ${l.code || ''} ${l.name}`);
+    else if (l.kind === 'del') L.push(`- ${when} · eliminato ${l.code || ''} ${l.name}`);
+    else L.push(`- ${when} · ${l.code || ''} ${l.name}: ${kindLabel(l.kind)} ${l.from} → ${l.to}`);
+  }
+  L.push(``, `---`, `File JSON completo: ${SYNC_RAW}gymbro.json`, ``);
+  return L.join('\n');
+}
+const b64 = s => btoa(unescape(encodeURIComponent(s)));
+async function ghPut(path, content, token, message) {
+  const url = `https://api.github.com/repos/${SYNC_REPO}/contents/${path}`;
+  const h = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' };
+  let sha;
+  const g = await fetch(`${url}?ref=${SYNC_BRANCH}`, { headers: h, cache: 'no-store' });
+  if (g.ok) sha = (await g.json()).sha;
+  const r = await fetch(url, { method: 'PUT', headers: h, body: JSON.stringify({ message, content: b64(content), branch: SYNC_BRANCH, sha }) });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+}
+let syncBusy = false, syncT = 0;
+async function syncNow(manual) {
+  const token = state.settings.syncToken; if (!token) { if (manual) toast(t('syncNoToken')); return; }
+  if (syncBusy) return; syncBusy = true;
+  try {
+    const stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    const { syncToken, ...settings } = state.settings;
+    const json = JSON.stringify({ exportedAt: Date.now(), routines: state.routines, routine: state.routine, history: state.history, log: state.log, settings }, null, 1);
+    await ghPut('registro.md', buildRegister(), token, `Gym Bro: registro ${stamp}`);
+    await ghPut('gymbro.json', json, token, `Gym Bro: dati ${stamp}`);
+    state.settings.lastSync = Date.now(); save(); if (manual) toast('✓ ' + t('syncOk'));
+    const el = $('#sSyncLast'); if (el) el.textContent = `${t('lastSync')}: ${new Date().toLocaleString()}`;
+  } catch (e) { if (manual) toast(`${t('syncFail')} · ${e.message}`); }
+  syncBusy = false;
+}
+function syncSoon() { if (!state.settings.syncToken) return; clearTimeout(syncT); syncT = setTimeout(() => syncNow(false), 8000); }
 
 /* =========================== helpers =========================== */
 const $ = s => document.querySelector(s);
@@ -420,7 +480,7 @@ function openForm(id) {
       for (const k of ['kg', 'reps', 'sets', 'rest']) if ((e[k] || 0) !== (data[k] || 0)) logAdd({ ...e, ...data }, k, e[k] || 0, data[k] || 0);
       Object.assign(e, data); if (e.doneSets > e.sets) e.doneSets = e.sets;
     } else { const ne = { id: uid(), doneSets: 0, ...data }; state.exercises.push(ne); logAdd(ne, 'add'); }
-    save(); closeDlg(); renderEdit();
+    save(); closeDlg(); renderEdit(); syncSoon();
   });
   const del = $('#fDelete');
   if (del) del.addEventListener('click', () => { if (confirm(t('deleteConfirm'))) { logAdd(e, 'del'); state.exercises = state.exercises.filter(x => x.id !== id); save(); closeDlg(); renderEdit(); } });
@@ -440,6 +500,7 @@ function openSettings() {
     <div class="opt"><div><div class="lab">${t('crt')}</div><div class="sub">${t('crtSub')}</div></div>${tog('crt', s.crt)}</div>
     <div class="opt"><div><div class="lab">${t('language')}</div></div>${tog('lang', s.lang === 'en', 'EN', 'IT').replace('class="toggle off"', 'class="toggle"')}</div>
     <div class="opt"><div><div class="lab">${t('routines')}</div><div class="sub">${esc(activeRoutine().name)} · ${state.routines.length}</div></div><button class="toggle" id="sRoutines">${t('edit')}</button></div>
+    <div class="opt" style="flex-wrap:wrap"><div style="flex:1 1 100%"><div class="lab">${t('sync')}</div><div class="sub">${t('syncSub')}</div><div class="sub" id="sSyncLast">${t('lastSync')}: ${s.lastSync ? new Date(s.lastSync).toLocaleString() : t('never')}</div></div><input type="password" id="sTok" placeholder="${t('syncToken')}" value="${esc(s.syncToken || '')}" autocomplete="off" style="flex:1 1 100%;background:var(--ink);border:3px solid var(--line);padding:10px;color:var(--white);font-family:var(--fb);font-size:15px"><div class="seg" style="gap:6px;background:none;border:0;padding:0"><button class="toggle" id="sTokSave">${t('save')}</button><button class="toggle" id="sSyncNow">${t('syncNow')}</button></div></div>
     ${NATIVE ? `<div class="opt" style="flex-wrap:wrap"><div style="flex:1 1 100%"><div class="lab">${t('notifs')}</div><div class="sub" id="sNotif">…</div></div><div class="seg" style="gap:6px;background:none;border:0;padding:0"><button class="toggle" id="sNotifTest">${t('test')}</button><button class="toggle" id="sNotifSet">${t('settingsBtn')}</button><button class="toggle" id="sNotifBat">${t('battery')}</button><button class="toggle" id="sNotifAlarm">${t('alarmBtn')}</button></div></div><div class="opt hidden" id="sCrashRow" style="flex-wrap:wrap"><div style="flex:1 1 100%"><div class="lab">${t('lastCrash')}</div><pre class="sub crash" id="sCrash"></pre></div><button class="toggle" id="sCrashClear">${t('crashClear')}</button></div>` : ''}
     ${NATIVE ? `<div class="opt"><div><div class="lab">${t('version')}</div><div class="sub" id="sVer">…</div></div><button class="toggle" id="sCheck">${t('check')}</button></div>` : ''}
     ${deferredInstall ? `<div class="opt"><div><div class="lab">${t('install')}</div><div class="sub">${t('installSub')}</div></div><button class="btn cyan" id="sInstall">${t('install')}</button></div>` : ''}
@@ -458,6 +519,8 @@ function openSettings() {
     save(); openSettings();
   }));
   $('#sRoutines').addEventListener('click', () => openRoutinePicker(false));
+  $('#sTokSave').addEventListener('click', () => { s.syncToken = $('#sTok').value.trim() || null; save(); toast(t('syncSaved')); if (s.syncToken) syncNow(true); });
+  $('#sSyncNow').addEventListener('click', () => syncNow(true));
   if (RT) {
     const refresh = () => Promise.all([RT.notifStatus(), RT.exactAlarmStatus().catch(() => ({ ok: true }))]).then(([st, ex]) => { const el = $('#sNotif'); if (!el) return;
       const xiaomi = /xiaomi|redmi|poco/i.test(st.manufacturer || '');
@@ -570,7 +633,7 @@ function finishWorkout() {
     logAdd(e, 'partial', null, { reps: e.reps, sets: e.doneSets, kg: e.kg, plan: e.sets });
   }
   state.exercises.forEach(e => e.doneSets = 0);
-  state.live = null; save(); renderList(); toast('✓ ' + t('savedToday'));
+  state.live = null; save(); renderList(); toast('✓ ' + t('savedToday')); syncSoon();
 }
 function newWorkout() {
   if (state.routines.length < 2) { if (!confirm(t('newWorkoutConfirm'))) return; state.exercises.forEach(e => e.doneSets = 0); save(); renderList(); return; }
@@ -781,7 +844,7 @@ function openWheel(kind) {
   $('#whCancel').addEventListener('click', closeDlg);
   $('#whSave').addEventListener('click', () => {
     const to = vals[Math.round(w.scrollTop / H)], from = e[kind];
-    if (to !== from) { logAdd(e, kind, from, to); e[kind] = to; save(); }
+    if (to !== from) { logAdd(e, kind, from, to); e[kind] = to; save(); syncSoon(); }
     closeDlg(); refreshStats();
   });
 }
@@ -812,7 +875,7 @@ function renderFeel() {
 function finishExercise() {
   S.phase = 'done'; fight.classList.add('go'); renderBar(); nativePip(); state.live = null;
   const all = state.exercises.every(isDone), e = S.ex;
-  logAdd(e, 'clear', null, { reps: e.reps, sets: e.sets, kg: e.kg }); historyAdd(state, Date.now(), e); save();
+  logAdd(e, 'clear', null, { reps: e.reps, sets: e.sets, kg: e.kg }); historyAdd(state, Date.now(), e); save(); syncSoon();
   stamp(all ? t('allClear') : t('stageClear'), all ? 'cyan' : '', 0);
   const vol = e.kg * e.reps * e.sets, sc = $('#score'); sc.innerHTML = `${t('volume')} <b>0</b> KG`; sc.classList.add('in');
   const t0 = performance.now(), D = 900;
