@@ -64,72 +64,152 @@
   const backrest = (p, x, y, h) => { p.rect(x, y, 3, h, 'M'); p.rect(x + 1, y, 1, h, 'm'); };
   const pad = (p, x, y, w, h) => { p.rect(x, y, w, h, 'Y'); p.rect(x, y + h - 1, w, 1, 'y'); };
   const stack = (p, x, y) => { for (let i = 0; i < 5; i++) { p.rect(x, y + i * 2, 5, 1, i % 2 ? 'G' : 'M'); p.rect(x, y + i * 2 + 1, 5, 1, 'K'); } p.rect(x + 2, y - 4, 1, 4, 'n'); };
+  const lever = (p, x0, y0, x1, y1) => { p.line(x0, y0, x1, y1, 'n', 1); p.dot(x0, y0, 'W', 2); };
+  const grip = (p, x, y) => p.rect(x, y - 2, 2, 5, 'Y');
+  /* gym80 Sygnum style: rear tower with the weight stack behind the seat (lifted = moving frame) */
+  const rearTower = (p, lifted) => { post(p, 5, 6, 24); p.rect(0, 6, 7, 2, 'M'); p.rect(0, 6, 7, 1, 'm'); stack(p, 0, lifted ? 16 : 20); base(p, 0, 30, 8); };
+  const chair = (p, bx, by, bh, sx, sw) => { backrest(p, bx, by, bh); seat(p, sx, by + bh, sw); post(p, sx + 4, by + bh + 2, 30 - (by + bh + 2)); base(p, sx - 2, 30, sw + 6); };
+
+  /* front / rear view athlete, seated. q = {head:[x,y], sh:y, hip:y, L:{elbow,hand,knee,ankle}, R:{...}, rear} */
+  function athleteFront(p, q) {
+    const [hx, hy] = q.head; p.head = q.head;
+    const cx = hx, sh = q.sh, hp = q.hip;
+    // legs (thighs toward the viewer, so short), shorts, shoes
+    for (const side of [q.L, q.R]) {
+      if (!side.knee) continue;
+      const hx0 = side === q.L ? cx - 2 : cx + 2;
+      p.line(hx0, hp, side.knee[0], side.knee[1], 'B', 3);
+      p.line(side.knee[0], side.knee[1] + 1, side.ankle[0], side.ankle[1], 'S', 2);
+      p.rect(side.ankle[0] - 1, side.ankle[1] + 1, 3, 2, 'W');
+    }
+    // torso
+    p.rect(cx - 4, sh, 8, hp - sh + 1, 'R'); p.rect(cx - 4, sh, 1, hp - sh + 1, 'r'); p.rect(cx + 3, sh, 1, hp - sh + 1, 'r');
+    if (q.rear) p.rect(cx - 1, sh + 1, 1, hp - sh - 1, 'r');
+    p.rect(cx - 4, hp - 1, 8, 2, 'B');
+    // arms
+    for (const side of [q.L, q.R]) {
+      const sx = side === q.L ? cx - 5 : cx + 4;
+      p.line(sx, sh + 1, side.elbow[0], side.elbow[1], 'S', 2);
+      p.line(side.elbow[0], side.elbow[1], side.hand[0], side.hand[1], 'S', 2);
+      p.dot(sx, sh + 1, 'R', 3);
+    }
+    // neck + head
+    p.rect(cx - 1, hy + 3, 2, sh - hy - 3, 'S');
+    p.disc(cx, hy, 3, 'S');
+    if (q.rear) p.disc(cx, hy, 3, 'H', (x, y) => y <= hy + 2);
+    else { p.disc(cx, hy, 3, 'H', (x, y) => y <= hy - 2); p.set(cx - 1, hy, 'K'); p.set(cx + 1, hy, 'K'); }
+    p.line(cx - 3, hy - 1, cx + 3, hy - 1, 'R', 1);
+  }
+  const frontSeat = p => { p.rect(9, 7, 14, 14, 'M'); p.rect(10, 8, 12, 12, 'G'); p.rect(8, 21, 16, 2, 'M'); p.rect(8, 21, 16, 1, 'm'); post(p, 15, 23, 7); base(p, 6, 30, 20); };
+  const seatedLegsApart = { L: { knee: [10, 23], ankle: [9, 28] }, R: { knee: [22, 23], ankle: [23, 28] } };
+  const seatedLegsTogether = { L: { knee: [14, 23], ankle: [13, 28] }, R: { knee: [18, 23], ankle: [19, 28] } };
+  const handsOnSeat = { L: { elbow: [9, 17], hand: [9, 21] }, R: { elbow: [23, 17], hand: [23, 21] } };
+  const fview = (legs, arms) => ({ head: [16, 6], sh: 11, hip: 20, L: { ...legs.L, ...arms.L }, R: { ...legs.R, ...arms.R } });
 
   const SPRITES = {
-    chestpress: [
-      p => { backrest(p, 6, 8, 16); seat(p, 6, 22, 10); post(p, 10, 24, 6); base(p, 6, 30, 10); stack(p, 25, 18);
-        athlete(p, { head: [11, 8], neck: [11, 12], hip: [11, 21], knee: [17, 21], ankle: [17, 28], shoulder: [11, 14], elbow: [15, 18], hand: [18, 14] });
-        p.rect(19, 11, 2, 7, 'Y'); p.rect(21, 14, 4, 1, 'n'); },
-      p => { backrest(p, 6, 8, 16); seat(p, 6, 22, 10); post(p, 10, 24, 6); base(p, 6, 30, 10); stack(p, 25, 18);
-        athlete(p, { head: [11, 8], neck: [11, 12], hip: [11, 21], knee: [17, 21], ankle: [17, 28], shoulder: [11, 14], elbow: [17, 15], hand: [23, 14] });
-        p.rect(24, 11, 2, 7, 'Y'); p.rect(26, 14, 2, 1, 'n'); }
-    ],
-    legext: [
-      p => { backrest(p, 5, 7, 16); seat(p, 5, 21, 12); post(p, 9, 23, 7); base(p, 5, 30, 10); stack(p, 25, 22);
-        athlete(p, { head: [10, 8], neck: [10, 12], hip: [10, 20], knee: [17, 20], ankle: [18, 28], shoulder: [10, 14], elbow: [13, 19], hand: [14, 22] });
-        p.line(18, 22, 19, 28, 'm', 1); pad(p, 17, 28, 4, 2); },
-      p => { backrest(p, 5, 7, 16); seat(p, 5, 21, 12); post(p, 9, 23, 7); base(p, 5, 30, 10); stack(p, 25, 22);
-        athlete(p, { head: [10, 8], neck: [10, 12], hip: [10, 20], knee: [17, 20], ankle: [25, 21], shoulder: [10, 14], elbow: [13, 19], hand: [14, 22] });
-        p.line(19, 22, 25, 22, 'm', 1); pad(p, 24, 22, 3, 4); }
-    ],
-    latpull: [
-      p => { seat(p, 6, 22, 12); post(p, 10, 24, 6); base(p, 6, 30, 12); p.rect(19, 0, 2, 32, 'M'); p.rect(19, 0, 1, 32, 'm'); stack(p, 24, 22);
-        p.rect(14, 2, 1, 2, 'n'); p.rect(6, 4, 16, 2, 'n'); p.rect(6, 4, 16, 1, 'W');
-        athlete(p, { head: [11, 10], neck: [11, 14], hip: [11, 22], knee: [17, 22], ankle: [17, 29], shoulder: [11, 16], elbow: [8, 10], hand: [9, 5] });
-        pad(p, 13, 19, 6, 2); },
-      p => { seat(p, 6, 22, 12); post(p, 10, 24, 6); base(p, 6, 30, 12); p.rect(19, 0, 2, 32, 'M'); p.rect(19, 0, 1, 32, 'm'); stack(p, 24, 16);
-        p.rect(14, 2, 1, 12, 'n'); p.rect(6, 14, 16, 2, 'n'); p.rect(6, 14, 16, 1, 'W');
-        athlete(p, { head: [11, 9], neck: [11, 13], hip: [11, 22], knee: [17, 22], ankle: [17, 29], shoulder: [11, 15], elbow: [6, 17], hand: [8, 15] });
-        pad(p, 13, 19, 6, 2); }
-    ],
-    row: [
-      p => { seat(p, 4, 22, 10); post(p, 7, 24, 6); base(p, 3, 30, 12); p.rect(24, 8, 2, 22, 'M'); p.rect(24, 8, 1, 22, 'm'); stack(p, 26, 20);
-        p.rect(26, 8, 2, 2, 'n'); p.rect(19, 24, 4, 6, 'G');
-        athlete(p, { head: [9, 9], neck: [9, 13], hip: [9, 21], knee: [16, 20], ankle: [20, 26], shoulder: [9, 15], elbow: [14, 18], hand: [19, 15] });
-        p.rect(20, 15, 4, 1, 'n'); p.rect(19, 13, 2, 5, 'Y'); },
-      p => { seat(p, 4, 22, 10); post(p, 7, 24, 6); base(p, 3, 30, 12); p.rect(24, 8, 2, 22, 'M'); p.rect(24, 8, 1, 22, 'm'); stack(p, 26, 14);
-        p.rect(26, 8, 2, 2, 'n'); p.rect(19, 24, 4, 6, 'G');
-        athlete(p, { head: [9, 9], neck: [9, 13], hip: [9, 21], knee: [16, 20], ankle: [20, 26], shoulder: [9, 15], elbow: [5, 18], hand: [11, 16] });
-        p.rect(12, 16, 12, 1, 'n'); p.rect(11, 14, 2, 5, 'Y'); }
-    ],
-    abs: [
-      p => { backrest(p, 4, 8, 15); seat(p, 4, 22, 12); post(p, 8, 24, 6); base(p, 4, 30, 12); stack(p, 25, 20);
-        p.rect(20, 4, 2, 20, 'M'); p.rect(20, 4, 1, 20, 'm'); p.rect(15, 8, 6, 1, 'n');
-        athlete(p, { head: [10, 9], neck: [10, 13], hip: [10, 21], knee: [16, 21], ankle: [16, 28], shoulder: [10, 15], elbow: [14, 12], hand: [15, 9] });
-        pad(p, 14, 14, 3, 5); },
-      p => { backrest(p, 4, 8, 15); seat(p, 4, 22, 12); post(p, 8, 24, 6); base(p, 4, 30, 12); stack(p, 25, 14);
-        p.rect(20, 4, 2, 20, 'M'); p.rect(20, 4, 1, 20, 'm'); p.rect(16, 13, 5, 1, 'n');
-        athlete(p, { head: [14, 13], neck: [13, 16], hip: [10, 21], knee: [16, 21], ankle: [16, 28], shoulder: [13, 17], elbow: [16, 15], hand: [16, 13] });
-        pad(p, 16, 18, 3, 4); }
-    ],
-    legcurl: [
-      p => { backrest(p, 5, 7, 16); seat(p, 5, 21, 12); post(p, 9, 23, 7); base(p, 5, 30, 10); stack(p, 25, 22);
-        athlete(p, { head: [10, 8], neck: [10, 12], hip: [10, 20], knee: [17, 20], ankle: [24, 23], shoulder: [10, 14], elbow: [13, 19], hand: [15, 18] });
-        pad(p, 11, 17, 6, 2); pad(p, 23, 24, 4, 2); p.line(18, 23, 24, 26, 'm', 1); },
-      p => { backrest(p, 5, 7, 16); seat(p, 5, 21, 12); post(p, 9, 23, 7); base(p, 5, 30, 10); stack(p, 25, 16);
-        athlete(p, { head: [10, 8], neck: [10, 12], hip: [10, 20], knee: [17, 20], ankle: [19, 27], shoulder: [10, 14], elbow: [13, 19], hand: [15, 18] });
-        pad(p, 11, 17, 6, 2); pad(p, 17, 28, 4, 2); p.line(18, 23, 19, 29, 'm', 1); }
-    ],
-    legpress: [
-      p => { base(p, 1, 30, 30); p.line(2, 27, 11, 11, 'M', 3); p.line(3, 26, 10, 13, 'm', 1); p.rect(1, 27, 9, 2, 'M'); p.rect(1, 26, 9, 1, 'm');
-        p.line(9, 1, 31, 23, 'n', 1); p.rect(24, 22, 6, 6, 'G'); p.rect(24, 22, 6, 1, 'n');
-        athlete(p, { head: [6, 9], neck: [7, 13], hip: [11, 22], knee: [15, 17], ankle: [19, 14], shoulder: [7, 15], elbow: [9, 20], hand: [13, 22] });
-        p.line(17, 8, 25, 16, 'Y', 3); p.line(18, 10, 26, 18, 'y', 1); },
-      p => { base(p, 1, 30, 30); p.line(2, 27, 11, 11, 'M', 3); p.line(3, 26, 10, 13, 'm', 1); p.rect(1, 27, 9, 2, 'M'); p.rect(1, 26, 9, 1, 'm');
-        p.line(9, 1, 31, 23, 'n', 1); p.rect(24, 22, 6, 6, 'G'); p.rect(24, 22, 6, 1, 'n');
-        athlete(p, { head: [6, 9], neck: [7, 13], hip: [11, 22], knee: [18, 15], ankle: [24, 9], shoulder: [7, 15], elbow: [9, 20], hand: [13, 22] });
-        p.line(22, 3, 30, 11, 'Y', 3); p.line(23, 5, 31, 13, 'y', 1); }
-    ],
+    /* gym80 Chest Press: upright seat, lever arms from a pivot above and behind, handles pushed forward */
+    chestpress: [0, 1].map(f => p => {
+      rearTower(p, f); chair(p, 8, 8, 14, 8, 11); p.rect(5, 3, 10, 2, 'M'); p.rect(5, 3, 10, 1, 'm');
+      const hand = f ? [26, 14] : [20, 14];
+      lever(p, 13, 4, hand[0], hand[1] - 2);
+      athlete(p, { head: [13, 8], neck: [13, 12], hip: [13, 21], knee: [19, 21], ankle: [19, 28], shoulder: [13, 14], elbow: f ? [19, 15] : [15, 18], hand });
+      grip(p, hand[0], hand[1]);
+    }),
+    /* gym80 Leg Extension: seat to the knee, roller on the front of the shin, pivot at the knee */
+    legext: [0, 1].map(f => p => {
+      rearTower(p, f); chair(p, 8, 7, 14, 8, 12);
+      const ankle = f ? [27, 20] : [19, 28];
+      athlete(p, { head: [13, 7], neck: [13, 11], hip: [13, 20], knee: [19, 20], ankle, shoulder: [13, 13], elbow: [15, 17], hand: [15, 21] });
+      if (f) { lever(p, 19, 20, 25, 17); pad(p, 24, 16, 4, 3); } else { lever(p, 19, 20, 21, 26); pad(p, 21, 25, 3, 4); }
+    }),
+    /* gym80 Lat Pulldown: tower in front with the stack, thigh pad, bar from the top pulley to the upper chest */
+    latpull: [0, 1].map(f => p => {
+      post(p, 23, 1, 29); p.rect(10, 0, 15, 2, 'M'); p.rect(10, 0, 15, 1, 'm'); stack(p, 26, f ? 14 : 20); base(p, 6, 30, 26); p.dot(13, 2, 'W', 2);
+      seat(p, 7, 22, 12); post(p, 11, 24, 6); post(p, 20, 18, 4); pad(p, 15, 17, 6, 2);
+      const hand = f ? [15, 13] : [13, 4];
+      p.line(13, 2, hand[0], hand[1] - 1, 'n', 1); p.rect(hand[0] - 3, hand[1] - 1, 7, 1, 'W'); p.rect(hand[0] - 3, hand[1], 1, 2, 'W'); p.rect(hand[0] + 3, hand[1], 1, 2, 'W');
+      athlete(p, { head: [12, 9], neck: [12, 13], hip: [12, 22], knee: [19, 21], ankle: [19, 28], shoulder: [12, 15], elbow: f ? [9, 19] : [11, 9], hand });
+    }),
+    /* gym80 Seated Row (vogatore): chest pad in front, feet on the platform, handles pulled to the pad */
+    row: [0, 1].map(f => p => {
+      post(p, 25, 6, 24); stack(p, 27, f ? 14 : 20); base(p, 4, 30, 28);
+      seat(p, 6, 22, 9); post(p, 9, 24, 6); post(p, 18, 19, 11); pad(p, 16, 10, 3, 9); p.rect(22, 22, 2, 7, 'G');
+      const hand = f ? [19, 13] : [24, 13];
+      lever(p, 25, 24, hand[0] + 1, hand[1] + 2); grip(p, hand[0], hand[1]);
+      athlete(p, { head: [12, 8], neck: [12, 12], hip: [11, 21], knee: [17, 21], ankle: [21, 26], shoulder: [12, 14], elbow: f ? [8, 16] : [18, 14], hand });
+    }),
+    /* gym80 Abdominal Crunch: pads on the upper chest, lever from above, curl the trunk forward */
+    abs: [0, 1].map(f => p => {
+      rearTower(p, f); chair(p, 8, 8, 13, 8, 11); p.rect(5, 2, 16, 2, 'M'); p.rect(5, 2, 16, 1, 'm');
+      post(p, 20, 26, 4); pad(p, 20, 24, 3, 3);
+      if (!f) { lever(p, 19, 3, 17, 12); athlete(p, { head: [13, 8], neck: [13, 12], hip: [13, 21], knee: [19, 21], ankle: [19, 27], shoulder: [13, 14], elbow: [16, 18], hand: [17, 13] }); pad(p, 16, 11, 3, 4); }
+      else { lever(p, 19, 3, 21, 14); athlete(p, { head: [19, 12], neck: [17, 15], hip: [13, 21], knee: [19, 21], ankle: [19, 27], shoulder: [17, 16], elbow: [20, 20], hand: [21, 16] }); pad(p, 20, 14, 3, 4); }
+    }),
+    /* gym80 Seated Leg Curl: thigh pad on top, roller behind the ankles, curl the heels down and back */
+    legcurl: [0, 1].map(f => p => {
+      rearTower(p, f); chair(p, 8, 7, 14, 8, 12); post(p, 17, 12, 4); pad(p, 15, 16, 6, 2);
+      const ankle = f ? [18, 28] : [27, 21];
+      athlete(p, { head: [13, 7], neck: [13, 11], hip: [13, 20], knee: [20, 20], ankle, shoulder: [13, 13], elbow: [15, 17], hand: [16, 15] });
+      if (f) { lever(p, 20, 20, 17, 26); pad(p, 15, 25, 3, 4); } else { lever(p, 20, 20, 26, 23); pad(p, 24, 23, 4, 3); }
+    }),
+    /* gym80 Seated Leg Press (weight stack): reclined back, feet on a vertical plate that slides forward */
+    legpress: [0, 1].map(f => p => {
+      base(p, 0, 30, 32); p.rect(16, 27, 15, 1, 'n'); stack(p, 0, f ? 14 : 18); post(p, 6, 24, 6);
+      p.line(5, 9, 10, 22, 'M', 3); p.line(6, 9, 11, 22, 'm', 1); seat(p, 8, 23, 8); 
+      const px = f ? 27 : 22;
+      athlete(p, { head: [7, 10], neck: [8, 14], hip: [12, 22], knee: f ? [19, 20] : [16, 15], ankle: f ? [26, 20] : [21, 20], shoulder: [8, 16], elbow: [10, 20], hand: [13, 24] });
+      p.rect(px, 13, 2, 14, 'Y'); p.rect(px + 1, 13, 1, 14, 'y'); p.rect(px - 1, 26, 4, 1, 'G');
+    }),
+    /* gym80 Biceps Curl: seated, upper arms on the angled pad, curl the handle to the shoulder */
+    biccurl: [0, 1].map(f => p => {
+      rearTower(p, f); seat(p, 8, 22, 9); post(p, 11, 24, 6); base(p, 8, 30, 20); post(p, 20, 19, 11);
+      p.line(15, 14, 22, 18, 'Y', 3); p.line(15, 16, 22, 20, 'y', 1);
+      const hand = f ? [18, 10] : [26, 21];
+      athlete(p, { head: [12, 7], neck: [13, 11], hip: [12, 21], knee: [18, 22], ankle: [18, 28], shoulder: [13, 13], elbow: [20, 16], hand });
+      lever(p, 21, 17, hand[0], hand[1]); p.rect(hand[0] - 1, hand[1] - 1, 3, 3, 'G');
+    }),
+    /* gym80 Triceps Machine: seated, upper arms on a steep pad, push the handles down until the arms are straight */
+    tricep: [0, 1].map(f => p => {
+      rearTower(p, f); seat(p, 8, 22, 9); post(p, 11, 24, 6); base(p, 8, 30, 20); post(p, 19, 21, 9);
+      p.line(15, 14, 19, 20, 'Y', 3); p.line(16, 15, 20, 21, 'y', 1);
+      const hand = f ? [25, 23] : [19, 10];
+      athlete(p, { head: [12, 7], neck: [13, 11], hip: [12, 21], knee: [17, 22], ankle: [17, 28], shoulder: [13, 13], elbow: [18, 18], hand });
+      lever(p, 19, 19, hand[0], hand[1]); p.rect(hand[0] - 1, hand[1] - 1, 3, 3, 'G');
+    }),
+    /* gym80 Adductor (front view): pads on the inside of the knees, squeeze the legs together */
+    adduct: [0, 1].map(f => p => {
+      frontSeat(p);
+      athleteFront(p, fview(f ? seatedLegsTogether : seatedLegsApart, handsOnSeat));
+      const [l, r] = f ? [14, 18] : [10, 22];
+      lever(p, 16, 28, l + 2, 25); lever(p, 16, 28, r - 2, 25);
+      pad(p, l + 1, 21, 2, 4); pad(p, r - 2, 21, 2, 4);
+    }),
+    /* gym80 Abductor (front view): pads on the outside of the knees, push the legs apart */
+    abduct: [0, 1].map(f => p => {
+      frontSeat(p);
+      athleteFront(p, fview(f ? seatedLegsApart : seatedLegsTogether, handsOnSeat));
+      const [l, r] = f ? [10, 22] : [14, 18];
+      lever(p, 16, 29, l - 3, 26); lever(p, 16, 29, r + 3, 26);
+      pad(p, l - 4, 21, 2, 5); pad(p, r + 3, 21, 2, 5);
+    }),
+    /* gym80 Lateral Raise (front view): pads on the outside of the elbows, raise the arms to shoulder height */
+    latraise: [0, 1].map(f => p => {
+      frontSeat(p);
+      const arms = f ? { L: { elbow: [5, 12], hand: [4, 14] }, R: { elbow: [27, 12], hand: [28, 14] } }
+                     : { L: { elbow: [10, 17], hand: [10, 19] }, R: { elbow: [22, 17], hand: [22, 19] } };
+      athleteFront(p, fview(seatedLegsTogether, arms));
+      if (f) { lever(p, 11, 9, 5, 10); lever(p, 21, 9, 27, 10); pad(p, 3, 9, 4, 2); pad(p, 26, 9, 4, 2); }
+      else { lever(p, 11, 9, 8, 16); lever(p, 21, 9, 24, 16); pad(p, 7, 15, 2, 5); pad(p, 24, 15, 2, 5); }
+    }),
+    /* gym80 Butterfly Reverse (rear view): chest on the pad, open the straight arms out to the sides */
+    revfly: [0, 1].map(f => p => {
+      post(p, 15, 0, 7); p.dot(16, 2, 'W', 2); p.rect(8, 21, 16, 2, 'M'); p.rect(8, 21, 16, 1, 'm'); post(p, 15, 23, 7); base(p, 6, 30, 20);
+      const arms = f ? { L: { elbow: [6, 12], hand: [2, 12] }, R: { elbow: [26, 12], hand: [30, 12] } }
+                     : { L: { elbow: [10, 13], hand: [11, 14] }, R: { elbow: [22, 13], hand: [21, 14] } };
+      if (f) { lever(p, 16, 2, 2, 10); lever(p, 16, 2, 30, 10); } else { lever(p, 16, 2, 12, 12); lever(p, 16, 2, 20, 12); }
+      athleteFront(p, { head: [16, 6], sh: 11, hip: 20, rear: true, L: arms.L, R: arms.R });
+      if (f) { grip(p, 1, 12); grip(p, 29, 12); }
+    }),
     dumbbell: [
       p => { base(p, 4, 30, 24);
         athlete(p, { head: [14, 5], neck: [14, 9], hip: [14, 18], knee: [15, 24], ankle: [15, 29], shoulder: [14, 11], elbow: [17, 16], hand: [19, 20],
@@ -159,6 +239,25 @@
           back: { knee: [10, 22], ankle: [9, 28], elbow: [11, 6], hand: [9, 1] } }); }
     ]
   };
+  /* best drawing for an exercise name (gym80 machine names, Italian or English) */
+  function guess(name) {
+    const n = String(name || '').toLowerCase();
+    if (/later|alzat|lateral raise/.test(n)) return 'latraise';
+    if (/reverse|revers|rear delt|deltoid|post/.test(n)) return 'revfly';
+    if (/abdu|abdut/.test(n) && /out|fuori|ester|apri/.test(n)) return 'abduct';
+    if (/addu|addut/.test(n)) return 'adduct';
+    if (/abdu|abdut/.test(n)) return /in\b|dentro|intern|chiud/.test(n) ? 'adduct' : 'adduct';
+    if (/leg ?press|pressa/.test(n)) return 'legpress';
+    if (/leg ?ext|estens|quadric/.test(n)) return 'legext';
+    if (/leg ?curl|femoral/.test(n)) return 'legcurl';
+    if (/bicip|bicep/.test(n)) return 'biccurl';
+    if (/tricip|tricep|dip/.test(n)) return 'tricep';
+    if (/vogator|row|rematore|pulley/.test(n)) return 'row';
+    if (/\blat\b|lat machine|pulldown|lat ?pull/.test(n)) return 'latpull';
+    if (/abdom|addom|crunch|\babs?\b/.test(n)) return 'abs';
+    if (/chest|petto|panca|bench/.test(n)) return 'chestpress';
+    return null;
+  }
   const cache = {};
   function draw(key, frame, opts = {}) {
     const ck = key + ':' + frame + ':' + (opts.sweat ? 1 : 0);
@@ -174,5 +273,5 @@
     cache[ck] = out; return out;
   }
   function svg(key, frame = 0, cls = '', opts) { return `<svg viewBox="0 0 32 32" shape-rendering="crispEdges" class="${cls}">${draw(key, frame, opts)}</svg>`; }
-  global.GymSprites = { keys: Object.keys(SPRITES), draw, svg, PAL };
+  global.GymSprites = { keys: Object.keys(SPRITES), draw, svg, PAL, guess };
 })(typeof window !== 'undefined' ? window : globalThis);

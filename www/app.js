@@ -70,9 +70,16 @@ function load() {
   try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && (s.routines || s.exercises)) { s.settings = { crt: true, ...s.settings }; s.log = s.log || [];
     if (!s.history) { s.history = {}; for (const l of [...s.log].reverse()) if (l.kind === 'clear' && l.to) historyAdd(s, l.t, { code: l.code, name: l.name, ...l.to }); }
     if (!s.settings.notifyV2) { s.settings.notify = true; s.settings.notifyV2 = true; }
-    seedKnownDays(s); return migrateRoutines(s); } } catch (e) {}
+    seedKnownDays(s); return redrawMachines(migrateRoutines(s)); } } catch (e) {}
   return migrateRoutines(seedKnownDays({ log: [], history: {}, settings: { rest: 90, sound: true, vibrate: true, notify: true, notifyV2: true, wake: true, crt: true, lang: (navigator.language || 'en').startsWith('it') ? 'it' : 'en' }, exercises: freshExercises(), day: today() }));
 }
+/* gym80 drawings (v28): give every exercise the drawing that matches its machine name, once */
+function redrawMachines(st) {
+  if (st.diagramsV2 || !window.GymSprites || !GymSprites.guess) return st;
+  for (const r of st.routines) for (const e of r.exercises) { const g = GymSprites.guess(e.name); if (g) e.diagram = g; }
+  st.diagramsV2 = true; st.diagramsPush = true; return st;
+}
+const diagramFor = (name, d) => (!d || d === 'body' || !GymSprites.keys.includes(d)) ? (GymSprites.guess(name) || d || 'body') : d;
 /* the owner's first three gym days, entered by hand before the history existed */
 function seedKnownDays(st) {
   if (st.seeded0919) return st;
@@ -286,7 +293,7 @@ function applySchede(doc) {
       if (!ed || !ed.name) continue;
       const code = upper(ed.code);
       let e = r.exercises.find(x => (code && upper(x.code) === code) || x.name.trim().toLowerCase() === String(ed.name).trim().toLowerCase());
-      const want = { code, name: String(ed.name).trim(), reps: Math.max(1, Math.round(num(ed.reps, 10))), sets: Math.max(1, Math.round(num(ed.sets, 4))), kg: Math.max(0, num(ed.kg, 0)), rest: num(ed.rest, 0) > 0 ? Math.round(num(ed.rest, 0)) : null, notes: String(ed.notes || '').trim(), diagram: GymSprites.keys.includes(ed.diagram) ? ed.diagram : (e ? e.diagram : 'body') };
+      const want = { code, name: String(ed.name).trim(), reps: Math.max(1, Math.round(num(ed.reps, 10))), sets: Math.max(1, Math.round(num(ed.sets, 4))), kg: Math.max(0, num(ed.kg, 0)), rest: num(ed.rest, 0) > 0 ? Math.round(num(ed.rest, 0)) : null, notes: String(ed.notes || '').trim(), diagram: e && state.diagramsPush ? e.diagram : GymSprites.keys.includes(ed.diagram) && ed.diagram !== 'body' ? ed.diagram : diagramFor(ed.name, e ? e.diagram : 'body') };
       if (!e) { e = { id: uid(), doneSets: 0, ...want }; r.exercises.push(e); logAdd(e, 'add'); state.log[0].by = 'claude'; changes++; }
       else {
         for (const k of ['kg', 'reps', 'sets', 'rest']) if ((e[k] || 0) !== (want[k] || 0)) { logAdd({ ...e, ...want }, k, e[k] || 0, want[k] || 0); state.log[0].by = 'claude'; changes++; }
@@ -331,6 +338,7 @@ async function syncNow(manual) {
     // 2. push: register, full data, and our current routines
     const res = await segreq('/gymbro/push', 'POST', { updatedAt: now, registro: buildRegister(), data, schede: buildSchede() });
     if (res && res.version) state.settings.schedeVersion = res.version;
+    delete state.diagramsPush;
     state.settings.lastSync = now; state.settings.syncErr = null; save(); if (manual) toast('✓ ' + t('syncOk'));
     renderSyncStatus();
   } catch (e) { state.settings.syncErr = `${new Date().toLocaleString()} · ${e.message}`; save(); renderSyncStatus(); if (manual) toast(`${t('syncFail')} · ${e.message}`); }
@@ -526,7 +534,7 @@ function openForm(id) {
   $('#fSave').addEventListener('click', () => {
     const data = { code: $('#fCodeI').value.trim().toUpperCase(), name: $('#fNameI').value.trim() || t('exercise'),
       reps: Math.max(1, parseInt($('#fReps').value) || 1), sets: Math.max(1, parseInt($('#fSets').value) || 1),
-      kg: Math.max(0, parseFloat($('#fKg').value) || 0), rest: (parseInt($('#fRest').value) || 0) || null, notes: $('#fNotesI').value.trim(), diagram };
+      kg: Math.max(0, parseFloat($('#fKg').value) || 0), rest: (parseInt($('#fRest').value) || 0) || null, notes: $('#fNotesI').value.trim(), diagram: diagramFor($('#fNameI').value, diagram) };
     if (id) {
       for (const k of ['kg', 'reps', 'sets', 'rest']) if ((e[k] || 0) !== (data[k] || 0)) logAdd({ ...e, ...data }, k, e[k] || 0, data[k] || 0);
       Object.assign(e, data); if (e.doneSets > e.sets) e.doneSets = e.sets;
