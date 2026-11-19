@@ -17,7 +17,7 @@ const icon = (k, color = 'currentColor') => `<svg class="icon" viewBox="0 0 8 8"
 /* =========================== i18n =========================== */
 const I18N = {
   en: { select: 'STAGE SELECT', clear: 'CLEAR', edit: 'EDIT', editTitle: 'EDIT EXERCISE', addTitle: 'NEW EXERCISE', settings: 'OPTIONS', sets: 'sets', reps: 'reps', set: 'SET',
-    done: 'DONE', rest: 'REST', resting: 'RESTING', ready: 'READY?', go: 'GO!!', hit: 'HIT!', last: 'LAST ONE!', stageClear: 'STAGE CLEAR', allClear: 'ALL CLEAR!', volume: 'VOLUME',
+    done: 'DONE', rest: 'REST', resting: 'RESTING', ready: 'READY?', go: 'GO!!', hit: 'HIT!', last: 'LAST ONE!', stageClear: 'STAGE CLEAR', allClear: 'ALL CLEAR!', cantGo: "✕ CAN'T GO ON", failAsk: 'SET {n} · HOW MANY REPS DID YOU DO?', failStamp: 'STOP!', failLbl: 'STOPPED', failTag: '✕ SET {s} · {r} REPS', lastFail: 'LAST TIME: STOPPED AT SET {s} ({r} REPS)', failSaved: 'STOPPED · SAVED TO THE REGISTER', volume: 'VOLUME',
     skip: 'SKIP', newWorkout: 'NEW WORKOUT', addExercise: 'ADD EXERCISE', save: 'SAVE', delete: 'DELETE', code: 'CODE', name: 'NAME', kg: 'WEIGHT (KG)',
     restOverride: 'REST FOR THIS EXERCISE', useDefault: 'default', notes: 'NOTES', sprite: 'SPRITE', restDefault: 'REST TIME',
     restDefaultSub: 'Countdown after every DONE', sound: 'SOUND', soundSub: 'Only HIT, the bell, 3-2-1 and GO. Short clips, so your music ducks instead of stopping.', vibration: 'RUMBLE',
@@ -28,7 +28,7 @@ const I18N = {
     hint: '▲▼ SELECT STAGE · TAP TO START', tapDone: 'TAP DONE AFTER EACH SET', notifTitle: 'Rest over', notifBody: 'GO! Next set', exit: 'EXIT', of: 'OF', on: 'ON', off: 'OFF',
     round: 'SET', clearedToday: 'CLEAR TODAY' },
   it: { select: 'SCEGLI ESERCIZIO', clear: 'FATTO', edit: 'MODIFICA', editTitle: 'MODIFICA ESERCIZIO', addTitle: 'NUOVO ESERCIZIO', settings: 'OPZIONI', sets: 'serie', reps: 'rip', set: 'SERIE',
-    done: 'FATTO', rest: 'RIPOSO', resting: 'RIPOSO', ready: 'PRONTO?', go: 'VIA!!', hit: 'BOOM!', last: "L'ULTIMA!", stageClear: 'ESERCIZIO OK', allClear: 'TUTTO FATTO!', volume: 'VOLUME',
+    done: 'FATTO', rest: 'RIPOSO', resting: 'RIPOSO', ready: 'PRONTO?', go: 'VIA!!', hit: 'BOOM!', last: "L'ULTIMA!", stageClear: 'ESERCIZIO OK', allClear: 'TUTTO FATTO!', cantGo: '✕ NON CE LA FACCIO', failAsk: 'SERIE {n} · QUANTE RIPETIZIONI HAI FATTO?', failStamp: 'STOP!', failLbl: 'CEDUTO', failTag: '✕ SERIE {s} · {r} RIP', lastFail: 'ULTIMA VOLTA: CEDUTO ALLA SERIE {s} ({r} RIP)', failSaved: 'CEDUTO · SALVATO NEL REGISTRO', volume: 'VOLUME',
     skip: 'SALTA', newWorkout: 'NUOVO ALLENAMENTO', addExercise: 'AGGIUNGI ESERCIZIO', save: 'SALVA', delete: 'ELIMINA', code: 'CODICE', name: 'NOME', kg: 'PESO (KG)',
     restOverride: 'RIPOSO PER QUESTO ESERCIZIO', useDefault: 'predefinito', notes: 'NOTE', sprite: 'SPRITE', restDefault: 'TEMPO DI RIPOSO',
     restDefaultSub: 'Conto alla rovescia dopo ogni FATTO', sound: 'SUONO', soundSub: 'Solo FATTO, campana, 3-2-1 e VIA. Clip brevi: la musica si abbassa invece di fermarsi.', vibration: 'VIBRAZIONE',
@@ -80,7 +80,7 @@ function seedKnownDays(st) {
   st.seeded0919 = true; return st;
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
-function dayCheck() { if (state.day !== today()) { state.routines.forEach(r => r.exercises.forEach(e => e.doneSets = 0)); state.day = today(); save(); } }
+function dayCheck() { if (state.day !== today()) { state.routines.forEach(r => r.exercises.forEach(e => { e.doneSets = 0; delete e.failed; })); state.day = today(); save(); } }
 const restOf = e => (e.rest && e.rest > 0) ? e.rest : state.settings.rest;
 const isDone = e => e.doneSets >= e.sets;
 const dayOf = ts => { const d = new Date(ts); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
@@ -90,12 +90,15 @@ function historyAdd(st, ts, ex) {
   const entry = { t: ts, code: ex.code, name: ex.name, reps: ex.reps, sets: ex.sets, kg: ex.kg };
   if (ex.plan && ex.plan !== ex.sets) entry.plan = ex.plan;
   if (ex.feel) entry.feel = ex.feel;
+  if (ex.fail) entry.fail = ex.fail;
   if (i >= 0) list[i] = entry; else list.push(entry);
 }
+const failedToday = e => !!(e.failed && e.failed.day === dayOf(Date.now()));
+const volOf = x => x.kg * x.reps * x.sets + (x.fail ? x.kg * x.fail.reps : 0);
 const sameEx = (e, l) => e.code ? l.code === e.code : l.name === e.name;
 /* changes to reps/sets/kg since this exercise was last cleared (or in the last 14 days) */
 function deltaFor(e) {
-  const lastClear = state.log.find(l => (l.kind === 'clear' || l.kind === 'partial') && sameEx(e, l));
+  const lastClear = state.log.find(l => (l.kind === 'clear' || l.kind === 'partial' || l.kind === 'fail') && sameEx(e, l));
   const since = lastClear ? lastClear.t : Date.now() - 14 * 864e5, out = {};
   for (const l of state.log) {
     if (l.t <= since) break;
@@ -115,7 +118,7 @@ function lastFeel(e) { const h = feelHistory(e).find(x => x.feel); return h ? h.
 /* consecutive identical ratings at the current weight, newest first */
 function feelStreak(e, feel) {
   let n = 0;
-  for (const x of feelHistory(e)) { if (x.plan) continue; if (x.feel !== feel || x.kg !== e.kg) break; n++; }
+  for (const x of feelHistory(e)) { if (x.plan && !x.fail) continue; if (x.feel !== feel || x.kg !== e.kg) break; n++; }
   return n;
 }
 const upStep = e => e.kg >= 60 ? 5 : 2.5;
@@ -245,16 +248,18 @@ function buildRegister() {
     for (const e of r.exercises) { const lf = lastFeel(e); L.push(`| ${e.code || ''} | ${e.name} | ${e.reps} | ${e.sets} | ${e.kg} | ${e.rest || state.settings.rest}s | ${lf ? t(lf) : ''} | ${(e.notes || '').replace(/\|/g, '/')} |`); }
     L.push(``);
   }
-  L.push(`## Allenamenti (dal più recente)`, ``);
+  L.push(`## Allenamenti (dal più recente)`, ``, `"CEDUTO" = Ema ha premuto NON CE LA FACCIO: si è fermato a metà esercizio perché non riusciva più a continuare (dato utile per decidere carichi e serie).`, ``);
   for (const d of days) {
-    const list = state.history[d], vol = list.reduce((a, x) => a + x.kg * x.reps * x.sets, 0);
+    const list = state.history[d], vol = list.reduce((a, x) => a + volOf(x), 0);
     L.push(`### ${d}${list.length ? ` · ${list.length} esercizi · volume ${vol} kg` : ' · giorno di palestra, senza dettagli'}`);
-    for (const x of list) L.push(`- ${x.code || ''} ${x.name}: ${x.reps}×${x.sets}${x.plan ? `/${x.plan} (parziale)` : ''} · ${x.kg} kg${x.feel ? ` · ${t(x.feel)}` : ''}`);
+    for (const x of list) L.push(x.fail
+      ? `- ${x.code || ''} ${x.name}: ${x.kg} kg · CEDUTO: ${x.sets} serie complete da ${x.reps} su ${x.plan}, alla serie ${x.fail.set} ha fatto ${x.fail.reps} ripetizioni su ${x.reps} e non ce l'ha fatta a continuare`
+      : `- ${x.code || ''} ${x.name}: ${x.reps}×${x.sets}${x.plan ? `/${x.plan} (parziale)` : ''} · ${x.kg} kg${x.feel ? ` · ${t(x.feel)}` : ''}`);
     L.push(``);
   }
   L.push(`## Modifiche recenti (reps / serie / kg)`, ``);
   for (const l of state.log.slice(0, 120)) {
-    if (l.kind === 'clear' || l.kind === 'partial') continue;
+    if (l.kind === 'clear' || l.kind === 'partial' || l.kind === 'fail') continue;
     const when = `${dayOf(l.t)} ${new Date(l.t).toTimeString().slice(0, 5)}`, who = l.by === 'claude' ? ' (da Claude)' : '';
     if (l.kind === 'add') L.push(`- ${when} · aggiunto ${l.code || ''} ${l.name}${who}`);
     else if (l.kind === 'del') L.push(`- ${when} · eliminato ${l.code || ''} ${l.name}${who}`);
@@ -378,7 +383,7 @@ function renderList() {
   $('#subtitle').classList.toggle('tap', multi);
   if (!ex.length) { el.innerHTML = `<div class="empty">${t('empty')}</div>${multi ? `<div class="center"><button class="btn cyan" id="btnNewWorkout">${t('newWorkout')}</button></div>` : ''}`; const b = $('#btnNewWorkout'); if (b) b.addEventListener('click', newWorkout); return; }
   el.innerHTML = `<div class="stages">${ex.map((e, i) => { const dl = deltaFor(e), lf = lastFeel(e), ez = feelStreak(e, 'easy'); return `
-    <button class="stage ${isDone(e) ? 'done' : ''}" data-id="${e.id}" style="--i:${i}">
+    <button class="stage ${isDone(e) ? 'done' : ''} ${failedToday(e) ? 'failed' : ''}" data-id="${e.id}" style="--i:${i}">
       <div class="sbox">${sprite(e.diagram, 0)}</div>
       <div>
         <span class="scode">${esc(e.code || '—')}</span>${lf ? `<span class="tag ${lf}">${t(lf)}</span>` : ''}${ez >= 3 ? `<span class="tag nudge-up">▲ KG</span>` : ''}
@@ -388,7 +393,7 @@ function renderList() {
       </div>
       <div class="skg">${dl.reps ? `<i class="${dl.reps.to > dl.reps.from ? 'up' : 'dn'}">${dl.reps.to > dl.reps.from ? '▲' : '▼'}</i>` : ''}${e.reps}<small>${t('reps')}</small></div>
       <div class="skg kg">${dl.kg ? `<i class="${dl.kg.to > dl.kg.from ? 'up' : 'dn'}">${dl.kg.to > dl.kg.from ? '▲' : '▼'}</i>` : ''}${e.kg}<small>KG</small></div>
-      ${isDone(e) ? `<div class="stamp-clear">${t('clear')}!</div>` : ''}
+      ${isDone(e) ? (failedToday(e) ? `<div class="stamp-clear fail">${t('failStamp')}</div>` : `<div class="stamp-clear">${t('clear')}!</div>`) : ''}
     </button>`; }).join('')}</div>
     ${anyProgress || doneCount || multi ? `<div class="center" style="gap:10px;flex-wrap:wrap">${anyProgress ? `<button class="btn" id="btnFinish">${t('finishWorkout')}</button>` : ''}${doneCount || multi ? `<button class="btn ${anyProgress ? 'grey' : 'cyan'}" id="btnNewWorkout">${t('newWorkout')}</button>` : ''}</div>` : ''}`;
   const fin = $('#btnFinish'); if (fin) fin.addEventListener('click', finishWorkout);
@@ -415,10 +420,10 @@ function longPress(el, fn) {
   el.addEventListener('contextmenu', ev => ev.preventDefault());
 }
 function resetExerciseToday(e) {
-  e.doneSets = 0;
+  e.doneSets = 0; delete e.failed;
   const d = dayOf(Date.now());
   if (state.history[d]) { state.history[d] = state.history[d].filter(x => !sameEx(e, x)); if (!state.history[d].length) delete state.history[d]; }
-  state.log = state.log.filter(l => !(l.kind === 'clear' && sameEx(e, l) && dayOf(l.t) === d));
+  state.log = state.log.filter(l => !((l.kind === 'clear' || l.kind === 'fail') && sameEx(e, l) && dayOf(l.t) === d));
   save(); renderList();
 }
 function openExerciseMenu(id) {
@@ -619,9 +624,9 @@ function renderWorkouts() {
   const perWeek = (inWindow / weeksActive).toFixed(1);
   const thisWeek = days.filter(d => d >= dayOf(monday.getTime())).length;
   const rows = days.map(d => {
-    const list = state.history[d], vol = list.reduce((a, x) => a + x.kg * x.reps * x.sets, 0);
+    const list = state.history[d], vol = list.reduce((a, x) => a + volOf(x), 0);
     return `<div class="wday" data-day="${d}"><div class="wh"><b>${dayLabel(d)}</b><span>${list.length ? `${list.length} ${t('exercisesN')} · <em>${vol}</em> KG` : `${t('gymDay')} · ${t('noDetails')}`}<button class="wdel" data-del="${d}" aria-label="delete">${icon('x')}</button></span></div>
-      ${list.map(x => `<div class="wrow"><span class="lc ${x.plan ? 'part' : ''}">${esc(x.code || '—')}</span><span class="wn">${esc(x.name)}</span><span class="n">${x.reps}×${x.sets}${x.plan ? `<i>/${x.plan}</i>` : ''}</span><span class="n kg">${x.kg}<small>KG</small></span>${x.feel ? `<span class="tag ${x.feel} sm">${t(x.feel)}</span>` : ''}</div>`).join('')}</div>`;
+      ${list.map(x => `<div class="wrow"><span class="lc ${x.fail ? 'fail' : x.plan ? 'part' : ''}">${esc(x.code || '—')}</span><span class="wn">${esc(x.name)}</span><span class="n">${x.reps}×${x.sets}${x.plan ? `<i>/${x.plan}</i>` : ''}</span><span class="n kg">${x.kg}<small>KG</small></span>${x.fail ? `<span class="tag hard sm">${t('failTag').replace('{s}', x.fail.set).replace('{r}', x.fail.reps)}</span>` : x.feel ? `<span class="tag ${x.feel} sm">${t(x.feel)}</span>` : ''}</div>`).join('')}</div>`;
   }).join('');
   return `<div class="tiles"><div class="tile"><b>${days.length}</b><small>${t('total')}</small></div><div class="tile"><b>${thisWeek}</b><small>${t('thisWeek')}</small></div><div class="tile"><b>${thisMonth}</b><small>${t('thisMonth')}</small></div><div class="tile"><b>${perWeek}</b><small>${t('perWeek')}</small></div></div>
     <div class="cal" style="grid-template-columns:repeat(${weeks},1fr)">${cal}</div>${rows}${addBtn}`;
@@ -631,17 +636,21 @@ function renderAddDay() {
     <div class="field"><label>${t('pickExercises')}</label><div class="picklist">${state.exercises.map(e => `<button type="button" class="pk" data-id="${e.id}"><span class="lc">${esc(e.code || '—')}</span><span class="wn">${esc(e.name)}</span><span class="n">${e.reps}×${e.sets} · ${e.kg}KG</span></button>`).join('')}</div></div>
     <div class="dlg-btns"><button class="btn grey" id="adCancel">${t('cancel')}</button><button class="btn" id="adSave">${t('save')}</button></div>`;
 }
+function doneBody(l) {
+  const x = l.to, lbl = l.kind === 'clear' ? t('clear') : l.kind === 'fail' ? t('failLbl') : t('partialLbl');
+  return `<span class="lk">${lbl}</span><span class="n">${x.reps}×${x.sets}${x.plan ? '/' + x.plan : ''}</span> · <span class="n">${x.kg}</span> KG${x.fail ? ` <span class="tag hard sm">${t('failTag').replace('{s}', x.fail.set).replace('{r}', x.fail.reps)}</span>` : ''}`;
+}
 function renderChanges() {
   const days = {};
   for (const l of state.log) { const d = dayOf(l.t); (days[d] = days[d] || []).push(l); }
   const row = l => {
     const hh = new Date(l.t).toTimeString().slice(0, 5);
     let body;
-    if (l.kind === 'clear' || l.kind === 'partial') body = `<span class="lk">${l.kind === 'clear' ? t('clear') : t('partialLbl')}</span><span class="n">${l.to.reps}×${l.to.sets}${l.to.plan ? '/' + l.to.plan : ''}</span> · <span class="n">${l.to.kg}</span> KG`;
+    if (l.kind === 'clear' || l.kind === 'partial' || l.kind === 'fail') body = doneBody(l);
     else if (l.kind === 'add') body = `<span class="lk">${t('added')}</span>${esc(l.name)}`;
     else if (l.kind === 'del') body = `<span class="lk">${t('deleted')}</span>${esc(l.name)}`;
     else { const up = l.to > l.from; body = `<span class="lk">${l.kind === 'kg' ? 'KG' : l.kind === 'rest' ? t('rest') : t(l.kind).toUpperCase()}</span><span class="n">${l.from}</span> → <b class="n ${up ? 'up' : 'dn'}">${l.to}</b>`; }
-    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'partial' ? 'part' : l.kind === 'del' ? 'del' : ''}">${esc(l.code || '—')}</span><div>${body}<span class="ln">${hh} · ${esc(l.name)}</span></div></div>`;
+    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'partial' ? 'part' : l.kind === 'fail' ? 'fail' : l.kind === 'del' ? 'del' : ''}">${esc(l.code || '—')}</span><div>${body}<span class="ln">${hh} · ${esc(l.name)}</span></div></div>`;
   };
   return state.log.length ? Object.keys(days).sort().reverse().map(d => `<div class="logday">${dayLabel(d)}</div>${days[d].map(row).join('')}`).join('') : `<div class="empty">${t('logEmpty')}</div>`;
 }
@@ -718,16 +727,16 @@ $('#subtitle').addEventListener('click', () => { if (state.routines.length > 1) 
 
 function openExerciseLog(e) {
   const items = [];
-  for (const [d, list] of Object.entries(state.history)) for (const x of list) if (sameEx(e, x)) items.push({ t: x.t, kind: x.plan ? 'partial' : 'clear', to: x });
-  for (const l of state.log) if (sameEx(e, l) && l.kind !== 'clear' && l.kind !== 'partial') items.push(l);
+  for (const [d, list] of Object.entries(state.history)) for (const x of list) if (sameEx(e, x)) items.push({ t: x.t, kind: x.fail ? 'fail' : x.plan ? 'partial' : 'clear', to: x });
+  for (const l of state.log) if (sameEx(e, l) && l.kind !== 'clear' && l.kind !== 'partial' && l.kind !== 'fail') items.push(l);
   items.sort((a, b) => b.t - a.t);
   const row = l => {
     let body;
-    if (l.kind === 'clear' || l.kind === 'partial') body = `<span class="lk">${l.kind === 'clear' ? t('clear') : t('partialLbl')}</span><span class="n">${l.to.reps}×${l.to.sets}${l.to.plan ? '/' + l.to.plan : ''}</span> · <span class="n">${l.to.kg}</span> KG`;
+    if (l.kind === 'clear' || l.kind === 'partial' || l.kind === 'fail') body = doneBody(l);
     else if (l.kind === 'add') body = `<span class="lk">${t('added')}</span>`;
     else if (l.kind === 'del') body = `<span class="lk">${t('deleted')}</span>`;
     else { const up = l.to > l.from; body = `<span class="lk">${kindLabel(l.kind)}</span><span class="n">${l.from}</span> → <b class="n ${up ? 'up' : 'dn'}">${l.to}</b>`; }
-    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'partial' ? 'part' : ''}">${l.kind === 'clear' ? '✓' : l.kind === 'partial' ? '½' : '✎'}</span><div>${body}<span class="ln">${dayLabel(dayOf(l.t))} · ${new Date(l.t).toTimeString().slice(0, 5)}</span></div></div>`;
+    return `<div class="logrow"><span class="lc ${l.kind === 'clear' ? 'clear' : l.kind === 'partial' ? 'part' : l.kind === 'fail' ? 'fail' : ''}">${l.kind === 'clear' ? '✓' : l.kind === 'partial' ? '½' : l.kind === 'fail' ? '✕' : '✎'}</span><div>${body}<span class="ln">${dayLabel(dayOf(l.t))} · ${new Date(l.t).toTimeString().slice(0, 5)}</span></div></div>`;
   };
   openDlg(`${e.code ? e.code + ' · ' : ''}${e.name}`.toUpperCase(), items.length ? items.map(row).join('') : `<div class="empty">${t('noExLog')}</div>`);
 }
@@ -792,6 +801,35 @@ function renderSub() {
     $('#btnPlus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt += 15000; S.dur += 15; tick(); nativeArm(); } });
     $('#btnMinus').addEventListener('click', () => { if (S.phase === 'rest') { S.endAt -= 15000; tick(); if (S.phase === 'rest') nativeArm(); } });
   } else el.innerHTML = '';
+  if (S.phase === 'set' || S.phase === 'rest') {
+    el.insertAdjacentHTML('beforeend', `<button class="btn failbtn" id="btnFail">${t('cantGo')}</button>`);
+    $('#btnFail').addEventListener('click', askFail);
+  }
+}
+/* "can't go on": ask the reps of the set where he stopped, then close the exercise as failed */
+function askFail() {
+  if (!S.open || !(S.phase === 'set' || S.phase === 'rest')) return;
+  const e = S.ex, setN = Math.min(e.sets, e.doneSets + 1), phase0 = S.phase;
+  $('#btnDone').classList.add('hidden');
+  const el = $('#subctl');
+  el.innerHTML = `<div class="feelask"><div class="lbl">${t('failAsk').replace('{n}', setN)}</div><div class="repgrid">${Array.from({ length: e.reps }, (_, r) => `<button class="btn grey" data-r="${r}">${r}</button>`).join('')}</div><button class="btn grey" id="failCancel" style="width:100%;margin-top:6px">${t('cancel')}</button></div>`;
+  el.querySelectorAll('[data-r]').forEach(b => b.addEventListener('click', () => failExercise(+b.dataset.r)));
+  $('#failCancel').addEventListener('click', () => { $('#btnDone').classList.remove('hidden'); if (S.phase === phase0) renderSub(); });
+}
+function failExercise(reps) {
+  if (!S.open) return;
+  const e = S.ex, ts = Date.now(), fail = { set: Math.min(e.sets, e.doneSets + 1), reps };
+  stopTimer(); nativeDisarm(); closeNotifications(); fight.classList.remove('resting', 'go');
+  const done = e.doneSets;
+  historyAdd(state, ts, { ...e, sets: done, plan: e.sets, feel: 'hard', fail });
+  logAdd(e, 'fail', null, { reps: e.reps, sets: done, kg: e.kg, plan: e.sets, fail });
+  e.doneSets = e.sets; e.failed = { day: dayOf(ts), ...fail };
+  S.phase = 'done'; state.live = null; save(); syncSoon(); nativePip();
+  renderBar(); $('#subctl').innerHTML = '';
+  sfx('hit'); buzz([60, 40, 60]); shake(); flash(false);
+  stamp(t('failStamp'), 'red', 0);
+  const sc = $('#score'); sc.innerHTML = `${t('volume')} <b>${volOf({ kg: e.kg, reps: e.reps, sets: done, fail })}</b> KG`; sc.classList.add('in');
+  setTimeout(() => wipe(() => { closeSessionNow(); toast('✕ ' + t('failSaved')); }), 1400);
 }
 
 /* the satisfying press */
@@ -817,7 +855,7 @@ function stamp(text, cls = '', hold = 700) {
 $('#btnDone').addEventListener('click', pressDone);
 function pressDone() {
   if (!S.open) return;
-  if (S.phase === 'cleared') { S.ex.doneSets = 0; S.phase = 'set'; save(); renderBar(); renderSub(); nativeShowSet(); nativePip(); saveLive(); renderPip(); return; }
+  if (S.phase === 'cleared') { S.ex.doneSets = 0; delete S.ex.failed; S.phase = 'set'; save(); renderBar(); renderSub(); nativeShowSet(); nativePip(); saveLive(); renderPip(); return; }
   if (S.phase !== 'set') return;
   const e = S.ex;
   Sfx.prime(['alarm', 'go', 'tick3']);
@@ -905,8 +943,8 @@ $('#stRepsBox').addEventListener('click', () => openWheel('reps'));
 $('#stKgBox').addEventListener('click', () => openWheel('kg'));
 function renderFeel() {
   const e = S.ex, el = $('#fFeel'); if (!e) return;
-  const lf = lastFeel(e), ez = feelStreak(e, 'easy'), hd = feelStreak(e, 'hard');
-  let h = lf ? `<span class="tag ${lf}">${t('lastTime')}: ${t(lf)}</span>` : '';
+  const lf = lastFeel(e), ez = feelStreak(e, 'easy'), hd = feelStreak(e, 'hard'), last = feelHistory(e)[0];
+  let h = last && last.fail ? `<span class="tag hard">${t('lastFail').replace('{s}', last.fail.set).replace('{r}', last.fail.reps)}</span>` : lf ? `<span class="tag ${lf}">${t('lastTime')}: ${t(lf)}</span>` : '';
   if (ez >= 3) { const to = Math.round((e.kg + upStep(e)) * 100) / 100; h += `<div class="nudge up">▲ ${t('easyStreak').replace('{n}', ez)} · ${t('tryUp')} <button class="btn feel-easy" id="fUp">${to} KG</button></div>`; }
   else if (hd >= 3) h += `<div class="nudge dn">▼ ${t('hardStreak').replace('{n}', hd)}</div>`;
   el.innerHTML = h; el.classList.toggle('hidden', !h);

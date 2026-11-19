@@ -159,6 +159,7 @@ svg{display:block}
 .stamp.blink{opacity:1;transform:translate(-50%,-50%) scale(1);animation:blink .34s steps(2) infinite;color:var(--white)}
 .stamp.out{animation:stampout .3s steps(3) forwards}
 .stamp.cyan{color:var(--cyan);text-shadow:3px 3px 0 var(--hi),6px 6px 0 #000}
+.stamp.red{color:var(--red);text-shadow:3px 3px 0 #000,6px 6px 0 #000}
 .stamp.small{font-size:14px;top:18%}
 .score{position:absolute;left:50%;top:38%;transform:translateX(-50%);font-family:var(--fx);font-size:11px;color:var(--white);text-shadow:2px 2px 0 #000;white-space:nowrap;opacity:0;z-index:3}
 .score.in{opacity:1}
@@ -213,6 +214,13 @@ svg{display:block}
 .subctl{display:flex;gap:8px;justify-content:center;min-height:56px;align-items:center;flex-wrap:wrap}
 .subctl:empty{min-height:56px}
 .subctl .btn{flex:1;min-height:44px;font-size:9px;margin:3px 3px 8px}
+.subctl .btn.failbtn{flex:1 1 100%;background:var(--ink);color:var(--red);font-size:9px;min-height:40px;box-shadow:inset 0 0 0 3px var(--red),0 4px 0 3px #000}
+.subctl .btn.failbtn:active{transform:translateY(4px);box-shadow:inset 0 0 0 3px var(--red),0 0 0 3px #000}
+.repgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.repgrid .btn{min-height:48px;font-size:14px;margin:2px}
+.stamp-clear.fail{color:var(--red);text-shadow:2px 2px 0 #000,4px 4px 0 #000}
+.stage.failed{border-color:var(--red)}
+.logrow .lc.fail,.wrow .lc.fail{background:var(--red);color:var(--white)}
 
 /* ---------- dialog ---------- */
 .backdrop{position:fixed;inset:0;z-index:40;background:rgba(6,4,20,.7);opacity:0;transition:opacity .2s steps(4);pointer-events:none}
