@@ -145,12 +145,13 @@
       if (!f) { lever(p, 19, 3, 17, 12); athlete(p, { head: [13, 8], neck: [13, 12], hip: [13, 21], knee: [19, 21], ankle: [19, 27], shoulder: [13, 14], elbow: [16, 18], hand: [17, 13] }); pad(p, 16, 11, 3, 4); }
       else { lever(p, 19, 3, 21, 14); athlete(p, { head: [19, 12], neck: [17, 15], hip: [13, 21], knee: [19, 21], ankle: [19, 27], shoulder: [17, 16], elbow: [20, 20], hand: [21, 16] }); pad(p, 20, 14, 3, 4); }
     }),
-    /* gym80 Seated Leg Curl: thigh pad on top, roller behind the ankles, curl the heels down and back */
+    /* gym80 Lying Leg Curl: face down on the bench, roller on the back of the ankles, heels curled up to the glutes */
     legcurl: [0, 1].map(f => p => {
-      rearTower(p, f); chair(p, 8, 7, 14, 8, 12); post(p, 17, 12, 4); pad(p, 15, 16, 6, 2);
-      const ankle = f ? [18, 28] : [27, 21];
-      athlete(p, { head: [13, 7], neck: [13, 11], hip: [13, 20], knee: [20, 20], ankle, shoulder: [13, 13], elbow: [15, 17], hand: [16, 15] });
-      if (f) { lever(p, 20, 20, 17, 26); pad(p, 15, 25, 3, 4); } else { lever(p, 20, 20, 26, 23); pad(p, 24, 23, 4, 3); }
+      post(p, 9, 24, 6); post(p, 23, 24, 6); base(p, 4, 30, 26); p.rect(5, 22, 24, 2, 'M'); p.rect(5, 22, 24, 1, 'm');
+      p.rect(15, 21, 6, 1, 'G'); post(p, 27, 24, 3);
+      if (f) lever(p, 8, 25, 11, 12); else lever(p, 8, 25, 3, 18);
+      athlete(p, { head: [26, 16], neck: [22, 19], hip: [14, 19], knee: [8, 20], ankle: f ? [11, 12] : [2, 20], shoulder: [22, 19], elbow: [24, 23], hand: [27, 25] });
+      if (f) pad(p, 10, 9, 4, 3); else pad(p, 1, 16, 4, 3);
     }),
     /* gym80 Seated Leg Press (weight stack): reclined back, feet on a vertical plate that slides forward */
     legpress: [0, 1].map(f => p => {
